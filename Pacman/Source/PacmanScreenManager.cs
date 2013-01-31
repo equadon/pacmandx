@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using SharpDX;
-using SharpDX.Toolkit;
+﻿using SharpDX.Toolkit;
+using SharpDX.Toolkit.Diagnostics;
+using SharpDX.Toolkit.Graphics;
 
 using Pacman.ScreenMachine;
-using SharpDX.Toolkit.Diagnostics;
 
 namespace Pacman
 {
@@ -15,10 +10,27 @@ namespace Pacman
     {
         public Logger Logger { get; private set; }
 
+        // Content
+        public SpriteFont DebugFont { get; private set; }
+
+        public Texture2D BonusItemsTileset { get; private set; }
+
         public PacmanScreenManager(Game game, Logger logger)
             : base(game)
         {
             Logger = logger;
+        }
+
+        protected override void LoadContent()
+        {
+            DebugFont = Content.Load<SpriteFont>(@"Fonts\DebugFont.tkfont");
+            
+            BlankTexture = Content.Load<Texture2D>(@"Textures\Blank.png");
+            BonusItemsTileset = Content.Load<Texture2D>(@"Textures\BonusItemsTileset.png");
+
+            base.LoadContent();
+
+            Logger.Info("Content loaded.");
         }
 
         public override void Initialize()
