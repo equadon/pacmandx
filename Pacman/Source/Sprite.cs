@@ -8,7 +8,7 @@ namespace Pacman
     {
         #region Fields
 
-        private Texture2D _texture;
+        private readonly Texture2D _texture;
 
         private Vector2 _position;
 
@@ -21,7 +21,7 @@ namespace Pacman
         public Vector2 Position
         {
             get { return _position; }
-            set { _position = value; }
+            protected set { _position = value; }
         }
 
         public Vector2 GridPosition

@@ -3,6 +3,7 @@ using SharpDX.Toolkit;
 using SharpDX.Toolkit.Diagnostics;
 using SharpDX.Toolkit.Graphics;
 
+using Pacman.Actors;
 using Pacman.ScreenMachine;
 
 namespace Pacman.Screens
@@ -13,7 +14,7 @@ namespace Pacman.Screens
 
         public Logger Logger { get; private set; }
 
-        public Sprite Fruit { get; private set; }
+        public PacMan PacMan { get; private set; }
 
         public new PacmanScreenManager ScreenManager
         {
@@ -36,8 +37,7 @@ namespace Pacman.Screens
         {
             if (!instancePreserved)
             {
-                Fruit = new Sprite(ScreenManager.BonusItemsTileset, new Vector2(PacmanGame.ScreenWidth/2f, PacmanGame.ScreenHeight/2f), new Rectangle(8, 5, 76, 83));
-                var a = Fruit.Origin;
+                PacMan = new PacMan(ScreenManager.PacManTileset, new Vector2(PacmanGame.ScreenWidth/2f, PacmanGame.ScreenHeight/2f));
             }
         }
 
@@ -47,7 +47,7 @@ namespace Pacman.Screens
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            Fruit.Update(gameTime);
+            PacMan.Update(gameTime);
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
@@ -55,10 +55,8 @@ namespace Pacman.Screens
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch.Begin();
-            
-            SpriteBatch.DrawString(ScreenManager.DebugFont, "Debugging!", Vector2.Zero, Color.White);
 
-            Fruit.Draw(SpriteBatch, gameTime);
+            PacMan.Draw(SpriteBatch, gameTime);
 
             SpriteBatch.End();
         }

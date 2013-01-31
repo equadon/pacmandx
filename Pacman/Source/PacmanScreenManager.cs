@@ -14,6 +14,7 @@ namespace Pacman
         public SpriteFont DebugFont { get; private set; }
 
         public Texture2D BonusItemsTileset { get; private set; }
+        public Texture2D PacManTileset { get; private set; }
 
         public PacmanScreenManager(Game game, Logger logger)
             : base(game)
@@ -26,7 +27,9 @@ namespace Pacman
             DebugFont = Content.Load<SpriteFont>(@"Fonts\DebugFont.tkfont");
             
             BlankTexture = Content.Load<Texture2D>(@"Textures\Blank.png");
+            
             BonusItemsTileset = Content.Load<Texture2D>(@"Textures\BonusItemsTileset.png");
+            PacManTileset = Content.Load<Texture2D>(@"Textures\PacManTilesheet.png");
 
             base.LoadContent();
 

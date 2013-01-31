@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Source\Actors\Actor.cs" />
+    <Compile Include="Source\Actors\PacMan.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Source\Level.cs" />
     <Compile Include="Source\PacmanGame.cs" />
     <Compile Include="Source\PacmanScreenManager.cs" />
@@ -99,6 +102,9 @@
     <None Include="Content\Textures\BonusItemsTileset.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Textures\PacManTilesheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Plan.txt" />
   </ItemGroup>
   <ItemGroup>
