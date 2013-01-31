@@ -39,26 +39,70 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Content\Fonts\DebugFont.tkfont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
     <None Include="Pacman.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blinky.cs" />
-    <Compile Include="Clyde.cs" />
-    <Compile Include="Inky.cs" />
-    <Compile Include="Pinky.cs" />
-    <Compile Include="Source\Actor.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Source\Actors\Ghosts\Blinky.cs" />
+    <Compile Include="Source\Actors\Ghosts\Clyde.cs" />
+    <Compile Include="Source\Actors\Ghosts\Inky.cs" />
+    <Compile Include="Source\Actors\Ghosts\Pinky.cs" />
+    <Compile Include="Source\Actors\Actor.cs" />
     <Compile Include="Source\Fruit.cs" />
-    <Compile Include="Source\Ghost.cs" />
+    <Compile Include="Source\Actors\Ghost.cs" />
     <Compile Include="Source\Level.cs" />
-    <Compile Include="Source\Pacman.cs" />
+    <Compile Include="Source\Actors\Pacman.cs" />
+    <Compile Include="Source\PacmanGame.cs" />
+    <Compile Include="Source\PacmanScreenManager.cs" />
+    <Compile Include="Source\ScreenMachine\GameScreen.cs" />
+    <Compile Include="Source\ScreenMachine\InputState.cs" />
+    <Compile Include="Source\ScreenMachine\Menu\MenuItem.cs" />
+    <Compile Include="Source\ScreenMachine\Menu\MenuScreen.cs" />
+    <Compile Include="Source\ScreenMachine\Menu\MenuTextItem.cs" />
+    <Compile Include="Source\ScreenMachine\ScreenManager.cs" />
+    <Compile Include="Source\Screens\DebugScreen.cs" />
     <Compile Include="Source\Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="SharpDX">
+      <HintPath>..\packages\SharpDX.2.4.2\lib\net40\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.D3DCompiler">
+      <HintPath>..\packages\SharpDX.D3DCompiler.2.4.2\lib\net40\SharpDX.D3DCompiler.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D11">
+      <HintPath>..\packages\SharpDX.Direct3D11.2.4.2\lib\net40\SharpDX.Direct3D11.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DXGI">
+      <HintPath>..\packages\SharpDX.DXGI.2.4.2\lib\net40\SharpDX.DXGI.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.RawInput">
+      <HintPath>..\packages\SharpDX.RawInput.2.4.2\lib\net40\SharpDX.RawInput.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Toolkit">
+      <HintPath>..\packages\SharpDX.Toolkit.2.4.2\lib\net40\SharpDX.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Toolkit.Game">
+      <HintPath>..\packages\SharpDX.Toolkit.Game.2.4.2\lib\net40\SharpDX.Toolkit.Game.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Toolkit.Graphics">
+      <HintPath>..\packages\SharpDX.Toolkit.Graphics.2.4.2\lib\net40\SharpDX.Toolkit.Graphics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Textures\blank.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Plan.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

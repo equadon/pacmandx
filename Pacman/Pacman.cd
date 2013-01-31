@@ -18,14 +18,14 @@
     <Position X="0.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Source\Pacman.cs</FileName>
+      <FileName>Source\Actors\Pacman.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pacman.Ghost">
     <Position X="5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Source\Ghost.cs</FileName>
+      <FileName>Source\Actors\Ghost.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pacman.Actor">
@@ -39,28 +39,28 @@
     <Position X="2.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Blinky.cs</FileName>
+      <FileName>Source\Actors\Ghosts\Blinky.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pacman.Pinky">
     <Position X="4.25" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Pinky.cs</FileName>
+      <FileName>Source\Actors\Ghosts\Pinky.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pacman.Inky">
     <Position X="6" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Inky.cs</FileName>
+      <FileName>Source\Actors\Ghosts\Inky.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Pacman.Clyde">
     <Position X="7.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Clyde.cs</FileName>
+      <FileName>Source\Actors\Ghosts\Clyde.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
