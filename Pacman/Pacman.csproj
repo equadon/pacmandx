@@ -47,15 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="Source\Actors\Ghosts\Blinky.cs" />
-    <Compile Include="Source\Actors\Ghosts\Clyde.cs" />
-    <Compile Include="Source\Actors\Ghosts\Inky.cs" />
-    <Compile Include="Source\Actors\Ghosts\Pinky.cs" />
     <Compile Include="Source\Actors\Actor.cs" />
-    <Compile Include="Source\Fruit.cs" />
-    <Compile Include="Source\Actors\Ghost.cs" />
     <Compile Include="Source\Level.cs" />
-    <Compile Include="Source\Actors\Pacman.cs" />
     <Compile Include="Source\PacmanGame.cs" />
     <Compile Include="Source\PacmanScreenManager.cs" />
     <Compile Include="Source\ScreenMachine\GameScreen.cs" />
@@ -108,7 +101,9 @@
     </None>
     <Content Include="Plan.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Source\Actors\Ghosts\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

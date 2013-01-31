@@ -8,6 +8,9 @@ namespace Pacman
 {
     public class PacmanGame : Game
     {
+        public static readonly int ScreenWidth = 1024;
+        public static readonly int ScreenHeight = 768;
+
         private readonly GraphicsDeviceManager _graphics;
         private readonly Logger _logger;
         private readonly PacmanScreenManager _screenManager;
@@ -19,6 +22,8 @@ namespace Pacman
             _logger.Info("Logger initiated.");
 
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = ScreenWidth;
+            _graphics.PreferredBackBufferHeight = ScreenHeight;
 
             _screenManager = new PacmanScreenManager(this, _logger);
             GameSystems.Add(_screenManager);
@@ -41,7 +46,7 @@ namespace Pacman
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             base.Draw(gameTime);
         }

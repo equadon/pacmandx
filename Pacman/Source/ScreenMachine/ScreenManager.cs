@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 using SharpDX;
 using SharpDX.Toolkit;
+using SharpDX.Toolkit.Content;
 using SharpDX.Toolkit.Graphics;
 
 namespace Pacman.ScreenMachine
