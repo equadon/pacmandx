@@ -130,7 +130,14 @@ namespace Pacman
 
         public static bool IsLegal(Vector2 position)
         {
-             return LegalTiles[(int)position.X, (int)position.Y] == (int)TileType.Empty;
+            try
+            {
+                return LegalTiles[(int)position.X, (int)position.Y] == (int)TileType.Empty;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
         }
 
         public static bool IsLegal(int x, int y)

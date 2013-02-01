@@ -111,11 +111,12 @@ namespace Pacman.Actors
                 case Direction.Up:
                     return new Vector2(GridPosition.X, GridPosition.Y - 1);
                 case Direction.Left:
-                    return new Vector2(GridPosition.X - 1, GridPosition.Y);
+                    // Go through the tunnels if we reach the end
+                    return new Vector2((GridPosition.X - 1 < 0) ? 27 : GridPosition.X - 1, GridPosition.Y);
                 case Direction.Down:
                     return new Vector2(GridPosition.X, GridPosition.Y + 1);
                 case Direction.Right:
-                    return new Vector2(GridPosition.X + 1, GridPosition.Y);
+                    return new Vector2((GridPosition.X + 1 > Level.TilesWide - 1) ? 0 : GridPosition.X + 1, GridPosition.Y);
                 default:
                     throw new Exception("Invalid direction: " + nextDirection);
             }
