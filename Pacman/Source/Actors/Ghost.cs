@@ -43,6 +43,8 @@ namespace Pacman.Actors
             CalculateNextPosition();
         }
 
+        #region Pathfinding Methods
+
         private void CalculateNextPosition()
         {
             if (TargetTile == new Vector2(-1, -1))
@@ -60,7 +62,7 @@ namespace Pacman.Actors
             }
 
             // Measure distance between each available position and the target tile.
-            var shortestDistance = (float)(Math.Pow(Level.TilesWide, 2) + Math.Pow(Level.TilesHigh, 2));
+            var shortestDistance = (float) (Math.Pow(Level.TilesWide, 2) + Math.Pow(Level.TilesHigh, 2));
 
             foreach (var direction in availableDirections)
             {
@@ -116,10 +118,13 @@ namespace Pacman.Actors
                 case Direction.Down:
                     return new Vector2(GridPosition.X, GridPosition.Y + 1);
                 case Direction.Right:
-                    return new Vector2((GridPosition.X + 1 > Level.TilesWide - 1) ? 0 : GridPosition.X + 1, GridPosition.Y);
+                    return new Vector2((GridPosition.X + 1 > Level.TilesWide - 1) ? 0 : GridPosition.X + 1,
+                                       GridPosition.Y);
                 default:
                     throw new Exception("Invalid direction: " + nextDirection);
             }
         }
+
+        #endregion
     }
 }
