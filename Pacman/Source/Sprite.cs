@@ -29,7 +29,7 @@ namespace Pacman
         /// </summary>
         public Vector2 GridPosition
         {
-            get { return Position; }
+            get { return Utils.AbsToGrid(_position); }
             set
             {
                 _position = new Vector2(

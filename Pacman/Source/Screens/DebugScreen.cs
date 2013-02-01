@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using SharpDX;
+using SharpDX.DirectInput;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Diagnostics;
 using SharpDX.Toolkit.Graphics;
@@ -80,11 +81,20 @@ namespace Pacman.Screens
             text += "    pos: (" + ScreenManager.MousePosition.X + ", " + ScreenManager.MousePosition.Y + ")\n";
 
             var gridPos = Utils.AbsToGrid(ScreenManager.MousePosition);
-            text += "    grid: [" + gridPos.X + ", " + gridPos.Y + "]";
+            text += "    grid: [" + gridPos.X + ", " + gridPos.Y + "]\n\n";
+
+            text += "Blinky:\n";
+            text += "    grid: [" + Level.Blinky.GridPosition.X + ", " + Level.Blinky.GridPosition.Y + "]\n";
+            text += "    direction: " + Level.Blinky.Direction + "\n";
+            text += "    target: (" + Level.Blinky.TargetTile.X + ", " + Level.Blinky.TargetTile.Y + ")\n";
 
             Vector2 pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
 
             spriteBatch.DrawString(ScreenManager.DebugFont, text, pos, Color.White);
+
+            var targetTileRect = new DrawingRectangle(
+                (int)(Level.Blinky.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Blinky.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
+            spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Green);
         }
     }
 }

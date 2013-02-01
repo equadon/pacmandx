@@ -1,4 +1,5 @@
 ﻿using System;
+using Pacman.Actors;
 using Pacman.Actors.Ghosts;
 using SharpDX;
 using SharpDX.Toolkit;
@@ -79,7 +80,7 @@ namespace Pacman
 
             ScreenManager = screenManager;
             Blinky = new Blinky(ScreenManager.GhostBlinkyTileset, new Vector2(0, 0));
-            Blinky.GridPosition = new Vector2(13, 14);
+            Blinky.GridPosition = new Vector2(14, 14);
 
             _random = new Random();
         }

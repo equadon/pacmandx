@@ -27,9 +27,5 @@ namespace Pacman.Actors
             : base(texture, position, sourceRect)
         {
         }
-
-        public virtual void Move(Direction? direction = null)
-        {
-        }
     }
 }
