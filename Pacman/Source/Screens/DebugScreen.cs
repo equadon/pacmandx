@@ -74,14 +74,13 @@ namespace Pacman.Screens
 
         private void DrawDebugInfo(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            var mousePos = new Vector2(0, 0);
-
-            var a = (Control)ScreenManager.Game.Window.NativeWindow;
-
             string text = "";
 
             text += "Mouse:\n";
-            text += "    pos: (" + mousePos.X + ", " + mousePos.Y + ")";
+            text += "    pos: (" + ScreenManager.MousePosition.X + ", " + ScreenManager.MousePosition.Y + ")\n";
+
+            var gridPos = Utils.AbsToGrid(ScreenManager.MousePosition);
+            text += "    grid: [" + gridPos.X + ", " + gridPos.Y + "]";
 
             Vector2 pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
 

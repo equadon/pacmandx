@@ -10,7 +10,7 @@ namespace Pacman
     {
         public static readonly int TileWidth = 30;
         public static readonly int ScreenWidth = Level.TilesWide * TileWidth + 300;
-        public static readonly int ScreenHeight = Level.TilesHigh * TileWidth;
+        public static readonly int ScreenHeight = 900;
 
         private readonly GraphicsDeviceManager _graphics;
         private readonly Logger _logger;

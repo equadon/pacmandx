@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using SharpDX;
+using SharpDX.DirectInput;
 using SharpDX.Multimedia;
-using SharpDX.RawInput;
 
 namespace Pacman.ScreenMachine
 {
@@ -10,49 +10,34 @@ namespace Pacman.ScreenMachine
 
     /// <summary>
     /// Helper for reading input from keyboard, gamepad, and touch input. This class 
-    /// tracks both the current and previous state of the input devices, and implements 
-    /// query methods for high level input actions such as "move up through the menu"
-    /// or "pause the game".
+    /// tracks both the current and previous state of the input devices.
     /// </summary>
     public class InputState
     {
-        public KeyState CurrentKeyState { get; private set; }
-        public KeyState LastKeyState { get; private set; }
+        private DirectInput _directInput;
+        private Mouse _mouse;
 
-        public Keys CurrentKey { get; private set; }
-        public Keys LastKey { get; private set; }
+        #region Properties
 
-        //public MouseState CurrentMouseState { get; private set; }
-        //public KeyState LastMouseState { get; private set; }
+        public MouseState MouseState { get; private set; }
 
-        public MouseButtonFlags CurrentMouseButtonFlags { get; private set; }
-        public MouseButtonFlags LastMouseButtonFlags { get; private set; }
+        #endregion
 
         /// <summary>
         /// Constructs a new input state.
         /// </summary>
         public InputState()
         {
-            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericKeyboard, DeviceFlags.None);
-            Device.RegisterDevice(UsagePage.Generic, UsageId.GenericMouse, DeviceFlags.None);
+            _directInput = new DirectInput();
 
-            Device.KeyboardInput += new System.EventHandler<KeyboardInputEventArgs>(Device_KeyboardInput);
-            Device.MouseInput += new System.EventHandler<MouseInputEventArgs>(Device_MouseInput);
-        }
+            // Initialize mouse
+            _mouse = new Mouse(_directInput);
+            _mouse.Properties.AxisMode = DeviceAxisMode.Relative;
 
-        public void Device_KeyboardInput(object sender, KeyboardInputEventArgs args)
-        {
-            LastKeyState = CurrentKeyState;
-            LastKey = CurrentKey;
+            // Set the cooperative level of the mouse to share with other programs.
+            //_mouse.SetCooperativeLevel();
 
-            CurrentKeyState = args.State;
-            CurrentKey = args.Key;
-        }
-
-        public void Device_MouseInput(object sender, MouseInputEventArgs args)
-        {
-            LastMouseButtonFlags = CurrentMouseButtonFlags;
-            CurrentMouseButtonFlags = args.ButtonFlags;
+            _mouse.Acquire();
         }
 
         /// <summary>
@@ -60,6 +45,33 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public void Update()
         {
+            ReadMouse();
+        }
+
+        private void ReadMouse()
+        {
+            var resultCode = ResultCode.Ok;
+
+            MouseState = new MouseState();
+
+            // Read mouse device
+            MouseState = _mouse.GetCurrentState();
+        }
+
+        public void Shutdown()
+        {
+            if (_mouse != null)
+            {
+                _mouse.Unacquire();
+                _mouse.Dispose();
+                _mouse = null;
+            }
+
+            if (_directInput != null)
+            {
+                _directInput.Dispose();
+                _directInput = null;
+            }
         }
 
         #region Mouse Button Handling
@@ -69,18 +81,6 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public bool IsMousePressed(MouseButton button)
         {
-            var down = MouseDownFlags(button);
-
-            if (down == MouseButtonFlags.None)
-                return false;
-
-            if (LastMouseButtonFlags != down &&
-                CurrentMouseButtonFlags == down)
-            {
-                LastMouseButtonFlags = CurrentMouseButtonFlags;
-                return true;
-            }
-
             return false;
         }
 
@@ -89,15 +89,6 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public bool IsMouseDown(MouseButton button)
         {
-            var down = MouseDownFlags(button);
-            if (down == MouseButtonFlags.None)
-                return false;
-
-            if (CurrentMouseButtonFlags == down)
-            {
-                LastMouseButtonFlags = CurrentMouseButtonFlags;
-                return true;
-            }
             return false;
         }
 
@@ -106,54 +97,7 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public bool IsMouseReleased(MouseButton button)
         {
-            var up = MouseUpFlags(button);
-
-            if (up == MouseButtonFlags.None)
-                return false;
-
-            if (LastMouseButtonFlags != up &&
-                CurrentMouseButtonFlags == up)
-            {
-                LastMouseButtonFlags = CurrentMouseButtonFlags;
-                return true;
-            }
             return false;
-        }
-
-        public MouseButtonFlags MouseDownFlags(MouseButton button)
-        {
-            var down = MouseButtonFlags.None;
-            switch (button)
-            {
-                case MouseButton.Left:
-                    down = MouseButtonFlags.LeftButtonDown;
-                    break;
-                case MouseButton.Right:
-                    down = MouseButtonFlags.RightButtonDown;
-                    break;
-                case MouseButton.Middle:
-                    down = MouseButtonFlags.MiddleButtonDown;
-                    break;
-            }
-            return down;
-        }
-
-        public MouseButtonFlags MouseUpFlags(MouseButton button)
-        {
-            var up = MouseButtonFlags.None;
-            switch (button)
-            {
-                case MouseButton.Left:
-                    up = MouseButtonFlags.LeftButtonUp;
-                    break;
-                case MouseButton.Right:
-                    up = MouseButtonFlags.RightButtonUp;
-                    break;
-                case MouseButton.Middle:
-                    up = MouseButtonFlags.MiddleButtonUp;
-                    break;
-            }
-            return up;
         }
 
         #endregion
@@ -165,14 +109,6 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public bool IsKeyPressed(Keys key)
         {
-            if (LastKeyState == KeyState.KeyUp &&
-                (CurrentKeyState == KeyState.KeyDown || CurrentKeyState == KeyState.KeyFirst) &&
-                key == CurrentKey)
-            {
-                LastKeyState = CurrentKeyState;
-                LastKey = Keys.None;
-                return true;
-            }
             return false;
         }
 
@@ -181,13 +117,6 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public bool IsKeyDown(Keys key)
         {
-            if (CurrentKeyState == KeyState.KeyDown &&
-                CurrentKey == key)
-            {
-                LastKeyState = KeyState.KeyDown;
-                LastKey = CurrentKey;
-                return true;
-            }
             return false;
         }
 
@@ -196,15 +125,6 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public bool IsKeyReleased(Keys key)
         {
-            if ((LastKeyState == KeyState.KeyDown || LastKeyState == KeyState.KeyFirst) &&
-                CurrentKeyState == KeyState.KeyUp &&
-                key == CurrentKey)
-            {
-                LastKeyState = CurrentKeyState;
-                LastKey = Keys.None;
-                CurrentKey = LastKey;
-                return true;
-            }
             return false;
         }
 

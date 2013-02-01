@@ -1,4 +1,5 @@
-﻿using SharpDX.Toolkit;
+﻿using SharpDX;
+using SharpDX.Toolkit;
 using SharpDX.Toolkit.Diagnostics;
 using SharpDX.Toolkit.Graphics;
 
@@ -17,6 +18,17 @@ namespace Pacman
         public Texture2D PacManTileset { get; private set; }
         public Texture2D GhostBlinkyTileset { get; private set; }
 
+        public Vector2 MousePosition
+        {
+            get
+            {
+                var handle = (System.Windows.Forms.Control)Game.Window.NativeWindow;
+                var cursorPos = handle.PointToClient(System.Windows.Forms.Cursor.Position);
+
+                return new Vector2(cursorPos.X, cursorPos.Y);
+            }
+        }
+
         public PacmanScreenManager(Game game, Logger logger)
             : base(game)
         {
@@ -29,9 +41,7 @@ namespace Pacman
             
             BlankTexture = Content.Load<Texture2D>(@"Textures\Blank.png");
             
-            BonusItemsTileset = Content.Load<Texture2D>(@"Textures\BonusItemsTileset.png");
-            PacManTileset = Content.Load<Texture2D>(@"Textures\PacManTilesheet.png");
-            GhostBlinkyTileset = Content.Load<Texture2D>(@"Textures\GhostBlinkyTileset.png");
+            GhostBlinkyTileset = Content.Load<Texture2D>(@"Textures\Blinky.png");
 
             base.LoadContent();
 

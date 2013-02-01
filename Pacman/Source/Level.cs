@@ -57,7 +57,7 @@ namespace Pacman
         /// 4: level tile #4
         /// level tiles are the four different type of level tiles we can have to build the map
         /// </summary>
-        private static readonly int[,] _legalTiles;
+        private static readonly int[,] LegalTiles;
 
         /// <summary>
         /// Array storing the state for the current level. Use the TileType
@@ -66,6 +66,8 @@ namespace Pacman
         private readonly int[,] _tiles;
 
         #endregion
+
+        private Random _random;
 
         public PacmanScreenManager ScreenManager { get; private set; }
 
@@ -77,7 +79,9 @@ namespace Pacman
 
             ScreenManager = screenManager;
             Blinky = new Blinky(ScreenManager.GhostBlinkyTileset, new Vector2(0, 0));
-            Blinky.GridPosition = new Vector2(0, 0);
+            Blinky.GridPosition = new Vector2(13, 14);
+
+            _random = new Random();
         }
 
         public void Update(GameTime gameTime)
@@ -100,25 +104,21 @@ namespace Pacman
             {
                 for (int x = 0; x < TilesWide; x++)
                 {
-                    Color color = (_legalTiles[x, y] == (int) TileType.Empty) ? DebugEmptyTileColor : DebugUnknownTileColor;
-                    spriteBatch.Draw(ScreenManager.BlankTexture, new DrawingRectangle(x * PacmanGame.TileWidth, y * PacmanGame.TileWidth, PacmanGame.TileWidth, PacmanGame.TileWidth), color);
-
+                    Color color = (LegalTiles[x, y] == (int) TileType.Empty) ? DebugEmptyTileColor : DebugUnknownTileColor;
 #if DEBUG
-                    // Draw dotted cell borders in debug mode
-                    int newX = x * PacmanGame.TileWidth;
-                    for (int i = 0; i < PacmanGame.TileWidth / 5; i++)
-                    {
-                        spriteBatch.Draw(ScreenManager.BlankTexture, new DrawingRectangle(newX, y * PacmanGame.TileWidth, 2, 1), DebugBorderColor);
-                        newX += 5;
-                    }
-
-                    int newY = y * PacmanGame.TileWidth;
-                    for (int i = 0; i < PacmanGame.TileWidth / 5; i++)
-                    {
-                        spriteBatch.Draw(ScreenManager.BlankTexture, new DrawingRectangle(x * PacmanGame.TileWidth, newY, 1, 2), DebugBorderColor);
-                        newY += 5;
-                    }
+                    var mouseGrid = Utils.AbsToGrid(ScreenManager.MousePosition);
+                    if (mouseGrid.X == x && mouseGrid.Y == y)
+                        color = new Color(200, 200, 200, 255);
 #endif
+                    var rect = new DrawingRectangle(x*PacmanGame.TileWidth, y*PacmanGame.TileWidth, PacmanGame.TileWidth,
+                                                    PacmanGame.TileWidth);
+                    spriteBatch.Draw(ScreenManager.BlankTexture, rect, color);
+
+                    for (int i = 0; i < 30; i += 6)
+                        spriteBatch.Draw(ScreenManager.BlankTexture, new DrawingRectangle(x * PacmanGame.TileWidth + i, y * PacmanGame.TileWidth, 2, 1), DebugBorderColor);
+
+                    for (int i = 0; i < 30; i += 6)
+                        spriteBatch.Draw(ScreenManager.BlankTexture, new DrawingRectangle(x * PacmanGame.TileWidth, y * PacmanGame.TileWidth + i, 1, 2), DebugBorderColor);
                 }
             }
 
@@ -131,7 +131,7 @@ namespace Pacman
 
         static Level()
         {
-            _legalTiles = new int[,] {
+            LegalTiles = new int[,] {
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 {1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,0,1,1,1,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1},
                 {1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1},

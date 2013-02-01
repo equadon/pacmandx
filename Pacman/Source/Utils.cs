@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SharpDX;
 
 namespace Pacman
 {
@@ -17,6 +18,16 @@ namespace Pacman
         public static float Lerp(float start, float end, float amount)
         {
             return (start + amount * (end - start));
+        }
+
+        /// <summary>
+        /// Converts an absolution position to grid position.
+        /// </summary>
+        public static Vector2 AbsToGrid(Vector2 absPosition)
+        {
+            return new Vector2(
+                Convert.ToInt32(Math.Floor(absPosition.X / PacmanGame.TileWidth)),
+                Convert.ToInt32(Math.Floor(absPosition.Y / PacmanGame.TileWidth)));
         }
     }
 }
