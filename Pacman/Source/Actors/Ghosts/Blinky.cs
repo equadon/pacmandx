@@ -9,7 +9,6 @@ namespace Pacman.Actors.Ghosts
             : base(texture, position, new Rectangle(0, 0, 30, 30))
         {
             Direction = Direction.Left;
-            TargetTile = new Vector2(9, 14);
         }
     }
 }

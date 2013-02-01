@@ -52,6 +52,15 @@ namespace Pacman.Screens
 
         public override void HandleInput(GameTime gameTime, InputState input)
         {
+            var mouseGrid = Utils.AbsToGrid(ScreenManager.MousePosition);
+
+            if (input.IsMousePressed(MouseButton.Left) &&
+                mouseGrid.X >= 0 && mouseGrid.X < Level.TilesWide &&
+                mouseGrid.Y >= 0 && mouseGrid.Y < Level.TilesHigh &&
+                mouseGrid != Level.Blinky.GridPosition)
+            {
+                Level.Blinky.TargetTile = mouseGrid;
+            }
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)

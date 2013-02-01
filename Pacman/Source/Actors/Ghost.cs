@@ -5,13 +5,12 @@ namespace Pacman.Actors
 {
     public class Ghost : Actor
     {
-        public Vector2 TargetTile { get; protected set; }
+        public Vector2 TargetTile { get; set; }
 
         public Ghost(Texture2D texture, Vector2 position, Rectangle sourceRect)
             : base(texture, position, sourceRect)
         {
+            TargetTile = new Vector2(-1, -1);
         }
-
-
     }
 }
