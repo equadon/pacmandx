@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using SharpDX;
 using SharpDX.DirectInput;
 using SharpDX.Multimedia;
@@ -15,9 +15,14 @@ namespace Pacman.ScreenMachine
     public class InputState
     {
         private DirectInput _directInput;
+
+        private Keyboard _keyboard;
         private Mouse _mouse;
 
         #region Properties
+
+        public KeyboardState LastKeyboardState { get; private set; }
+        public KeyboardState KeyboardState { get; private set; }
 
         public MouseState MouseState { get; private set; }
 
@@ -30,14 +35,26 @@ namespace Pacman.ScreenMachine
         {
             _directInput = new DirectInput();
 
+            // Initialize keyboard
+            _keyboard = new Keyboard(_directInput);
+            _keyboard.Properties.BufferSize = 256;
+
+            // Set the cooperative level of the keyboard to not share with other programs.
+            //_keyboard.SetCooperativeLevel(windowsHandle, CooperativeLevel.Foreground | CooperativeLevel.Exclusive);
+
+            _keyboard.Acquire();
+
             // Initialize mouse
             _mouse = new Mouse(_directInput);
             _mouse.Properties.AxisMode = DeviceAxisMode.Relative;
 
             // Set the cooperative level of the mouse to share with other programs.
-            //_mouse.SetCooperativeLevel();
+            //_mouse.SetCooperativeLevel(windowsHandle, CooperativeLevel.Foreground | CooperativeLevel.NonExclusive);
 
             _mouse.Acquire();
+
+            LastKeyboardState = new KeyboardState();
+            KeyboardState = new KeyboardState();
         }
 
         /// <summary>
@@ -45,7 +62,15 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public void Update()
         {
+            ReadKeyboard();
+
             ReadMouse();
+        }
+
+        private void ReadKeyboard()
+        {
+            LastKeyboardState = KeyboardState;
+            KeyboardState = _keyboard.GetCurrentState();
         }
 
         private void ReadMouse()
@@ -60,6 +85,13 @@ namespace Pacman.ScreenMachine
 
         public void Shutdown()
         {
+            if (_keyboard != null)
+            {
+                _keyboard.Unacquire();
+                _keyboard.Dispose();
+                _keyboard = null;
+            }
+
             if (_mouse != null)
             {
                 _mouse.Unacquire();
@@ -107,25 +139,27 @@ namespace Pacman.ScreenMachine
         /// <summary>
         /// Helper for checking if a key was pressed during this update.
         /// </summary>
-        public bool IsKeyPressed(Keys key)
+        public bool IsKeyPressed(Key key)
         {
-            return false;
+            return (!LastKeyboardState.IsPressed(key) &&
+                    KeyboardState.IsPressed(key));
         }
 
         /// <summary>
         /// Helper for checking if a key is down during this update.
         /// </summary>
-        public bool IsKeyDown(Keys key)
+        public bool IsKeyDown(Key key)
         {
-            return false;
+            return KeyboardState.IsPressed(key);
         }
 
         /// <summary>
         /// Helper for checking if a key was released during this update.
         /// </summary>
-        public bool IsKeyReleased(Keys key)
+        public bool IsKeyReleased(Key key)
         {
-            return false;
+            return (LastKeyboardState.IsPressed(key) &&
+                    !KeyboardState.IsPressed(key));
         }
 
         #endregion

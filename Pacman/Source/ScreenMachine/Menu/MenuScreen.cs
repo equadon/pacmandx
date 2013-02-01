@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using SharpDX;
+using SharpDX.DirectInput;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
@@ -39,7 +40,7 @@ namespace Pacman.ScreenMachine.Menu
         public override void HandleInput(GameTime gameTime, InputState input)
         {
             // Move to the previous menu entry?
-            if (input.IsKeyPressed(Keys.Up))
+            if (input.IsKeyPressed(Key.UpArrow))
             {
                 SelectedEntry--;
 
@@ -48,7 +49,7 @@ namespace Pacman.ScreenMachine.Menu
             }
 
             // Move to the next menu entry?
-            if (input.IsKeyPressed(Keys.Down))
+            if (input.IsKeyPressed(Key.Down))
             {
                 SelectedEntry++;
 
@@ -56,11 +57,11 @@ namespace Pacman.ScreenMachine.Menu
                     SelectedEntry = 0;
             }
 
-            if (input.IsKeyPressed(Keys.Enter))
+            if (input.IsKeyPressed(Key.Return))
             {
                 OnSelectEntry(SelectedEntry);
             }
-            else if (input.IsKeyPressed(Keys.Escape))
+            else if (input.IsKeyPressed(Key.Escape))
             {
                 OnCancel();
             }
