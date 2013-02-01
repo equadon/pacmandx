@@ -6,7 +6,7 @@ using SharpDX.Multimedia;
 
 namespace Pacman.ScreenMachine
 {
-    public enum MouseButton { Left, Middle, Right }
+    public enum MouseButton { Left, Right, Middle }
 
     /// <summary>
     /// Helper for reading input from keyboard, gamepad, and touch input. This class 
@@ -24,6 +24,7 @@ namespace Pacman.ScreenMachine
         public KeyboardState LastKeyboardState { get; private set; }
         public KeyboardState KeyboardState { get; private set; }
 
+        public MouseState LastMouseState { get; private set; }
         public MouseState MouseState { get; private set; }
 
         #endregion
@@ -55,6 +56,9 @@ namespace Pacman.ScreenMachine
 
             LastKeyboardState = new KeyboardState();
             KeyboardState = new KeyboardState();
+
+            LastMouseState = new MouseState();
+            MouseState = new MouseState();
         }
 
         /// <summary>
@@ -71,6 +75,9 @@ namespace Pacman.ScreenMachine
         {
             LastKeyboardState = KeyboardState;
             KeyboardState = _keyboard.GetCurrentState();
+
+            LastMouseState = MouseState;
+            MouseState = _mouse.GetCurrentState();
         }
 
         private void ReadMouse()
@@ -113,7 +120,8 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public bool IsMousePressed(MouseButton button)
         {
-            return false;
+            return (!LastMouseState.Buttons[(int)button] &&
+                    MouseState.Buttons[(int)button]);
         }
 
         /// <summary>
@@ -121,7 +129,7 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public bool IsMouseDown(MouseButton button)
         {
-            return false;
+            return MouseState.Buttons[(int)button];
         }
 
         /// <summary>
@@ -129,7 +137,8 @@ namespace Pacman.ScreenMachine
         /// </summary>
         public bool IsMouseReleased(MouseButton button)
         {
-            return false;
+            return (LastMouseState.Buttons[(int)button] &&
+                    !MouseState.Buttons[(int)button]);
         }
 
         #endregion
