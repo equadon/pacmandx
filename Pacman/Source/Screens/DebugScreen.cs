@@ -14,7 +14,7 @@ namespace Pacman.Screens
 
         public Logger Logger { get; private set; }
 
-        public PacMan PacMan { get; private set; }
+        public Level Level { get; private set; }
 
         public new PacmanScreenManager ScreenManager
         {
@@ -37,7 +37,7 @@ namespace Pacman.Screens
         {
             if (!instancePreserved)
             {
-                PacMan = new PacMan(ScreenManager.PacManTileset, new Vector2(PacmanGame.ScreenWidth/2f, PacmanGame.ScreenHeight/2f));
+                Level = new Level(Logger, ScreenManager);
             }
         }
 
@@ -47,7 +47,7 @@ namespace Pacman.Screens
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            PacMan.Update(gameTime);
+            Level.Update(gameTime);
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
@@ -56,7 +56,7 @@ namespace Pacman.Screens
         {
             SpriteBatch.Begin();
 
-            PacMan.Draw(SpriteBatch, gameTime);
+            Level.Draw(SpriteBatch, gameTime);
 
             SpriteBatch.End();
         }

@@ -62,6 +62,7 @@
     <Compile Include="Source\ScreenMachine\ScreenManager.cs" />
     <Compile Include="Source\Screens\DebugScreen.cs" />
     <Compile Include="Source\Sprite.cs" />
+    <Compile Include="Source\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SharpDX">

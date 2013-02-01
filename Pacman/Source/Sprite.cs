@@ -21,7 +21,6 @@ namespace Pacman
         public Vector2 Position
         {
             get { return _position; }
-            protected set { _position = value; }
         }
 
         public Vector2 GridPosition
