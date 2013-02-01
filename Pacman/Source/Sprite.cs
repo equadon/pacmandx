@@ -10,7 +10,7 @@ namespace Pacman
 
         private readonly Texture2D _texture;
 
-        private Vector2 _position;
+        protected Vector2 _position;
 
         #endregion
 
@@ -53,11 +53,11 @@ namespace Pacman
             SourceRect = sourceRect;
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(_texture, Position, SourceRect, Color.White, 0f, Origin, 1f, SpriteEffects.None, 0f);
         }

@@ -128,6 +128,16 @@ namespace Pacman
 
         #endregion
 
+        public static bool IsLegal(Vector2 position)
+        {
+             return LegalTiles[(int)position.X, (int)position.Y] == (int)TileType.Empty;
+        }
+
+        public static bool IsLegal(int x, int y)
+        {
+            return LegalTiles[x, y] == (int)TileType.Empty;
+        }
+
         #region Generate Level
 
         static Level()

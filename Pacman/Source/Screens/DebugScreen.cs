@@ -54,12 +54,19 @@ namespace Pacman.Screens
         {
             var mouseGrid = Utils.AbsToGrid(ScreenManager.MousePosition);
 
+            // Set Blinky's target tile with left mouse button
             if (input.IsMousePressed(MouseButton.Left) &&
                 mouseGrid.X >= 0 && mouseGrid.X < Level.TilesWide &&
                 mouseGrid.Y >= 0 && mouseGrid.Y < Level.TilesHigh &&
                 mouseGrid != Level.Blinky.GridPosition)
             {
                 Level.Blinky.TargetTile = mouseGrid;
+            }
+
+            // Make Blinky move to his next tile with Space
+            if (input.IsKeyPressed(Key.Space))
+            {
+                Level.Blinky.Move();
             }
         }
 
@@ -96,6 +103,7 @@ namespace Pacman.Screens
             text += "    grid: [" + Level.Blinky.GridPosition.X + ", " + Level.Blinky.GridPosition.Y + "]\n";
             text += "    direction: " + Level.Blinky.Direction + "\n";
             text += "    target: (" + Level.Blinky.TargetTile.X + ", " + Level.Blinky.TargetTile.Y + ")\n";
+            text += "    next: (" + Level.Blinky.NextPosition.X + ", " + Level.Blinky.NextPosition.Y + ") " + Level.Blinky.NextDirection + "\n";
 
             Vector2 pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
 
