@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Source\Actors\Actor.cs" />
+    <Compile Include="Source\Actors\Ghost.cs" />
+    <Compile Include="Source\Actors\Ghosts\Blinky.cs" />
     <Compile Include="Source\Actors\PacMan.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -103,14 +105,15 @@
     <None Include="Content\Textures\BonusItemsTileset.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Content\Textures\GhostBlinkyTileset.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Textures\PacManTilesheet.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Plan.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Source\Actors\Ghosts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

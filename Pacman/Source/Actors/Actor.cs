@@ -28,12 +28,6 @@ namespace Pacman.Actors
         {
         }
 
-        /// <summary>
-        /// Move the actor in the chosen direction. Override this for
-        /// customized behavior.
-        /// </summary>
-        /// <param name="direction">The direction to move. This will be null for
-        /// ghosts since their movement will be decided by their pathfinding.</param>
         public virtual void Move(Direction? direction = null)
         {
         }

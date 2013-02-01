@@ -15,6 +15,7 @@ namespace Pacman
 
         public Texture2D BonusItemsTileset { get; private set; }
         public Texture2D PacManTileset { get; private set; }
+        public Texture2D GhostBlinkyTileset { get; private set; }
 
         public PacmanScreenManager(Game game, Logger logger)
             : base(game)
@@ -30,6 +31,7 @@ namespace Pacman
             
             BonusItemsTileset = Content.Load<Texture2D>(@"Textures\BonusItemsTileset.png");
             PacManTileset = Content.Load<Texture2D>(@"Textures\PacManTilesheet.png");
+            GhostBlinkyTileset = Content.Load<Texture2D>(@"Textures\GhostBlinkyTileset.png");
 
             base.LoadContent();
 

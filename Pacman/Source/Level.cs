@@ -1,4 +1,5 @@
 ﻿using System;
+using Pacman.Actors.Ghosts;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Diagnostics;
@@ -68,15 +69,20 @@ namespace Pacman
 
         public PacmanScreenManager ScreenManager { get; private set; }
 
+        public Blinky Blinky { get; private set; }
+
         public Level(Logger logger, PacmanScreenManager screenManager)
         {
             _tiles = new int[TilesWide, TilesHigh];
 
             ScreenManager = screenManager;
+            Blinky = new Blinky(ScreenManager.GhostBlinkyTileset, new Vector2(0, 0));
+            Blinky.GridPosition = new Vector2(0, 0);
         }
 
         public void Update(GameTime gameTime)
         {
+            Blinky.Update(gameTime);
         }
 
         #region Draw Methods
@@ -84,6 +90,8 @@ namespace Pacman
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             DrawBoard(spriteBatch);
+
+            Blinky.Draw(spriteBatch, gameTime);
         }
 
         private void DrawBoard(SpriteBatch spriteBatch)

@@ -23,9 +23,19 @@ namespace Pacman
             get { return _position; }
         }
 
+        /// <summary>
+        /// Return the Sprite's grid position. The setter will update Position
+        /// and place it in the middle of the specified tile.
+        /// </summary>
         public Vector2 GridPosition
         {
             get { return Position; }
+            set
+            {
+                _position = new Vector2(
+                    value.X * PacmanGame.TileWidth + Origin.X,
+                    value.Y * PacmanGame.TileWidth + Origin.Y);
+            }
         }
 
         public Vector2 Origin
