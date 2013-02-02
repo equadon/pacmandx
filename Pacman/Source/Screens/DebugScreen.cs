@@ -55,25 +55,18 @@ namespace Pacman.Screens
             var mouseGrid = Utils.AbsToGrid(ScreenManager.MousePosition);
 
             // Control pacman with WASD or arrow keys
+            // TODO: How often do we want the polling to occurr?
             if (input.IsKeyDown(Key.W) || input.IsKeyDown(Key.UpArrow))
-            {
                 Level.PacMan.ChangeDirection(Direction.Up);
-            }
 
-            if (input.IsKeyPressed(Key.S) || input.IsKeyPressed(Key.Down))
-            {
+            if (input.IsKeyDown(Key.S) || input.IsKeyDown(Key.Down))
                 Level.PacMan.ChangeDirection(Direction.Down);
-            }
 
-            if (input.IsKeyPressed(Key.A) || input.IsKeyPressed(Key.Left))
-            {
+            if (input.IsKeyDown(Key.A) || input.IsKeyDown(Key.Left))
                 Level.PacMan.ChangeDirection(Direction.Left);
-            }
 
-            if (input.IsKeyPressed(Key.D) || input.IsKeyPressed(Key.Right))
-            {
+            if (input.IsKeyDown(Key.D) || input.IsKeyDown(Key.Right))
                 Level.PacMan.ChangeDirection(Direction.Right);
-            }
 
             // Set Blinky's target tile with left mouse button
             if (input.IsMousePressed(MouseButton.Left) &&
