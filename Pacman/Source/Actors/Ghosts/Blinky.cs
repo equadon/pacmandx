@@ -10,11 +10,13 @@ namespace Pacman.Actors.Ghosts
         {
             Color = Color.Red;
 
-            TargetTile = new Vector2(15, 11);
             Direction = Direction.Left;
-            NextPosition = GetNextPosition(GridPosition, Direction);
+            Velocity = GetVelocity();
 
-            CalculateFutureDirection();
+            TargetTile = new Vector2(11, 11);
+
+            NextPosition = GridPosition;
+            FutureDirection = Direction.Left;
         }
     }
 }

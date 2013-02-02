@@ -15,9 +15,9 @@ namespace Pacman.Actors
         /// <summary>
         /// We reached the center of the tile, make sure we don't run into a wall.
         /// </summary>
-        public override void OnTileCenter(Rectangle currentTileBounds)
+        public override void OnTileCenter()
         {
-            base.OnTileCenter(currentTileBounds);
+            base.OnTileCenter();
 
             // Stop if the next position is an illegal tile.
             if (!Level.IsLegal(GetNextPosition(GridPosition, Direction)))

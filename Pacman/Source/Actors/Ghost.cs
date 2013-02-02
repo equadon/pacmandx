@@ -24,44 +24,22 @@ namespace Pacman.Actors
         public Ghost(Texture2D texture, Vector2 position, Rectangle sourceRect)
             : base(texture, position, sourceRect)
         {
-            SpeedModifier = 0.1f;
         }
 
-        public override void Update(GameTime gameTime)
+        /// <summary>
+        /// We reached the tile's center point, calculate the next move.
+        /// </summary>
+        /// <param name="currentTileBounds"></param>
+        public override void OnTileCenter()
         {
-            base.Update(gameTime);
-            return;
+            base.OnTileCenter();
 
-            // We reached our next position, set the new position and calculate the next future direction
-            var tileBounds = Level.TileBounds(NextPosition);
-
-            switch (Direction)
-            {
-                case Direction.Up:
-                    if (Bounds.Top == tileBounds.Top)
-                        PerformNextMove();
-                    break;
-                case Direction.Down:
-                    if (Bounds.Bottom == tileBounds.Bottom)
-                        PerformNextMove();
-                    break;
-                case Direction.Left:
-                    if (Bounds.Left == tileBounds.Left)
-                        PerformNextMove();
-                    break;
-                case Direction.Right:
-                    if (Bounds.Right == tileBounds.Right)
-                        PerformNextMove();
-                    break;
-            }
-        }
-
-        private void PerformNextMove()
-        {
             GridPosition = NextPosition;
             NextPosition = GetNextPosition(GridPosition, FutureDirection);
 
             Direction = FutureDirection;
+
+            Velocity = GetVelocity();
 
             CalculateFutureDirection();
         }

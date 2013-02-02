@@ -122,7 +122,7 @@ namespace Pacman
                     rotation = MathUtil.DegreesToRadians(270);
                     break;
             }
-            spriteBatch.Draw(ScreenManager.DirectionTexture, Utils.GridToAbs(Blinky.NextPosition, Blinky.Origin), new DrawingRectangle(0, 0, 30, 30), Color.Red, rotation, new Vector2(15, 15), 1f, SpriteEffects.None, 0f);
+            //spriteBatch.Draw(ScreenManager.DirectionTexture, Utils.GridToAbs(Blinky.NextPosition, Blinky.Origin), new DrawingRectangle(0, 0, 30, 30), Color.Red, rotation, new Vector2(15, 15), 1f, SpriteEffects.None, 0f);
 #endif
 
             PacMan.Draw(spriteBatch, gameTime);

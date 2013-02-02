@@ -37,6 +37,7 @@ namespace Pacman.Actors
             : base(texture, position, sourceRect)
         {
             SpeedModifier = BaseSpeedModifer;
+            LastGridPosition = Utils.AbsToGrid(position);
             Direction = Direction.Left;
             Velocity = GetVelocity();
         }
@@ -67,19 +68,19 @@ namespace Pacman.Actors
             {
                 case Direction.Up:
                     if (Position.Y < tileBounds.Top + PacmanGame.TileWidth / 2f)
-                        OnTileCenter(tileBounds);
+                        OnTileCenter();
                     break;
                 case Direction.Down:
                     if (Position.Y > tileBounds.Top + PacmanGame.TileWidth / 2f)
-                        OnTileCenter(tileBounds);
+                        OnTileCenter();
                     break;
                 case Direction.Left:
                     if (Position.X < tileBounds.Left + PacmanGame.TileWidth / 2f)
-                        OnTileCenter(tileBounds);
+                        OnTileCenter();
                     break;
                 case Direction.Right:
                     if (Position.X > tileBounds.Left + PacmanGame.TileWidth / 2f)
-                        OnTileCenter(tileBounds);
+                        OnTileCenter();
                     break;
             }
 
@@ -122,7 +123,7 @@ namespace Pacman.Actors
             #endregion
         }
 
-        public virtual void OnTileCenter(Rectangle currentTileBounds)
+        public virtual void OnTileCenter()
         {
             // we just reached tile's center, do something
             _reachedCenter = true;
