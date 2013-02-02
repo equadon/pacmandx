@@ -21,13 +21,13 @@ namespace Pacman.Actors.Ghosts
         /// </summary>
         public override void UpdateTarget()
         {
-            switch (CurrentMode)
+            switch (Level.GhostMode)
             {
                 case GhostMode.Scatter:
                     TargetTile = new Vector2(2, 0);
                     break;
                 case GhostMode.Frightened:
-                    TargetTile = Vector2.Zero;
+                    TargetTile = new Vector2(2, 0);
                     break;
                 case GhostMode.Chase:
                     Vector2 target = GetNextPosition(Level.PacMan.GridPosition, Level.PacMan.Direction, 4);

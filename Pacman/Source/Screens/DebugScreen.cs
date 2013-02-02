@@ -73,6 +73,12 @@ namespace Pacman.Screens
             {
                 Level.Blinky.TargetTile = mouseGrid;
             }
+
+            // Change ghost mode
+            if (input.IsKeyPressed(Key.Space))
+            {
+                Level.GhostMode = (Level.GhostMode == GhostMode.Chase) ? GhostMode.Scatter : GhostMode.Chase;
+            }
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -97,6 +103,8 @@ namespace Pacman.Screens
         private void DrawDebugInfo(SpriteBatch spriteBatch, GameTime gameTime)
         {
             string text = "";
+
+            text += "Ghost Mode: " + Level.GhostMode + "\n\n";
 
             text += "Mouse:\n";
             text += "    pos: (" + ScreenManager.MousePosition.X + ", " + ScreenManager.MousePosition.Y + ")\n";

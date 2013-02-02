@@ -17,20 +17,12 @@ namespace Pacman.Actors
     {
         private Vector2 _targetTile;
 
-        private GhostMode _currentMode;
-
         #region Properties
 
         /// <summary>The direction we'll take once we reach NextPosition.</summary>
         public Direction FutureDirection { get; protected set; }
 
         public Vector2 NextPosition { get; protected set; }
-
-        public GhostMode CurrentMode
-        {
-            get { return _currentMode; }
-            set { _currentMode = value; } // TODO: update other stuff like movement speed on mode change
-        }
 
         public Vector2 TargetTile
         {
@@ -44,8 +36,8 @@ namespace Pacman.Actors
             : base(level, texture, position, sourceRect)
         {
             // TODO: Better handling of movement speeds
-            //SpeedModifier = PacmanBaseSpeed * 0.75f;
             SpeedModifier = PacmanBaseSpeed * 0.75f;
+            //SpeedModifier = PacmanBaseSpeed * 0.15f;
         }
 
         /// <summary>
