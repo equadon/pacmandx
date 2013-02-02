@@ -103,7 +103,7 @@ namespace Pacman.Screens
             text += "    grid: [" + gridPos.X + ", " + gridPos.Y + "]\n\n";
 
             text += "Blinky:\n";
-            text += "    grid: (" + Level.Blinky.Position.X + ", " + Level.Blinky.Position.Y + ")\n";
+            text += "    pos:  (" + Level.Blinky.Position.X + ", " + Level.Blinky.Position.Y + ")\n";
             text += "    grid: [" + Level.Blinky.GridPosition.X + ", " + Level.Blinky.GridPosition.Y + "]\n";
             text += "    direction: " + Level.Blinky.Direction + "\n";
             text += "    target: (" + Level.Blinky.TargetTile.X + ", " + Level.Blinky.TargetTile.Y + ")\n";

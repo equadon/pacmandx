@@ -24,7 +24,10 @@ namespace Pacman
             {
                 float x = Position.X;
                 float y = Position.Y;
-                return new RectangleF(x, y, x + SourceRect.Width, y + SourceRect.Height);
+                float originX = Origin.X;
+                float originY = Origin.Y;
+                //return new RectangleF(x - originX, y - originY, x + originX, y + originY);
+                return new RectangleF(x - originX, y - originY, x + originX, y + originY);
             }
         }
 

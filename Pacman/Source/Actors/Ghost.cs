@@ -24,7 +24,6 @@ namespace Pacman.Actors
         public Ghost(Texture2D texture, Vector2 position, Rectangle sourceRect)
             : base(texture, position, sourceRect)
         {
-            SpeedModifier = 0f;
         }
 
         public override void Update(GameTime gameTime)
@@ -37,20 +36,20 @@ namespace Pacman.Actors
             switch (Direction)
             {
                 case Direction.Up:
-                    if (Bounds.Top < tileBounds.Top + tileBounds.Height / 2f)
+                    if (Bounds.Top < tileBounds.Top)
                         PerformNextMove();
                     break;
                 case Direction.Down:
-                    if (Bounds.Bottom > tileBounds.Bottom - tileBounds.Height / 2f)
+                    if (Bounds.Bottom > tileBounds.Bottom)
                         PerformNextMove();
                     break;
                 case Direction.Left:
-                    if (Bounds.Left < tileBounds.Left + tileBounds.Width / 2f)
+                    if (Bounds.Left < tileBounds.Left)
                         PerformNextMove();
                     break;
                 case Direction.Right:
-                    if (Bounds.Right > tileBounds.Right - tileBounds.Width / 2f)
-                        PerformNextMove(); // TODO: Fix down and right movement
+                    if (Bounds.Right > tileBounds.Right)
+                        PerformNextMove();
                     break;
             }
         }

@@ -59,7 +59,7 @@ namespace Pacman.Actors
             if (direction != Direction)
                 return;
 
-            const float moveDistance = 0.5f;
+            const float moveDistance = 1.4f;
 
             switch (direction)
             {

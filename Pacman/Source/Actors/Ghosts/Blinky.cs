@@ -13,6 +13,8 @@ namespace Pacman.Actors.Ghosts
             Direction = Direction.Right;
             NextPosition = GetNextPosition(GridPosition, Direction);
 
+            SpeedModifier = 2f;
+
             CalculateFutureDirection();
         }
     }
