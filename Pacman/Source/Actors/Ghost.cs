@@ -13,7 +13,7 @@ namespace Pacman.Actors
         Frightened
     }
 
-    public class Ghost : Actor
+    public abstract class Ghost : Actor
     {
         private Vector2 _targetTile;
 
@@ -40,8 +40,8 @@ namespace Pacman.Actors
 
         #endregion
 
-        public Ghost(Texture2D texture, Vector2 position, Rectangle sourceRect)
-            : base(texture, position, sourceRect)
+        public Ghost(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
+            : base(level, texture, position, sourceRect)
         {
             // TODO: Better handling of movement speeds
             SpeedModifier = PacmanBaseSpeed * 0.75f;
@@ -54,6 +54,9 @@ namespace Pacman.Actors
         {
             base.OnTileCenter();
 
+            // Update target
+            UpdateTarget();
+
             GridPosition = NextPosition;
             NextPosition = GetNextPosition(GridPosition, FutureDirection);
 
@@ -63,6 +66,8 @@ namespace Pacman.Actors
 
             CalculateFutureDirection();
         }
+
+        public abstract void UpdateTarget();
 
         #region Pathfinding Methods
 

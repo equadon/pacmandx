@@ -1,15 +1,28 @@
 ﻿using SharpDX;
+using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
 namespace Pacman.Actors
 {
     public class PacMan : Actor
     {
-        public PacMan(Texture2D texture, Vector2 position)
-            : base(texture, position, new DrawingRectangle(3, 3, 48, 48))
+        public PacMan(Level level, Texture2D texture, Vector2 position)
+            : base(level, texture, position, new DrawingRectangle(3, 3, 48, 48))
         {
             SpeedModifier = PacmanBaseSpeed * 0.8f;
             Direction = Direction.Left;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            // Handle tunnels
+            if (Bounds.Right > Level.TilesWide * PacmanGame.TileWidth)
+                Position = new Vector2(Origin.X, Position.Y);
+
+            if (Bounds.Left < 0)
+                Position = new Vector2(Level.TilesWide * PacmanGame.TileWidth - Origin.X, Position.Y);
         }
 
         /// <summary>

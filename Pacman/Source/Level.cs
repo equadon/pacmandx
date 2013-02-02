@@ -86,9 +86,9 @@ namespace Pacman
 
             ScreenManager = screenManager;
 
-            Blinky = new Blinky(ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
+            Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
 
-            PacMan = new PacMan(ScreenManager.PacManTileset, PacmanStartingPosition);
+            PacMan = new PacMan(this, ScreenManager.PacManTileset, PacmanStartingPosition);
 
             _random = new Random();
         }

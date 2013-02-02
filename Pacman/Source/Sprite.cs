@@ -21,6 +21,8 @@ namespace Pacman
 
         public Rectangle SourceRect { get; protected set; }
 
+        public Level Level { get; private set; }
+
         public RectangleF Bounds
         {
             get
@@ -56,11 +58,12 @@ namespace Pacman
 
         #endregion
 
-        public Sprite(Texture2D texture, Vector2 position, Rectangle sourceRect)
+        public Sprite(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
         {
             _texture = texture;
             _position = position;
 
+            Level = level;
             SourceRect = sourceRect;
 
             Color = Color.White;

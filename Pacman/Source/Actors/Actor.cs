@@ -34,8 +34,8 @@ namespace Pacman.Actors
 
         #endregion
 
-        public Actor(Texture2D texture, Vector2 position, Rectangle sourceRect)
-            : base(texture, position, sourceRect)
+        public Actor(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
+            : base(level, texture, position, sourceRect)
         {
             SpeedModifier = PacmanBaseSpeed;
             LastGridPosition = Utils.AbsToGrid(position);
