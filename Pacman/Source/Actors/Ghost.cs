@@ -69,8 +69,7 @@ namespace Pacman.Actors
         protected void CalculateFutureDirection()
         {
             // Which paths are available?
-            var nextPos = GetNextPosition(GridPosition, Direction);
-            List<Direction> availableDirections = AvailableDirections(Direction, nextPos);
+            List<Direction> availableDirections = AvailableDirections(Direction, NextPosition);
 
             if (availableDirections.Count == 0)
                 return;
@@ -87,7 +86,7 @@ namespace Pacman.Actors
 
             foreach (var direction in availableDirections)
             {
-                Vector2 next = GetNextPosition(nextPos, direction);
+                Vector2 next = GetNextPosition(NextPosition, direction);
                 float distance = Vector2.Distance(TargetTile, next);
                 if (distance < shortestDistance)
                 {
