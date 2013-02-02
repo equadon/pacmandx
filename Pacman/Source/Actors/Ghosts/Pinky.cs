@@ -29,7 +29,7 @@ namespace Pacman.Actors.Ghosts
                 case GhostMode.Frightened:
                     TargetTile = Vector2.Zero;
                     break;
-                default:
+                case GhostMode.Chase:
                     Vector2 target = GetNextPosition(Level.PacMan.GridPosition, Level.PacMan.Direction, 4);
 
                     // Original game had a bug which caused the upward pos to be both 4 above and 4 to the left of pacman

@@ -29,7 +29,7 @@ namespace Pacman.Actors.Ghosts
                 case GhostMode.Frightened:
                     TargetTile = Vector2.Zero;
                     break;
-                default:
+                case GhostMode.Chase:
                     TargetTile = Level.PacMan.GridPosition;
                     break;
             }

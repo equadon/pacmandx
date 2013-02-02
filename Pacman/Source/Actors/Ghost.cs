@@ -44,6 +44,7 @@ namespace Pacman.Actors
             : base(level, texture, position, sourceRect)
         {
             // TODO: Better handling of movement speeds
+            //SpeedModifier = PacmanBaseSpeed * 0.75f;
             SpeedModifier = PacmanBaseSpeed * 0.75f;
         }
 
