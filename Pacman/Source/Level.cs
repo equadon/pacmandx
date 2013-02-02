@@ -86,7 +86,7 @@ namespace Pacman
 
             ScreenManager = screenManager;
 
-            Blinky = new Blinky(ScreenManager.BlankTexture, BlinkyStartingPosition);
+            Blinky = new Blinky(ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
 
             PacMan = new PacMan(ScreenManager.PacManTileset, PacmanStartingPosition);
 

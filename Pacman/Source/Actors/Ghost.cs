@@ -6,14 +6,31 @@ using SharpDX.Toolkit.Graphics;
 
 namespace Pacman.Actors
 {
+    public enum GhostMode
+    {
+        Chase,
+        Scatter,
+        Frightened
+    }
+
     public class Ghost : Actor
     {
         private Vector2 _targetTile;
+
+        private GhostMode _currentMode;
+
+        #region Properties
 
         /// <summary>The direction we'll take once we reach NextPosition.</summary>
         public Direction FutureDirection { get; protected set; }
 
         public Vector2 NextPosition { get; protected set; }
+
+        public GhostMode CurrentMode
+        {
+            get { return _currentMode; }
+            set { _currentMode = value; } // TODO: update other stuff like movement speed on mode change
+        }
 
         public Vector2 TargetTile
         {
@@ -21,15 +38,18 @@ namespace Pacman.Actors
             set { _targetTile = value; }
         }
 
+        #endregion
+
         public Ghost(Texture2D texture, Vector2 position, Rectangle sourceRect)
             : base(texture, position, sourceRect)
         {
+            // TODO: Better handling of movement speeds
+            SpeedModifier = PacmanBaseSpeed * 0.75f;
         }
 
         /// <summary>
         /// We reached the tile's center point, calculate the next move.
         /// </summary>
-        /// <param name="currentTileBounds"></param>
         public override void OnTileCenter()
         {
             base.OnTileCenter();

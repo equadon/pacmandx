@@ -8,7 +8,7 @@ namespace Pacman.Actors
         public PacMan(Texture2D texture, Vector2 position)
             : base(texture, position, new DrawingRectangle(3, 3, 48, 48))
         {
-            SpeedModifier = 1f;
+            SpeedModifier = PacmanBaseSpeed * 0.8f;
             Direction = Direction.Left;
         }
 
