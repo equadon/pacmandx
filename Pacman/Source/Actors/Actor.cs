@@ -166,20 +166,20 @@ namespace Pacman.Actors
             return velocity * SpeedModifier;
         }
 
-        protected Vector2 GetNextPosition(Vector2 currentPosition, Direction nextDirection)
+        protected Vector2 GetNextPosition(Vector2 currentPosition, Direction nextDirection, int steps = 1)
         {
             switch (nextDirection)
             {
                 case Direction.Up:
-                    return new Vector2(currentPosition.X, currentPosition.Y - 1);
+                    return new Vector2(currentPosition.X, currentPosition.Y - steps);
                 case Direction.Left:
                     // Go through the tunnels if we reach the end
-                    return new Vector2((currentPosition.X - 1 < 0) ? 27 : currentPosition.X - 1, currentPosition.Y);
+                    return new Vector2((currentPosition.X - steps < 0) ? 27 : currentPosition.X - steps, currentPosition.Y);
                 case Direction.Down:
-                    return new Vector2(currentPosition.X, currentPosition.Y + 1);
+                    return new Vector2(currentPosition.X, currentPosition.Y + steps);
                 case Direction.Right:
                     // Go through the tunnels if we reach the end
-                    return new Vector2((currentPosition.X + 1 > Level.TilesWide - 1) ? 0 : currentPosition.X + 1,
+                    return new Vector2((currentPosition.X + steps > Level.TilesWide - steps) ? 0 : currentPosition.X + steps,
                                        currentPosition.Y);
                 default:
                     throw new Exception("Invalid direction: " + nextDirection);

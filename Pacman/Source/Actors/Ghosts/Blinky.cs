@@ -11,8 +11,6 @@ namespace Pacman.Actors.Ghosts
             Direction = Direction.Left;
             Velocity = GetVelocity();
 
-            TargetTile = new Vector2(11, 11);
-
             NextPosition = GridPosition;
             FutureDirection = Direction.Left;
         }

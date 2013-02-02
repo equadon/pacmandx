@@ -15,6 +15,7 @@ namespace Pacman
         public Texture2D BonusItemsTileset { get; private set; }
         public Texture2D PacManTileset { get; private set; }
         public Texture2D GhostBlinkyTileset { get; private set; }
+        public Texture2D GhostPinkyTileset { get; private set; }
 
         public Texture2D DirectionTexture { get; private set; }
 
@@ -41,7 +42,9 @@ namespace Pacman
             BlankTexture = Content.Load<Texture2D>(@"Textures\Blank.png");
 
             PacManTileset = Content.Load<Texture2D>(@"Textures\PacMan.png");
+
             GhostBlinkyTileset = Content.Load<Texture2D>(@"Textures\Blinky.png");
+            GhostPinkyTileset = Content.Load<Texture2D>(@"Textures\Pinky.png");
 
             DirectionTexture = Content.Load<Texture2D>(@"Textures\Direction.png");
 

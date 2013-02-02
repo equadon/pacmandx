@@ -50,6 +50,7 @@
     <Compile Include="Source\Actors\Actor.cs" />
     <Compile Include="Source\Actors\Ghost.cs" />
     <Compile Include="Source\Actors\Ghosts\Blinky.cs" />
+    <Compile Include="Source\Actors\Ghosts\Pinky.cs" />
     <Compile Include="Source\Actors\PacMan.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -109,6 +110,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\PacMan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\Pinky.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Plan.txt" />

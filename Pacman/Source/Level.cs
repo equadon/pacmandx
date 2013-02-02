@@ -78,7 +78,9 @@ namespace Pacman
         public PacmanScreenManager ScreenManager { get; private set; }
 
         public PacMan PacMan { get; private set; }
+
         public Blinky Blinky { get; private set; }
+        public Pinky Pinky { get; private set; }
 
         public Level(PacmanScreenManager screenManager)
         {
@@ -86,9 +88,11 @@ namespace Pacman
 
             ScreenManager = screenManager;
 
-            Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
-
             PacMan = new PacMan(this, ScreenManager.PacManTileset, PacmanStartingPosition);
+
+            Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
+            Pinky = new Pinky(this, ScreenManager.GhostPinkyTileset, BlinkyStartingPosition);
+            Pinky.GridPosition = new Vector2(26, 11);
 
             _random = new Random();
         }
@@ -96,7 +100,9 @@ namespace Pacman
         public void Update(GameTime gameTime)
         {
             PacMan.Update(gameTime);
+
             Blinky.Update(gameTime);
+            Pinky.Update(gameTime);
         }
 
         #region Draw Methods
@@ -126,7 +132,9 @@ namespace Pacman
 #endif
 
             PacMan.Draw(spriteBatch, gameTime);
+
             Blinky.Draw(spriteBatch, gameTime);
+            Pinky.Draw(spriteBatch, gameTime);
         }
 
         private void DrawBoard(SpriteBatch spriteBatch)

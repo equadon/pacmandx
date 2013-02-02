@@ -133,9 +133,15 @@ namespace Pacman.Screens
 
             spriteBatch.DrawString(ScreenManager.DebugFont, text, pos, Color.White);
 
+            // Blinky's target tile
             var targetTileRect = new DrawingRectangle(
                 (int)(Level.Blinky.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Blinky.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
-            spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Green);
+            spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Red);
+
+            // Pinky's target tile
+            targetTileRect = new DrawingRectangle(
+                (int)(Level.Pinky.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Pinky.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
+            spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Pink);
         }
     }
 }
