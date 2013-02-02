@@ -17,24 +17,26 @@ namespace Pacman
 
         #region Properties
 
+        public Color Color { get; protected set; }
+
         public Rectangle SourceRect { get; protected set; }
 
-        public Rectangle Bounds
+        public RectangleF Bounds
         {
             get
             {
-                int x = (int)Position.X;
-                int y = (int)Position.Y;
-                int originX = (int) Origin.X;
-                int originY = (int)Origin.Y;
-                return new Rectangle(x - originX, y - originY, x + originX, y + originY);
+                float x = Position.X;
+                float y = Position.Y;
+                float originX = Origin.X;
+                float originY = Origin.Y;
+                return new RectangleF(x - originX, y - originY, x + originX, y + originY);
             }
         }
 
         public Vector2 Position
         {
             get { return _position; }
-            protected set { _position = new Vector2((float)Math.Round(value.X, 0), (float)Math.Round(value.Y, 0)); }
+            protected set { _position = value; }
         }
 
         /// <summary>
@@ -60,6 +62,8 @@ namespace Pacman
             _position = position;
 
             SourceRect = sourceRect;
+
+            Color = Color.White;
         }
 
         public virtual void Update(GameTime gameTime)
@@ -68,7 +72,7 @@ namespace Pacman
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(_texture, Position, SourceRect, Color.White, 0f, Origin, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_texture, Position, SourceRect, Color, 0f, Origin, 1f, SpriteEffects.None, 0f);
         }
     }
 }

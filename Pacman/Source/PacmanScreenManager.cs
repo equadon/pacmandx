@@ -9,8 +9,6 @@ namespace Pacman
 {
     public class PacmanScreenManager : ScreenManager
     {
-        public Logger Logger { get; private set; }
-
         // Content
         public SpriteFont DebugFont { get; private set; }
 
@@ -31,10 +29,9 @@ namespace Pacman
             }
         }
 
-        public PacmanScreenManager(Game game, Logger logger)
+        public PacmanScreenManager(Game game)
             : base(game)
         {
-            Logger = logger;
         }
 
         protected override void LoadContent()
@@ -50,14 +47,14 @@ namespace Pacman
 
             base.LoadContent();
 
-            Logger.Info("Content loaded.");
+            PacmanGame.Logger.Info("Content loaded.");
         }
 
         public override void Initialize()
         {
             base.Initialize();
 
-            Logger.Info("Pacman Screen Manager initialized.");
+            PacmanGame.Logger.Info("Pacman Screen Manager initialized.");
         }
     }
 }

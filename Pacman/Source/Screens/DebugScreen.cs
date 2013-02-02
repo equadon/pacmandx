@@ -14,8 +14,6 @@ namespace Pacman.Screens
     {
         #region Properties
 
-        public Logger Logger { get; private set; }
-
         public Level Level { get; private set; }
 
         public Rectangle DebugBounds { get; private set; }
@@ -34,14 +32,13 @@ namespace Pacman.Screens
 
         public DebugScreen(Logger logger)
         {
-            Logger = logger;
         }
 
         public override void Activate(bool instancePreserved)
         {
             if (!instancePreserved)
             {
-                Level = new Level(Logger, ScreenManager);
+                Level = new Level(ScreenManager);
                 
                 DebugBounds = new Rectangle(Level.TilesWide * PacmanGame.TileWidth,
                                             0,

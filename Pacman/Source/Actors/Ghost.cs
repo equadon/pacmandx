@@ -24,11 +24,13 @@ namespace Pacman.Actors
         public Ghost(Texture2D texture, Vector2 position, Rectangle sourceRect)
             : base(texture, position, sourceRect)
         {
+            SpeedModifier = 0.1f;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            return;
 
             // We reached our next position, set the new position and calculate the next future direction
             var tileBounds = Level.TileBounds(NextPosition);

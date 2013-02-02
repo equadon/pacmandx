@@ -12,24 +12,24 @@ namespace Pacman
         public static readonly int ScreenWidth = Level.TilesWide * TileWidth + 300;
         public static readonly int ScreenHeight = 900;
 
+        public static readonly Logger Logger = new Logger();
+
         private readonly GraphicsDeviceManager _graphics;
-        private readonly Logger _logger;
         private readonly PacmanScreenManager _screenManager;
 
         public PacmanGame()
         {
-            _logger = new Logger();
-            _logger.NewMessageLogged += new Logger.LogAction(Logger_NewMessageLogged);
-            _logger.Info("Logger initiated.");
+            Logger.NewMessageLogged += new Logger.LogAction(Logger_NewMessageLogged);
+            Logger.Info("Logger initiated.");
 
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = ScreenWidth;
             _graphics.PreferredBackBufferHeight = ScreenHeight;
 
-            _screenManager = new PacmanScreenManager(this, _logger);
+            _screenManager = new PacmanScreenManager(this);
             GameSystems.Add(_screenManager);
 
-            _screenManager.AddScreen(new DebugScreen(_logger));
+            _screenManager.AddScreen(new DebugScreen(Logger));
 
             Content.RootDirectory = "Content";
         }

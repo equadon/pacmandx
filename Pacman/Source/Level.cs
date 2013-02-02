@@ -80,13 +80,13 @@ namespace Pacman
         public PacMan PacMan { get; private set; }
         public Blinky Blinky { get; private set; }
 
-        public Level(Logger logger, PacmanScreenManager screenManager)
+        public Level(PacmanScreenManager screenManager)
         {
             _tiles = new int[TilesWide, TilesHigh];
 
             ScreenManager = screenManager;
 
-            Blinky = new Blinky(ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
+            Blinky = new Blinky(ScreenManager.BlankTexture, BlinkyStartingPosition);
 
             PacMan = new PacMan(ScreenManager.PacManTileset, PacmanStartingPosition);
 
@@ -104,10 +104,7 @@ namespace Pacman
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             DrawBoard(spriteBatch);
-
-            PacMan.Draw(spriteBatch, gameTime);
-            Blinky.Draw(spriteBatch, gameTime);
-
+            
 #if DEBUG
             float rotation = 0f;
             switch (Blinky.FutureDirection)
@@ -127,6 +124,9 @@ namespace Pacman
             }
             spriteBatch.Draw(ScreenManager.DirectionTexture, Utils.GridToAbs(Blinky.NextPosition, Blinky.Origin), new DrawingRectangle(0, 0, 30, 30), Color.Red, rotation, new Vector2(15, 15), 1f, SpriteEffects.None, 0f);
 #endif
+
+            PacMan.Draw(spriteBatch, gameTime);
+            Blinky.Draw(spriteBatch, gameTime);
         }
 
         private void DrawBoard(SpriteBatch spriteBatch)
