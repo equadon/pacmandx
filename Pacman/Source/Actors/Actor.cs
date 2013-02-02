@@ -92,10 +92,10 @@ namespace Pacman.Actors
 
             // Handle tunnels
             if (Bounds.Right > Level.TilesWide * PacmanGame.TileWidth)
-                GridPosition = new Vector2(0, GridPosition.Y);
+                Position = new Vector2(Origin.X, Position.Y);
 
             if (Bounds.Left < 0)
-                GridPosition = new Vector2(Level.TilesWide - 1, GridPosition.Y);
+                Position = new Vector2(Level.TilesWide * PacmanGame.TileWidth - Origin.X, Position.Y);
         }
 
         public bool IsDirectionLegal(Direction direction, Vector2 currentPosition)
