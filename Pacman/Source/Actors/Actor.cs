@@ -56,6 +56,12 @@ namespace Pacman.Actors
 
         public virtual void Move(Direction? direction = null)
         {
+            switch (direction)
+            {
+                case Direction.Left:
+                    _position.X -= 0.5f;
+                    break;
+            }
         }
     }
 }

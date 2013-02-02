@@ -29,5 +29,15 @@ namespace Pacman
                 Convert.ToInt32(Math.Floor(absPosition.X / PacmanGame.TileWidth)),
                 Convert.ToInt32(Math.Floor(absPosition.Y / PacmanGame.TileWidth)));
         }
+
+        /// <summary>
+        /// Converts a grid position to absolute position.
+        /// </summary>
+        public static Vector2 GridToAbs(Vector2 gridPosition, Vector2 origin)
+        {
+            return new Vector2(
+                gridPosition.X * PacmanGame.TileWidth + origin.X,
+                gridPosition.Y * PacmanGame.TileWidth + origin.Y);
+        }
     }
 }

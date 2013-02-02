@@ -63,10 +63,9 @@ namespace Pacman.Screens
                 Level.Blinky.TargetTile = mouseGrid;
             }
 
-            // Make Blinky move to his next tile with Space
-            if (input.IsKeyPressed(Key.Space))
+            if (input.IsKeyDown(Key.Left))
             {
-                Level.Blinky.Move();
+                Level.Blinky.Move(Direction.Left);
             }
         }
 
@@ -100,10 +99,12 @@ namespace Pacman.Screens
             text += "    grid: [" + gridPos.X + ", " + gridPos.Y + "]\n\n";
 
             text += "Blinky:\n";
+            text += "    grid: (" + Level.Blinky.Position.X + ", " + Level.Blinky.Position.Y + ")\n";
             text += "    grid: [" + Level.Blinky.GridPosition.X + ", " + Level.Blinky.GridPosition.Y + "]\n";
             text += "    direction: " + Level.Blinky.Direction + "\n";
             text += "    target: (" + Level.Blinky.TargetTile.X + ", " + Level.Blinky.TargetTile.Y + ")\n";
-            text += "    next: (" + Level.Blinky.NextPosition.X + ", " + Level.Blinky.NextPosition.Y + ") " + Level.Blinky.NextDirection + "\n";
+            text += "    next: (" + Level.Blinky.NextPosition.X + ", " + Level.Blinky.NextPosition.Y + ")\n";
+            text += "    future: " + Level.Blinky.FutureDirection + "\n";
 
             Vector2 pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
 

@@ -30,12 +30,7 @@ namespace Pacman
         public Vector2 GridPosition
         {
             get { return Utils.AbsToGrid(_position); }
-            set
-            {
-                _position = new Vector2(
-                    value.X * PacmanGame.TileWidth + Origin.X,
-                    value.Y * PacmanGame.TileWidth + Origin.Y);
-            }
+            set { _position = Utils.GridToAbs(value, Origin); }
         }
 
         public Vector2 Origin

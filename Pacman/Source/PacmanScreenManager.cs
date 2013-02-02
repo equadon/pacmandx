@@ -18,6 +18,8 @@ namespace Pacman
         public Texture2D PacManTileset { get; private set; }
         public Texture2D GhostBlinkyTileset { get; private set; }
 
+        public Texture2D DirectionTexture { get; private set; }
+
         public Vector2 MousePosition
         {
             get
@@ -42,6 +44,8 @@ namespace Pacman
             BlankTexture = Content.Load<Texture2D>(@"Textures\Blank.png");
             
             GhostBlinkyTileset = Content.Load<Texture2D>(@"Textures\Blinky.png");
+
+            DirectionTexture = Content.Load<Texture2D>(@"Textures\Direction.png");
 
             base.LoadContent();
 

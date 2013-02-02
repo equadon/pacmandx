@@ -80,7 +80,6 @@ namespace Pacman
 
             ScreenManager = screenManager;
             Blinky = new Blinky(ScreenManager.GhostBlinkyTileset, new Vector2(0, 0));
-            Blinky.GridPosition = new Vector2(14, 14);
 
             _random = new Random();
         }
@@ -97,6 +96,26 @@ namespace Pacman
             DrawBoard(spriteBatch);
 
             Blinky.Draw(spriteBatch, gameTime);
+
+#if DEBUG
+            float rotation = 0f;
+            switch (Blinky.FutureDirection)
+            {
+                case Direction.Up:
+                    rotation = MathUtil.DegreesToRadians(0);
+                    break;
+                case Direction.Right:
+                    rotation = MathUtil.DegreesToRadians(90);
+                    break;
+                case Direction.Down:
+                    rotation = MathUtil.DegreesToRadians(180);
+                    break;
+                case Direction.Left:
+                    rotation = MathUtil.DegreesToRadians(270);
+                    break;
+            }
+            spriteBatch.Draw(ScreenManager.DirectionTexture, Utils.GridToAbs(Blinky.NextPosition, Blinky.Origin), new DrawingRectangle(0, 0, 30, 30), Color.Red, rotation, new Vector2(15, 15), 1f, SpriteEffects.None, 0f);
+#endif
         }
 
         private void DrawBoard(SpriteBatch spriteBatch)
