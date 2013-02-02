@@ -63,10 +63,14 @@ namespace Pacman.Screens
                 Level.Blinky.TargetTile = mouseGrid;
             }
 
+            if (input.IsKeyDown(Key.UpArrow))
+                Level.Blinky.Move(Direction.Up);
+            if (input.IsKeyDown(Key.Down))
+                Level.Blinky.Move(Direction.Down);
             if (input.IsKeyDown(Key.Left))
-            {
                 Level.Blinky.Move(Direction.Left);
-            }
+            if (input.IsKeyDown(Key.Right))
+                Level.Blinky.Move(Direction.Right);
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -104,6 +108,9 @@ namespace Pacman.Screens
             text += "    direction: " + Level.Blinky.Direction + "\n";
             text += "    target: (" + Level.Blinky.TargetTile.X + ", " + Level.Blinky.TargetTile.Y + ")\n";
             text += "    next: (" + Level.Blinky.NextPosition.X + ", " + Level.Blinky.NextPosition.Y + ")\n";
+
+            Vector2 nextAbsPos = Utils.GridToAbs(Level.Blinky.NextPosition, Level.Blinky.Origin);
+            text += "          (" + nextAbsPos.X + ", " + nextAbsPos.Y + ")\n";
             text += "    future: " + Level.Blinky.FutureDirection + "\n";
 
             Vector2 pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);

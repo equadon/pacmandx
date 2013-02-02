@@ -13,19 +13,12 @@ namespace Pacman.Actors
         /// <summary>The direction we'll take once we reach NextPosition.</summary>
         public Direction FutureDirection { get; protected set; }
 
-        public Vector2 NextPosition
-        {
-            get { return GetNextPosition(GridPosition, Direction); }
-        }
+        public Vector2 NextPosition { get; protected set; }
 
         public Vector2 TargetTile
         {
             get { return _targetTile; }
-            set
-            {
-                _targetTile = value;
-                CalculateFutureDirection();
-            }
+            set { _targetTile = value; }
         }
 
         public Ghost(Texture2D texture, Vector2 position, Rectangle sourceRect)
@@ -38,10 +31,38 @@ namespace Pacman.Actors
         {
             base.Update(gameTime);
 
-            if (Position == Utils.AbsToGrid(NextPosition))
+            // We reached our next position, set the new position and calculate the next future direction
+            var tileBounds = Level.TileBounds(NextPosition);
+
+            switch (Direction)
             {
-                throw new Exception("hello!");
+                case Direction.Up:
+                    if (Bounds.Top < tileBounds.Top + tileBounds.Height / 2f)
+                        PerformNextMove();
+                    break;
+                case Direction.Down:
+                    if (Bounds.Bottom > tileBounds.Bottom - tileBounds.Height / 2f)
+                        PerformNextMove();
+                    break;
+                case Direction.Left:
+                    if (Bounds.Left < tileBounds.Left + tileBounds.Width / 2f)
+                        PerformNextMove();
+                    break;
+                case Direction.Right:
+                    if (Bounds.Right > tileBounds.Right - tileBounds.Width / 2f)
+                        PerformNextMove(); // TODO: Fix down and right movement
+                    break;
             }
+        }
+
+        private void PerformNextMove()
+        {
+            GridPosition = NextPosition;
+            NextPosition = GetNextPosition(GridPosition, FutureDirection);
+
+            Direction = FutureDirection;
+
+            CalculateFutureDirection();
         }
 
         #region Pathfinding Methods

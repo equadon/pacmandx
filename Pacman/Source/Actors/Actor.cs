@@ -56,10 +56,24 @@ namespace Pacman.Actors
 
         public virtual void Move(Direction? direction = null)
         {
+            if (direction != Direction)
+                return;
+
+            const float moveDistance = 0.5f;
+
             switch (direction)
             {
+                case Direction.Up:
+                    _position.Y -= moveDistance;
+                    break;
+                case Direction.Down:
+                    _position.Y += moveDistance;
+                    break;
                 case Direction.Left:
-                    _position.X -= 0.5f;
+                    _position.X -= moveDistance;
+                    break;
+                case Direction.Right:
+                    _position.X += moveDistance;
                     break;
             }
         }

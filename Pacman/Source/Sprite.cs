@@ -18,6 +18,16 @@ namespace Pacman
 
         public Rectangle SourceRect { get; protected set; }
 
+        public RectangleF Bounds
+        {
+            get
+            {
+                float x = Position.X;
+                float y = Position.Y;
+                return new RectangleF(x, y, x + SourceRect.Width, y + SourceRect.Height);
+            }
+        }
+
         public Vector2 Position
         {
             get { return _position; }

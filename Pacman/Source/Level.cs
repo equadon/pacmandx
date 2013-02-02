@@ -164,6 +164,13 @@ namespace Pacman
             return LegalTiles[x, y] == (int)TileType.Empty;
         }
 
+        public static Rectangle TileBounds(Vector2 position)
+        {
+            int xPos = (int)position.X * PacmanGame.TileWidth;
+            int yPos = (int)position.Y * PacmanGame.TileWidth;
+            return new Rectangle(xPos, yPos, xPos + PacmanGame.TileWidth, yPos + PacmanGame.TileWidth);
+        }
+
         #region Generate Level
 
         static Level()
