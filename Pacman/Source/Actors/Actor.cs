@@ -89,6 +89,13 @@ namespace Pacman.Actors
                         Position = new Vector2(tileBounds.Right - tileBounds.Width / 2, Position.Y);
                     break;
             }
+
+            // Handle tunnels
+            if (Bounds.Right > Level.TilesWide * PacmanGame.TileWidth)
+                GridPosition = new Vector2(0, GridPosition.Y);
+
+            if (Bounds.Left < 0)
+                GridPosition = new Vector2(Level.TilesWide - 1, GridPosition.Y);
         }
 
         public bool IsDirectionLegal(Direction direction, Vector2 currentPosition)
@@ -110,6 +117,7 @@ namespace Pacman.Actors
                 case Direction.Down:
                     return new Vector2(currentPosition.X, currentPosition.Y + 1);
                 case Direction.Right:
+                    // Go through the tunnels if we reach the end
                     return new Vector2((currentPosition.X + 1 > Level.TilesWide - 1) ? 0 : currentPosition.X + 1,
                                        currentPosition.Y);
                 default:
