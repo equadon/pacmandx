@@ -54,6 +54,27 @@ namespace Pacman.Screens
         {
             var mouseGrid = Utils.AbsToGrid(ScreenManager.MousePosition);
 
+            // Control pacman with WASD or arrow keys
+            if (input.IsKeyDown(Key.W) || input.IsKeyDown(Key.UpArrow))
+            {
+                Level.PacMan.ChangeDirection(Direction.Up);
+            }
+
+            if (input.IsKeyPressed(Key.S) || input.IsKeyPressed(Key.Down))
+            {
+                Level.PacMan.ChangeDirection(Direction.Down);
+            }
+
+            if (input.IsKeyPressed(Key.A) || input.IsKeyPressed(Key.Left))
+            {
+                Level.PacMan.ChangeDirection(Direction.Left);
+            }
+
+            if (input.IsKeyPressed(Key.D) || input.IsKeyPressed(Key.Right))
+            {
+                Level.PacMan.ChangeDirection(Direction.Right);
+            }
+
             // Set Blinky's target tile with left mouse button
             if (input.IsMousePressed(MouseButton.Left) &&
                 mouseGrid.X >= 0 && mouseGrid.X < Level.TilesWide &&
@@ -62,15 +83,6 @@ namespace Pacman.Screens
             {
                 Level.Blinky.TargetTile = mouseGrid;
             }
-
-            if (input.IsKeyDown(Key.UpArrow))
-                Level.Blinky.Move(Direction.Up);
-            if (input.IsKeyDown(Key.Down))
-                Level.Blinky.Move(Direction.Down);
-            if (input.IsKeyDown(Key.Left))
-                Level.Blinky.Move(Direction.Left);
-            if (input.IsKeyDown(Key.Right))
-                Level.Blinky.Move(Direction.Right);
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -111,7 +123,20 @@ namespace Pacman.Screens
 
             Vector2 nextAbsPos = Utils.GridToAbs(Level.Blinky.NextPosition, Level.Blinky.Origin);
             text += "          (" + nextAbsPos.X + ", " + nextAbsPos.Y + ")\n";
-            text += "    future: " + Level.Blinky.FutureDirection + "\n";
+            text += "    future: " + Level.Blinky.FutureDirection + "\n\n\n";
+
+            text += "Pacman:\n";
+            text += "    pos: " + Level.PacMan.Position + "\n";
+            text += "   grid: " + Level.PacMan.GridPosition + "\n";
+            text += "   direction: " + Level.PacMan.Direction + "\n";
+            text += "   velocity: " + Level.PacMan.Velocity + "\n";
+            text += "   top left: (" + Level.PacMan.Bounds.Left + "," + Level.PacMan.Bounds.Top + ")\n";
+            text += "   bot right: (" + Level.PacMan.Bounds.Right + "," + Level.PacMan.Bounds.Bottom + ")\n";
+
+            Rectangle tileBounds = Level.TileBounds(Level.PacMan.GridPosition);
+            text += "\n\nPacman Tile:\n";
+            text += "   top left: (" + tileBounds.Left + "," + tileBounds.Top + ")\n";
+            text += "   bot right: (" + tileBounds.Right + "," + tileBounds.Bottom + ")\n";
 
             Vector2 pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
 

@@ -36,19 +36,19 @@ namespace Pacman.Actors
             switch (Direction)
             {
                 case Direction.Up:
-                    if (Bounds.Top < tileBounds.Top)
+                    if (Bounds.Top == tileBounds.Top)
                         PerformNextMove();
                     break;
                 case Direction.Down:
-                    if (Bounds.Bottom > tileBounds.Bottom)
+                    if (Bounds.Bottom == tileBounds.Bottom)
                         PerformNextMove();
                     break;
                 case Direction.Left:
-                    if (Bounds.Left < tileBounds.Left)
+                    if (Bounds.Left == tileBounds.Left)
                         PerformNextMove();
                     break;
                 case Direction.Right:
-                    if (Bounds.Right > tileBounds.Right)
+                    if (Bounds.Right == tileBounds.Right)
                         PerformNextMove();
                     break;
             }
@@ -127,25 +127,6 @@ namespace Pacman.Actors
                 list.Add(Direction.Right);
 
             return list;
-        }
-
-        protected Vector2 GetNextPosition(Vector2 currentPosition, Direction nextDirection)
-        {
-            switch (nextDirection)
-            {
-                case Direction.Up:
-                    return new Vector2(currentPosition.X, currentPosition.Y - 1);
-                case Direction.Left:
-                    // Go through the tunnels if we reach the end
-                    return new Vector2((currentPosition.X - 1 < 0) ? 27 : currentPosition.X - 1, currentPosition.Y);
-                case Direction.Down:
-                    return new Vector2(currentPosition.X, currentPosition.Y + 1);
-                case Direction.Right:
-                    return new Vector2((currentPosition.X + 1 > Level.TilesWide - 1) ? 0 : currentPosition.X + 1,
-                                       currentPosition.Y);
-                default:
-                    throw new Exception("Invalid direction: " + nextDirection);
-            }
         }
 
         #endregion

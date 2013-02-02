@@ -7,6 +7,7 @@ namespace Pacman.Actors
 {
     public enum Direction
     {
+        None,
         Up,
         Down,
         Left,
@@ -23,21 +24,29 @@ namespace Pacman.Actors
 
         public Direction Direction { get; protected set; }
 
-        protected Vector2 Velocity
+        public Vector2 Velocity
         {
             get
             {
+                Vector2 velocity = Vector2.Zero;
+
                 switch (Direction)
                 {
                     case Direction.Up:
-                        return new Vector2(0, -1);
+                        velocity = new Vector2(0, -1);
+                        break;
                     case Direction.Down:
-                        return new Vector2(0, 1);
+                        velocity = new Vector2(0, 1);
+                        break;
                     case Direction.Left:
-                        return new Vector2(-1, 0);
-                    default:
-                        return new Vector2(1, 0);
+                        velocity = new Vector2(-1, 0);
+                        break;
+                    case Direction.Right:
+                        velocity = new Vector2(1, 0);
+                        break;
                 }
+
+                return velocity*SpeedModifier;
             }
         }
 
@@ -51,30 +60,60 @@ namespace Pacman.Actors
 
         public override void Update(GameTime gameTime)
         {
-            _position += Velocity * SpeedModifier;
-        }
+            if (Direction != Direction.None)
+                Position += Velocity;
 
-        public virtual void Move(Direction? direction = null)
-        {
-            if (direction != Direction)
-                return;
+            // Handle collision with illegal tiles
+            var tileBounds = Level.TileBounds(GridPosition);
 
-            const float moveDistance = 1.4f;
-
-            switch (direction)
+            switch (Direction)
             {
                 case Direction.Up:
-                    _position.Y -= moveDistance;
+                    if (!IsDirectionLegal(Direction, GridPosition) &&
+                        Position.Y < tileBounds.Top + tileBounds.Height / 2)
+                        Position = new Vector2(Position.X, tileBounds.Top + tileBounds.Height / 2);
                     break;
                 case Direction.Down:
-                    _position.Y += moveDistance;
+                    if (!IsDirectionLegal(Direction, GridPosition) &&
+                        Position.Y > tileBounds.Bottom - tileBounds.Height / 2)
+                        Position = new Vector2(Position.X, tileBounds.Bottom - tileBounds.Height / 2);
                     break;
                 case Direction.Left:
-                    _position.X -= moveDistance;
+                    if (!IsDirectionLegal(Direction, GridPosition) &&
+                        Position.X < tileBounds.Left + tileBounds.Width / 2)
+                        Position = new Vector2(tileBounds.Left + tileBounds.Width / 2, Position.Y);
                     break;
                 case Direction.Right:
-                    _position.X += moveDistance;
+                    if (!IsDirectionLegal(Direction, GridPosition) &&
+                        Position.X > tileBounds.Right - tileBounds.Width / 2)
+                        Position = new Vector2(tileBounds.Right - tileBounds.Width / 2, Position.Y);
                     break;
+            }
+        }
+
+        public bool IsDirectionLegal(Direction direction, Vector2 currentPosition)
+        {
+            Vector2 nextPos = GetNextPosition(currentPosition, direction);
+
+            return Level.IsLegal(nextPos);
+        }
+
+        protected Vector2 GetNextPosition(Vector2 currentPosition, Direction nextDirection)
+        {
+            switch (nextDirection)
+            {
+                case Direction.Up:
+                    return new Vector2(currentPosition.X, currentPosition.Y - 1);
+                case Direction.Left:
+                    // Go through the tunnels if we reach the end
+                    return new Vector2((currentPosition.X - 1 < 0) ? 27 : currentPosition.X - 1, currentPosition.Y);
+                case Direction.Down:
+                    return new Vector2(currentPosition.X, currentPosition.Y + 1);
+                case Direction.Right:
+                    return new Vector2((currentPosition.X + 1 > Level.TilesWide - 1) ? 0 : currentPosition.X + 1,
+                                       currentPosition.Y);
+                default:
+                    throw new Exception("Invalid direction: " + nextDirection);
             }
         }
     }

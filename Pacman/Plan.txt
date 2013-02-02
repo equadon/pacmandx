@@ -4,5 +4,6 @@
 2. Basic Level class with tiles in a grid system
 3. Develop pathfinding with a DebugScreen
 4. DebugScreen should show real time details about ghosts decision making
-5. Implement Pacman class
-6. Individual ghost behaviour
+5. Update Actor class to handle animations
+6. Implement Pacman
+7. Individual ghost behaviour

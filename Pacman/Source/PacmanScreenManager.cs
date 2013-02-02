@@ -42,7 +42,8 @@ namespace Pacman
             DebugFont = Content.Load<SpriteFont>(@"Fonts\DebugFont.tkfont");
             
             BlankTexture = Content.Load<Texture2D>(@"Textures\Blank.png");
-            
+
+            PacManTileset = Content.Load<Texture2D>(@"Textures\PacMan.png");
             GhostBlinkyTileset = Content.Load<Texture2D>(@"Textures\Blinky.png");
 
             DirectionTexture = Content.Load<Texture2D>(@"Textures\Direction.png");

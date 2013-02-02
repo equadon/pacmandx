@@ -42,9 +42,14 @@ namespace Pacman
         public static readonly int TilesWide = 28;
         public static readonly int TilesHigh = 36;
 
+        // Colors
         public static readonly Color DebugEmptyTileColor = new Color(79, 79, 79, 255);
         public static readonly Color DebugBorderColor = new Color(150, 150, 150, 255);
         public static readonly Color DebugUnknownTileColor = Color.Black;
+
+        // Starting positions
+        public static readonly Vector2 PacmanStartingPosition = new Vector2(420, 780 + PacmanGame.TileWidth / 2f);
+        public static readonly Vector2 BlinkyStartingPosition = new Vector2(420, 420 + PacmanGame.TileWidth / 2f);
 
         /// <summary>
         /// Array listing legal and illegal tiles that will be used by the pathfinding.
@@ -72,6 +77,7 @@ namespace Pacman
 
         public PacmanScreenManager ScreenManager { get; private set; }
 
+        public PacMan PacMan { get; private set; }
         public Blinky Blinky { get; private set; }
 
         public Level(Logger logger, PacmanScreenManager screenManager)
@@ -79,13 +85,17 @@ namespace Pacman
             _tiles = new int[TilesWide, TilesHigh];
 
             ScreenManager = screenManager;
-            Blinky = new Blinky(ScreenManager.GhostBlinkyTileset, new Vector2(0, 0));
+
+            Blinky = new Blinky(ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
+
+            PacMan = new PacMan(ScreenManager.PacManTileset, PacmanStartingPosition);
 
             _random = new Random();
         }
 
         public void Update(GameTime gameTime)
         {
+            PacMan.Update(gameTime);
             Blinky.Update(gameTime);
         }
 
@@ -95,6 +105,7 @@ namespace Pacman
         {
             DrawBoard(spriteBatch);
 
+            PacMan.Draw(spriteBatch, gameTime);
             Blinky.Draw(spriteBatch, gameTime);
 
 #if DEBUG

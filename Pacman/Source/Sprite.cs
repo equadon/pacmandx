@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
@@ -18,22 +19,22 @@ namespace Pacman
 
         public Rectangle SourceRect { get; protected set; }
 
-        public RectangleF Bounds
+        public Rectangle Bounds
         {
             get
             {
-                float x = Position.X;
-                float y = Position.Y;
-                float originX = Origin.X;
-                float originY = Origin.Y;
-                //return new RectangleF(x - originX, y - originY, x + originX, y + originY);
-                return new RectangleF(x - originX, y - originY, x + originX, y + originY);
+                int x = (int)Position.X;
+                int y = (int)Position.Y;
+                int originX = (int) Origin.X;
+                int originY = (int)Origin.Y;
+                return new Rectangle(x - originX, y - originY, x + originX, y + originY);
             }
         }
 
         public Vector2 Position
         {
             get { return _position; }
+            protected set { _position = new Vector2((float)Math.Round(value.X, 0), (float)Math.Round(value.Y, 0)); }
         }
 
         /// <summary>
