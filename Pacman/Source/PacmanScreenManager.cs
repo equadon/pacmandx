@@ -12,6 +12,8 @@ namespace Pacman
         // Content
         public SpriteFont DebugFont { get; private set; }
 
+        public Texture2D SimpleLevelTiles { get; private set; }
+
         public Texture2D BonusItemsTileset { get; private set; }
         public Texture2D PacManTileset { get; private set; }
         public Texture2D GhostBlinkyTileset { get; private set; }
@@ -45,6 +47,8 @@ namespace Pacman
             DebugFont = Content.Load<SpriteFont>(@"Fonts\DebugFont.tkfont");
             
             BlankTexture = Content.Load<Texture2D>(@"Textures\Blank.png");
+
+            SimpleLevelTiles = Content.Load<Texture2D>(@"Textures\LevelTilesSimple.png");
 
             PacManTileset = Content.Load<Texture2D>(@"Textures\PacMan.png");
 

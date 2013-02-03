@@ -8,9 +8,10 @@ namespace Pacman
 {
     public class PacmanGame : Game
     {
-        public static readonly int TileWidth = 27;
+        public static readonly int TileWidth = 30;
         public static readonly int ScreenWidth = Level.TilesWide * TileWidth + 300;
-        public static readonly int ScreenHeight = Level.TilesHigh * TileWidth;
+        //public static readonly int ScreenHeight = Level.TilesHigh * TileWidth;
+        public static readonly int ScreenHeight = 900;
 
         public static readonly Logger Logger = new Logger();
 
@@ -29,7 +30,7 @@ namespace Pacman
             _screenManager = new PacmanScreenManager(this);
             GameSystems.Add(_screenManager);
 
-            _screenManager.AddScreen(new DebugScreen(Logger));
+            _screenManager.AddScreen(new TestLevelScreen(Logger));
 
             Content.RootDirectory = "Content";
         }
@@ -38,9 +39,7 @@ namespace Pacman
         {
             Window.Title = "Pacman using SharpDX";
 
-#if DEBUG
             IsMouseVisible = true;
-#endif
 
             base.Initialize();
         }

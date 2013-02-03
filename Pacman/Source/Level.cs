@@ -168,12 +168,105 @@ namespace Pacman
             {
                 for (int x = 0; x < TilesWide; x++)
                 {
-                    Color color = (LegalTiles[x, y] == (int) TileType.Empty) ? DebugEmptyTileColor : DebugUnknownTileColor;
+                    int tile = LegalTiles[x, y];
+
+                    var destination = new DrawingRectangle(x*PacmanGame.TileWidth, y*PacmanGame.TileWidth,
+                                                           PacmanGame.TileWidth, PacmanGame.TileWidth);
+
+                    float rotation = 0f;
+                    DrawingRectangle source = new DrawingRectangle(0, 0, 30, 30);
+                    Vector2 origin = new Vector2(PacmanGame.TileWidth / 2f, PacmanGame.TileWidth / 2f);
+                    Vector2 pos = new Vector2(
+                                x * PacmanGame.TileWidth + origin.X,
+                                y * PacmanGame.TileWidth + origin.Y);
+
+                    switch (tile)
+                    {
+                        case 0:
+                            spriteBatch.Draw(ScreenManager.BlankTexture, destination, Color.White);
+                            break;
+                        case 1:
+                            spriteBatch.Draw(ScreenManager.BlankTexture, destination, Color.Black);
+                            break;
+                        case 2:
+                            rotation = 0f;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 3:
+                            rotation = MathUtil.Pi;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 4:
+                            rotation = MathUtil.Pi + MathUtil.Pi/2f;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 5:
+                            rotation = MathUtil.Pi / 2f;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 6:
+                            rotation = MathUtil.Pi/2;
+                            source.X = 30;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 7:
+                            rotation = 0f;
+                            source.X = 30;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 8:
+                            rotation = -MathUtil.Pi / 2f;
+                            source.X = 30;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 9:
+                            rotation = -MathUtil.Pi;
+                            source.X = 30;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 10:
+                            rotation = MathUtil.Pi;
+                            source.X = 60;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 11:
+                            rotation = MathUtil.Pi / 2f;
+                            source.X = 60;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 12:
+                            rotation = 0f;
+                            source.X = 60;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        case 13:
+                            rotation = -MathUtil.Pi / 2f;
+                            source.X = 60;
+                            spriteBatch.Draw(ScreenManager.SimpleLevelTiles, pos, source, Color.White, rotation, origin,
+                                             1f, SpriteEffects.None, 0f);
+                            break;
+                        default:
+                            spriteBatch.Draw(ScreenManager.BlankTexture, destination, Color.Blue);
+                            break;
+                    }
 #if DEBUG
+                    Color color = (LegalTiles[x, y] == (int) TileType.Empty) ? DebugEmptyTileColor : DebugUnknownTileColor;
+
                     var mouseGrid = Utils.AbsToGrid(ScreenManager.MousePosition);
                     if (mouseGrid.X == x && mouseGrid.Y == y)
                         color = new Color(200, 200, 200, 255);
-#endif
+
                     var rect = new DrawingRectangle(x*PacmanGame.TileWidth, y*PacmanGame.TileWidth, PacmanGame.TileWidth,
                                                     PacmanGame.TileWidth);
                     spriteBatch.Draw(ScreenManager.BlankTexture, rect, color);
@@ -183,12 +276,14 @@ namespace Pacman
 
                     for (int i = 0; i < 30; i += 6)
                         spriteBatch.Draw(ScreenManager.BlankTexture, new DrawingRectangle(x * PacmanGame.TileWidth, y * PacmanGame.TileWidth + i, 1, 2), DebugBorderColor);
+#endif
                 }
             }
 
             spriteBatch.Draw(ScreenManager.BlankTexture, new DrawingRectangle(TilesWide * PacmanGame.TileWidth, 0, 1, TilesHigh * PacmanGame.TileWidth), DebugBorderColor);
         }
 
+#if DEBUG
         private void DrawGhostDirection(SpriteBatch spriteBatch, Ghost ghost)
         {
             // We don't use future direction in frightened mode
@@ -224,7 +319,7 @@ namespace Pacman
 
             spriteBatch.Draw(ScreenManager.DirectionTexture, Utils.GridToAbs(ghost.NextPosition, ghost.Origin), new DrawingRectangle(0, 0, 30, 30), color, rotation, new Vector2(15, 15), 1f, SpriteEffects.None, 0f);
         }
-
+#endif
         #endregion
 
         public static bool IsLegal(Vector2 position)
@@ -256,35 +351,68 @@ namespace Pacman
         static Level()
         {
             LegalTiles = new int[,] {
-                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-                {1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,0,1,1,1,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,0,0,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1},
-                {1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1},
-                {1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1},
-                {1,1,1,1,0,0,0,0,0,1,1,0,0,0,0,1,1,1,1,1,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1},
-                {1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,0,0,0,1,1,0,1,1,1},
-                {1,1,1,1,0,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,1},
-                {1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,0,1,1,1,1,1,0,0,0,0,1,1,0,0,0,0,1,1,1},
-                {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 7, 3, 8, 0, 7, 8, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 7, 8, 0, 1, 1, 0, 7, 8, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 4, 5, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 4, 5, 0, 0, 0, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 4, 5, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 4,11, 3, 3, 8, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 6, 2, 9, 0, 6, 9, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 6, 2, 2, 2, 9, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 7, 3, 8, 0, 7, 3, 3, 3, 3, 3, 3, 8, 0, 7, 3, 3, 3, 8, 0, 7, 8, 0, 7, 3, 3,10, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 6, 2, 2,13,12, 2, 2, 9, 0, 6, 2, 2, 2, 9, 0, 4, 5, 0, 6, 2, 2,13, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 7, 8, 0, 4, 5, 0, 1, 1, 1, 1, 1, 0, 7, 8, 0, 4, 5, 0, 7, 8, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 6, 2, 9, 0, 4, 5, 0, 6, 9, 0, 1, 1, 1, 1, 1, 0, 4, 5, 0, 6, 9, 0, 4, 5, 0, 6, 9, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 4, 5, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 3, 3, 3, 8, 0, 4,11, 3, 3, 8, 0, 1, 1, 1, 1, 1, 0, 4,11, 3, 3, 8, 0, 4,11, 3, 3, 8, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 2, 2, 2, 9, 0, 4,12, 2, 2, 9, 0, 1, 1, 1, 1, 1, 0, 4,12, 2, 2, 9, 0, 4,12, 2, 2, 9, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 4, 5, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 7, 3, 8, 0, 4, 5, 0, 7, 8, 0, 1, 1, 1, 1, 1, 0, 4, 5, 0, 7, 8, 0, 4, 5, 0, 7, 8, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 6, 9, 0, 4, 5, 0, 1, 1, 1, 1, 1, 0, 6, 9, 0, 4, 5, 0, 6, 9, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 7, 3, 3,10,11, 3, 3, 8, 0, 7, 3, 3, 3, 8, 0, 4, 5, 0, 7, 3, 3,10, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 6, 2, 9, 0, 6, 2, 2, 2, 2, 2, 2, 9, 0, 6, 2, 2, 2, 9, 0, 6, 9, 0, 6, 2, 2,13, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 7, 3, 8, 0, 7, 8, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 7, 3, 3, 3, 8, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 4, 5, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 4,12, 2, 2, 9, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 4, 1, 5, 0, 4, 5, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 4, 5, 0, 0, 0, 0, 4, 5, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 6, 2, 9, 0, 6, 9, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 6, 9, 0, 1, 1, 0, 6, 9, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1}, 
+                { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
             };
+
+            // TODO: use this version once we have the full map drawn out so we can load one large image once rather
+            //       than building it up every frame.
+            //LegalTiles = new int[,] {
+            //    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1}, 
+            //    { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+            //};
         }
 
         #endregion
