@@ -6,13 +6,38 @@ namespace Pacman.Actors
 {
     public class PacMan : Actor
     {
+        public float FrightSpeedModifier { get; private set; }
+
         public PacMan(Level level, Texture2D texture, Vector2 position)
             : base(level, texture, position, new DrawingRectangle(3, 3, 48, 48))
         {
-            SpeedModifier = PacmanBaseSpeed * 0.8f;
             Direction = Direction.Left;
 
             Velocity = Vector2.Zero;
+
+            // Set speeds
+            int currentLevel = Level.ScreenManager.CurrentLevel;
+
+            if (currentLevel == 1)
+            {
+                SpeedModifier = 0.8f;
+                FrightSpeedModifier = 0.9f;
+            }
+            else if (currentLevel >= 2 && currentLevel <= 4)
+            {
+                SpeedModifier = 0.9f;
+                FrightSpeedModifier = 0.95f;
+            }
+            else if (currentLevel >= 5 && currentLevel <= 20)
+            {
+                SpeedModifier = 1f;
+                FrightSpeedModifier = 1f;
+            }
+            else
+            {
+                SpeedModifier = 0.9f;
+                FrightSpeedModifier = SpeedModifier;
+            }
         }
 
         public override void Update(GameTime gameTime)

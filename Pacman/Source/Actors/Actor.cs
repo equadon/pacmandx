@@ -26,9 +26,12 @@ namespace Pacman.Actors
 
         #region Properties
 
+        public float BaseSpeedModifier { get; protected set; }
         public float SpeedModifier { get; protected set; }
 
         public Vector2 LastGridPosition { get; private set; }
+
+        public Vector2 Velocity { get; protected set; }
 
         public Vector2 NextPosition
         {
@@ -45,7 +48,21 @@ namespace Pacman.Actors
             }
         }
 
-        public Vector2 Velocity { get; protected set; }
+        public bool IsInsideTunnels
+        {
+            get
+            {
+                if ((int)GridPosition.Y == 17 &&
+                    (GridPosition.X >= 0 && GridPosition.X <= 5))
+                    return true;
+
+                if ((int)GridPosition.Y == 17 &&
+                    (GridPosition.X >= 22 && GridPosition.X <= 27))
+                    return true;
+
+                return false;
+            }
+        }
 
         #endregion
 
@@ -195,7 +212,7 @@ namespace Pacman.Actors
                     break;
             }
 
-            return velocity * SpeedModifier;
+            return velocity * PacmanBaseSpeed * SpeedModifier;
         }
 
         protected Vector2 GetNextPosition(Vector2 currentPosition, Direction nextDirection, int steps = 1)

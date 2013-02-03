@@ -21,7 +21,7 @@ namespace Pacman
 
         public Texture2D DirectionTexture { get; private set; }
 
-        public int CurrentLevel { get; private set; }
+        public int CurrentLevel { get; set; }
 
         public Vector2 MousePosition
         {

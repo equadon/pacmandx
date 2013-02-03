@@ -111,14 +111,19 @@ namespace Pacman.Screens
             string text = "";
             var pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
 
+            var gridPos = Utils.AbsToGrid(ScreenManager.MousePosition);
+            text += "Mouse:\n";
+            text += "    pos: (" + ScreenManager.MousePosition.X + ", " + ScreenManager.MousePosition.Y + ")\n";
+            text += "    grid: [" + gridPos.X + ", " + gridPos.Y + "]\n\n";
+
             text += "Level: " + ScreenManager.CurrentLevel + "\n\n";
 
             text += "Speeds:\n";
             text += "  Pac-Man: " + Level.PacMan.SpeedModifier * 100 + "%\n";
             text += "   Blinky: " + Level.Blinky.SpeedModifier * 100 + "%\n";
-            text += "    Pinky: " + Level.Blinky.SpeedModifier * 100 + "%\n";
-            text += "     Inky: " + Level.Blinky.SpeedModifier * 100 + "%\n";
-            text += "    Clyde: " + Level.Blinky.SpeedModifier * 100 + "%\n";
+            text += "    Pinky: " + Level.Pinky.SpeedModifier * 100 + "%\n";
+            text += "     Inky: " + Level.Inky.SpeedModifier * 100 + "%\n";
+            text += "    Clyde: " + Level.Clyde.SpeedModifier * 100 + "%\n";
 
             spriteBatch.DrawString(ScreenManager.DebugFont, text, pos, Color.White);
         }

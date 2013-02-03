@@ -24,6 +24,10 @@ namespace Pacman.Actors
 
         public Vector2 TargetTile { get; protected set; }
 
+        // Speeds
+        public float FrightSpeedModifier { get; private set; }
+        public float TunnelSpeedModifier { get; private set; }
+
         #endregion
 
         public Ghost(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
@@ -31,10 +35,37 @@ namespace Pacman.Actors
         {
             ForceNewDirection = false;
 
-            // TODO: Better handling of movement speeds
-            SpeedModifier = PacmanBaseSpeed * 0.75f;
-
             UpdateTarget();
+
+            // Set speeds
+            int currentLevel = Level.ScreenManager.CurrentLevel;
+
+            if (currentLevel == 1)
+            {
+                BaseSpeedModifier = 0.75f;
+                FrightSpeedModifier = 0.5f;
+                TunnelSpeedModifier = 0.4f;
+            }
+            else if (currentLevel >= 2 && currentLevel <= 4)
+            {
+                BaseSpeedModifier = 0.85f;
+                FrightSpeedModifier = 0.55f;
+                TunnelSpeedModifier = 0.45f;
+            }
+            else if (currentLevel >= 5 && currentLevel <= 20)
+            {
+                BaseSpeedModifier = 0.95f;
+                FrightSpeedModifier = 0.60f;
+                TunnelSpeedModifier = 0.50f;
+            }
+            else
+            {
+                BaseSpeedModifier = 0.95f;
+                FrightSpeedModifier = SpeedModifier;
+                TunnelSpeedModifier = 0.5f;
+            }
+
+            SpeedModifier = BaseSpeedModifier;
         }
 
         public override void OnNewTile()
@@ -43,6 +74,14 @@ namespace Pacman.Actors
 
             if (ForceNewDirection)
                 ReverseDirection();
+
+            // Are we in the tunnels?
+            if (IsInsideTunnels)
+                SpeedModifier = TunnelSpeedModifier;
+            else if (Level.GhostMode == GhostMode.Frightened)
+                SpeedModifier = FrightSpeedModifier;
+            else
+                SpeedModifier = BaseSpeedModifier;
         }
 
         /// <summary>
@@ -73,6 +112,14 @@ namespace Pacman.Actors
         public void ReverseDirection()
         {
             ForceNewDirection = false;
+
+            // Change speed modifier
+            if (IsInsideTunnels)
+                SpeedModifier = TunnelSpeedModifier;
+            else if (Level.GhostMode == GhostMode.Frightened)
+                SpeedModifier = FrightSpeedModifier;
+            else
+                SpeedModifier = BaseSpeedModifier;
 
             // Reverse direction
             var newDirection = Direction.Left;
