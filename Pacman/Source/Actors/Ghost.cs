@@ -17,6 +17,8 @@ namespace Pacman.Actors
     {
         #region Properties
 
+        public bool ForceNewDirection { get; set; }
+
         /// <summary>The direction we'll take once we reach NextPosition.</summary>
         public Direction FutureDirection { get; protected set; }
 
@@ -27,10 +29,20 @@ namespace Pacman.Actors
         public Ghost(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
             : base(level, texture, position, sourceRect)
         {
+            ForceNewDirection = false;
+
             // TODO: Better handling of movement speeds
             SpeedModifier = PacmanBaseSpeed * 0.75f;
 
             UpdateTarget();
+        }
+
+        public override void OnNewTile()
+        {
+            base.OnNewTile();
+
+            if (ForceNewDirection)
+                ReverseDirection();
         }
 
         /// <summary>
@@ -58,10 +70,12 @@ namespace Pacman.Actors
         /// <summary>
         /// Called when ghost mode was changed.
         /// </summary>
-        public void GhostModeChanged()
+        public void ReverseDirection()
         {
+            ForceNewDirection = false;
+
             // Reverse direction
-            Direction newDirection = Direction.Left;
+            var newDirection = Direction.Left;
 
             switch (Direction)
             {
@@ -79,10 +93,7 @@ namespace Pacman.Actors
                     break;
             }
 
-            var possibleDirections = AvailableDirections(newDirection, GridPosition);
-
-            if (possibleDirections.Contains(newDirection))
-                Direction = newDirection;
+            Direction = newDirection;
 
             UpdateTarget();
 

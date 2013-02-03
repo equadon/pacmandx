@@ -88,10 +88,10 @@ namespace Pacman
                     _ghostMode = value;
                     
                     // Inform all ghosts of the chanage
-                    Blinky.GhostModeChanged();
-                    Pinky.GhostModeChanged();
-                    Inky.GhostModeChanged();
-                    Clyde.GhostModeChanged();
+                    Blinky.ForceNewDirection = true;
+                    Pinky.ForceNewDirection = true;
+                    Inky.ForceNewDirection = true;
+                    Clyde.ForceNewDirection = true;
                 }
             }
         }

@@ -21,6 +21,8 @@ namespace Pacman
 
         public Texture2D DirectionTexture { get; private set; }
 
+        public int CurrentLevel { get; private set; }
+
         public Vector2 MousePosition
         {
             get
@@ -35,6 +37,7 @@ namespace Pacman
         public PacmanScreenManager(Game game)
             : base(game)
         {
+            CurrentLevel = 1;
         }
 
         protected override void LoadContent()
