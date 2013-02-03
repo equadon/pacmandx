@@ -53,7 +53,7 @@ namespace Pacman
 
         public Vector2 Origin
         {
-            get { return new Vector2(SourceRect.Width / 2f, SourceRect.Height / 2f); }
+            get { return new Vector2(SourceRect.Width * Scale / 2f, SourceRect.Height * Scale / 2f); }
         }
 
         public static float Scale

@@ -8,9 +8,9 @@ namespace Pacman
 {
     public class PacmanGame : Game
     {
-        public static readonly int TileWidth = 15;
+        public static readonly int TileWidth = 27;
         public static readonly int ScreenWidth = Level.TilesWide * TileWidth + 300;
-        public static readonly int ScreenHeight = 900;
+        public static readonly int ScreenHeight = Level.TilesHigh * TileWidth;
 
         public static readonly Logger Logger = new Logger();
 

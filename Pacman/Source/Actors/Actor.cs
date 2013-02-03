@@ -84,44 +84,6 @@ namespace Pacman.Actors
                         OnTileCenter();
                     break;
             }
-
-            return;
-
-            #region tmp
-
-
-            switch (Direction)
-            {
-                case Direction.Up:
-                    if (!IsDirectionLegal(Direction, GridPosition) &&
-                        Position.Y < tileBounds.Top + tileBounds.Height/2)
-                        Position = new Vector2(Position.X, tileBounds.Top + tileBounds.Height/2);
-                    break;
-                case Direction.Down:
-                    if (!IsDirectionLegal(Direction, GridPosition) &&
-                        Position.Y > tileBounds.Bottom - tileBounds.Height/2)
-                        Position = new Vector2(Position.X, tileBounds.Bottom - tileBounds.Height/2);
-                    break;
-                case Direction.Left:
-                    if (!IsDirectionLegal(Direction, GridPosition) &&
-                        Position.X < tileBounds.Left + tileBounds.Width/2)
-                        Position = new Vector2(tileBounds.Left + tileBounds.Width/2, Position.Y);
-                    break;
-                case Direction.Right:
-                    if (!IsDirectionLegal(Direction, GridPosition) &&
-                        Position.X > tileBounds.Right - tileBounds.Width/2)
-                        Position = new Vector2(tileBounds.Right - tileBounds.Width/2, Position.Y);
-                    break;
-            }
-
-            // Handle tunnels
-            if (Bounds.Right > Level.TilesWide*PacmanGame.TileWidth)
-                Position = new Vector2(Origin.X, Position.Y);
-
-            if (Bounds.Left < 0)
-                Position = new Vector2(Level.TilesWide*PacmanGame.TileWidth - Origin.X, Position.Y);
-
-            #endregion
         }
 
         public virtual void OnTileCenter()

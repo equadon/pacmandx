@@ -18,10 +18,10 @@ namespace Pacman.Actors
             base.Update(gameTime);
 
             // Handle tunnels
-            if (Bounds.Right > Level.TilesWide * PacmanGame.TileWidth + PacmanGame.TileWidth)
+            if (Bounds.Right > Level.TilesWide * PacmanGame.TileWidth)
                 Position = new Vector2(Origin.X, Position.Y);
 
-            if (Bounds.Left < -PacmanGame.TileWidth)
+            if (Bounds.Left < 0)
                 Position = new Vector2(Level.TilesWide * PacmanGame.TileWidth - Origin.X, Position.Y);
         }
 
