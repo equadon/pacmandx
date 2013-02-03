@@ -47,10 +47,6 @@ namespace Pacman
         public static readonly Color DebugBorderColor = new Color(150, 150, 150, 255);
         public static readonly Color DebugUnknownTileColor = Color.Black;
 
-        // Starting positions
-        public static readonly Vector2 PacmanStartingPosition = new Vector2(420, 780 + PacmanGame.TileWidth / 2f);
-        public static readonly Vector2 BlinkyStartingPosition = new Vector2(420, 420 + PacmanGame.TileWidth / 2f);
-
         /// <summary>
         /// Array listing legal and illegal tiles that will be used by the pathfinding.
         /// 
@@ -92,19 +88,22 @@ namespace Pacman
 
             ScreenManager = screenManager;
 
-            PacMan = new PacMan(this, ScreenManager.PacManTileset, PacmanStartingPosition);
+            var pacOrigin = new Vector2(48 * Sprite.Scale / 2f, 48 * Sprite.Scale / 2f);
+            var ghostOrigin = new Vector2(48*Sprite.Scale / 2f, 51*Sprite.Scale / 2f);
+
+            PacMan = new PacMan(this, ScreenManager.PacManTileset, Utils.GridToAbs(new Vector2(14, 26), pacOrigin));
 
             //Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
-            Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, Utils.GridToAbs(new Vector2(26, 4), new Vector2(48 / 2f, 51 / 2f)));
+            Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, Utils.GridToAbs(new Vector2(26, 4), ghostOrigin));
 
             //Pinky = new Pinky(this, ScreenManager.GhostPinkyTileset, PinkyStartingPosition);
-            Pinky = new Pinky(this, ScreenManager.GhostPinkyTileset, Utils.GridToAbs(new Vector2(2, 4), new Vector2(48 / 2f, 51 / 2f)));
+            Pinky = new Pinky(this, ScreenManager.GhostPinkyTileset, Utils.GridToAbs(new Vector2(4, 4), ghostOrigin));
 
             //Inky = new Inky(this, ScreenManager.GhostInkyTileset, InkyStartingPosition);
-            Inky = new Inky(this, ScreenManager.GhostInkyTileset, Utils.GridToAbs(new Vector2(26, 23), new Vector2(48 / 2f, 51 / 2f)));
+            Inky = new Inky(this, ScreenManager.GhostInkyTileset, Utils.GridToAbs(new Vector2(25, 32), ghostOrigin));
 
             //Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, ClydeStartingPosition);
-            Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, Utils.GridToAbs(new Vector2(2, 23), new Vector2(48 / 2f, 51 / 2f)));
+            Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, Utils.GridToAbs(new Vector2(4, 32), ghostOrigin));
 
             GhostMode = GhostMode.Scatter;
 

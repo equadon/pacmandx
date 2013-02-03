@@ -155,6 +155,11 @@ namespace Pacman.Screens
             targetTileRect = new DrawingRectangle(
                 (int)(Level.Inky.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Inky.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
             spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Blue);
+
+            // Clyde's target tile
+            targetTileRect = new DrawingRectangle(
+                (int)(Level.Clyde.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Clyde.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
+            spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Orange);
         }
     }
 }

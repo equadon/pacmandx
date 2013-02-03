@@ -56,6 +56,11 @@ namespace Pacman
             get { return new Vector2(SourceRect.Width / 2f, SourceRect.Height / 2f); }
         }
 
+        public static float Scale
+        {
+            get { return PacmanGame.TileWidth/30f; }
+        }
+
         #endregion
 
         public Sprite(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
@@ -75,7 +80,7 @@ namespace Pacman
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(_texture, Position, SourceRect, Color, 0f, Origin, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_texture, Position, SourceRect, Color, 0f, Origin, Scale, SpriteEffects.None, 0f);
         }
     }
 }
