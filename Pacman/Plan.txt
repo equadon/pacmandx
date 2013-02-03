@@ -4,6 +4,7 @@
 * Update Actor class to handle animations
 * Implement Pacmans "cornering"
 * More in depth individual ghost behavior (mostly speed variations)
+* dots and fruits
 * Points
 * Actor speeds
 * Sounds
