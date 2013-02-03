@@ -66,8 +66,12 @@ namespace Pacman.Screens
                 Level.PacMan.ChangeDirection(Direction.Right);
 
             // Change ghost mode
-            if (input.IsKeyPressed(Key.Space))
-                Level.GhostMode = (Level.GhostMode == GhostMode.Chase) ? GhostMode.Scatter : GhostMode.Chase;
+            if (input.IsKeyPressed(Key.D1))
+                Level.GhostMode = GhostMode.Chase;
+            if (input.IsKeyPressed(Key.D2))
+                Level.GhostMode = GhostMode.Scatter;
+            if (input.IsKeyPressed(Key.D3))
+                Level.GhostMode = GhostMode.Frightened;
 
             // Change level
             if (input.IsKeyPressed(Key.PageUp))
@@ -103,6 +107,9 @@ namespace Pacman.Screens
             // Draw level debug info
             DrawLevelDebugInfo(SpriteBatch, gameTime);
 
+            // Ghost targets
+            DrawGhostTargets(SpriteBatch);
+
             SpriteBatch.End();
         }
 
@@ -118,12 +125,23 @@ namespace Pacman.Screens
 
             text += "Level: " + ScreenManager.CurrentLevel + "\n\n";
 
+            text += "Ghost Mode: " + Level.GhostMode + "\n\n";
+
             text += "Speeds:\n";
             text += "  Pac-Man: " + Level.PacMan.SpeedModifier * 100 + "%\n";
             text += "   Blinky: " + Level.Blinky.SpeedModifier * 100 + "%\n";
             text += "    Pinky: " + Level.Pinky.SpeedModifier * 100 + "%\n";
             text += "     Inky: " + Level.Inky.SpeedModifier * 100 + "%\n";
-            text += "    Clyde: " + Level.Clyde.SpeedModifier * 100 + "%\n";
+            text += "    Clyde: " + Level.Clyde.SpeedModifier * 100 + "%\n\n";
+
+            text += "Blinky:\n";
+            text += "    pos:  (" + Level.Blinky.Position.X + ", " + Level.Blinky.Position.Y + ")\n";
+            text += "    grid: [" + Level.Blinky.GridPosition.X + ", " + Level.Blinky.GridPosition.Y + "]\n";
+            text += "    direction: " + Level.Blinky.Direction + "\n";
+            text += "    future dir: " + Level.Blinky.FutureDirection + "\n";
+            text += "    velocity: " + Level.Blinky.Velocity + "\n";
+            text += "    target: (" + Level.Blinky.TargetTile.X + ", " + Level.Blinky.TargetTile.Y + ")\n";
+            text += "    next: (" + Level.Blinky.NextPosition.X + ", " + Level.Blinky.NextPosition.Y + ")\n";
 
             spriteBatch.DrawString(ScreenManager.DebugFont, text, pos, Color.White);
         }
@@ -175,6 +193,13 @@ namespace Pacman.Screens
             Vector2 pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
 
             spriteBatch.DrawString(ScreenManager.DebugFont, text, pos, Color.White);
+        }
+
+        private void DrawGhostTargets(SpriteBatch spriteBatch)
+        {
+            // No need to draw targets in frightened mode
+            if (Level.GhostMode == GhostMode.Frightened)
+                return;
 
             // Blinky's target tile
             var targetTileRect = new DrawingRectangle(
