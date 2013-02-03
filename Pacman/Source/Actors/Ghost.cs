@@ -36,8 +36,8 @@ namespace Pacman.Actors
             : base(level, texture, position, sourceRect)
         {
             // TODO: Better handling of movement speeds
-            SpeedModifier = PacmanBaseSpeed * 0.75f;
-            //SpeedModifier = PacmanBaseSpeed * 0.15f;
+            //SpeedModifier = PacmanBaseSpeed * 0.75f;
+            SpeedModifier = PacmanBaseSpeed * 0.2f;
         }
 
         /// <summary>
@@ -50,14 +50,40 @@ namespace Pacman.Actors
             // Update target
             UpdateTarget();
 
-            GridPosition = NextPosition;
             NextPosition = GetNextPosition(GridPosition, FutureDirection);
 
             Direction = FutureDirection;
 
-            Velocity = GetVelocity();
-
             CalculateFutureDirection();
+        }
+
+        /// <summary>
+        /// Called when ghost mode was changed.
+        /// </summary>
+        public void GhostModeChanged()
+        {
+            // Reverse direction
+            switch (Direction)
+            {
+                case Direction.Up:
+                    Direction = Direction.Down;
+                    break;
+                case Direction.Down:
+                    Direction = Direction.Up;
+                    break;
+                case Direction.Left:
+                    Direction = Direction.Right;
+                    break;
+                case Direction.Right:
+                    Direction = Direction.Left;
+                    break;
+            }
+
+            NextPosition = GetNextPosition(GridPosition, Direction);
+            FutureDirection = Direction;
+
+            // Update target
+            UpdateTarget();
         }
 
         public abstract void UpdateTarget();

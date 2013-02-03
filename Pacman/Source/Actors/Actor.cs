@@ -22,13 +22,23 @@ namespace Pacman.Actors
 
         protected Vector2 _velocity;
 
+        private Direction _direction;
+
         #region Properties
 
         public float SpeedModifier { get; protected set; }
 
         public Vector2 LastGridPosition { get; private set; }
 
-        public Direction Direction { get; protected set; }
+        public Direction Direction
+        {
+            get { return _direction; }
+            set
+            {
+                _direction = value;
+                Velocity = GetVelocity();
+            }
+        }
 
         public Vector2 Velocity { get; protected set; }
 
@@ -39,8 +49,6 @@ namespace Pacman.Actors
         {
             SpeedModifier = PacmanBaseSpeed;
             LastGridPosition = Utils.AbsToGrid(position);
-            Direction = Direction.Left;
-            Velocity = GetVelocity();
         }
 
         public override void Update(GameTime gameTime)

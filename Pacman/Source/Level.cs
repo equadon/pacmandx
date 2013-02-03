@@ -71,9 +71,27 @@ namespace Pacman
 
         private Random _random;
 
+        private GhostMode _ghostMode;
+
         public PacmanScreenManager ScreenManager { get; private set; }
 
-        public GhostMode GhostMode { get; set; }
+        public GhostMode GhostMode
+        {
+            get { return _ghostMode; }
+            set
+            {
+                if (value != _ghostMode)
+                {
+                    _ghostMode = value;
+                    
+                    // Inform all ghosts of the chanage
+                    Blinky.GhostModeChanged();
+                    Pinky.GhostModeChanged();
+                    Inky.GhostModeChanged();
+                    Clyde.GhostModeChanged();
+                }
+            }
+        }
 
         public PacMan PacMan { get; private set; }
 
@@ -89,7 +107,9 @@ namespace Pacman
             ScreenManager = screenManager;
 
             var pacOrigin = new Vector2(48 * Sprite.Scale / 2f, 48 * Sprite.Scale / 2f);
-            var ghostOrigin = new Vector2(48*Sprite.Scale / 2f, 51*Sprite.Scale / 2f);
+            var ghostOrigin = new Vector2(48 * Sprite.Scale / 2f, 51 * Sprite.Scale / 2f);
+
+            _ghostMode = GhostMode.Scatter;
 
             PacMan = new PacMan(this, ScreenManager.PacManTileset, Utils.GridToAbs(new Vector2(14, 26), pacOrigin));
 
@@ -100,12 +120,10 @@ namespace Pacman
             Pinky = new Pinky(this, ScreenManager.GhostPinkyTileset, Utils.GridToAbs(new Vector2(4, 4), ghostOrigin));
 
             //Inky = new Inky(this, ScreenManager.GhostInkyTileset, InkyStartingPosition);
-            Inky = new Inky(this, ScreenManager.GhostInkyTileset, Utils.GridToAbs(new Vector2(25, 32), ghostOrigin));
+            Inky = new Inky(this, ScreenManager.GhostInkyTileset, Utils.GridToAbs(new Vector2(24, 32), ghostOrigin));
 
             //Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, ClydeStartingPosition);
             Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, Utils.GridToAbs(new Vector2(4, 32), ghostOrigin));
-
-            GhostMode = GhostMode.Scatter;
 
             _random = new Random();
         }

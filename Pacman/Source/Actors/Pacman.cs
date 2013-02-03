@@ -55,7 +55,6 @@ namespace Pacman.Actors
             if (Level.IsLegal(GetNextPosition(GridPosition, direction)))
             {
                 Direction = direction;
-                Velocity = GetVelocity();
 
                 return true;
             }

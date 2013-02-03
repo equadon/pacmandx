@@ -132,10 +132,17 @@ namespace Pacman.Screens
             text += "   top left: (" + Level.PacMan.Bounds.Left + "," + Level.PacMan.Bounds.Top + ")\n";
             text += "   bot right: (" + Level.PacMan.Bounds.Right + "," + Level.PacMan.Bounds.Bottom + ")\n";
 
-            Rectangle tileBounds = Level.TileBounds(Level.PacMan.GridPosition);
-            text += "\n\nPacman Tile:\n";
-            text += "   top left: (" + tileBounds.Left + "," + tileBounds.Top + ")\n";
-            text += "   bot right: (" + tileBounds.Right + "," + tileBounds.Bottom + ")\n";
+            text += "Inky:\n";
+            text += "    pos:  (" + Level.Inky.Position.X + ", " + Level.Inky.Position.Y + ")\n";
+            text += "    grid: [" + Level.Inky.GridPosition.X + ", " + Level.Inky.GridPosition.Y + "]\n";
+            text += "    direction: " + Level.Inky.Direction + "\n";
+            text += "    velocity: " + Level.Inky.Velocity + "\n";
+            text += "    target: (" + Level.Inky.TargetTile.X + ", " + Level.Inky.TargetTile.Y + ")\n";
+            text += "    next: (" + Level.Inky.NextPosition.X + ", " + Level.Inky.NextPosition.Y + ")\n";
+
+            nextAbsPos = Utils.GridToAbs(Level.Blinky.NextPosition, Level.Blinky.Origin);
+            text += "          (" + nextAbsPos.X + ", " + nextAbsPos.Y + ")\n";
+            text += "    future: " + Level.Blinky.FutureDirection + "\n\n\n";
 
             Vector2 pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
 

@@ -9,7 +9,6 @@ namespace Pacman.Actors.Ghosts
             : base(level, texture, position, new DrawingRectangle(3, 2, 48, 51))
         {
             Direction = Direction.Left;
-            Velocity = GetVelocity();
 
             NextPosition = GridPosition;
             FutureDirection = Direction.Left;
