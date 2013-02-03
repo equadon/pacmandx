@@ -75,6 +75,9 @@ namespace Pacman
 
         public PacmanScreenManager ScreenManager { get; private set; }
 
+        // Starting positions
+        public readonly Vector2 PacmanStartingPosition = new Vector2(14 * PacmanGame.TileWidth, 26 * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f);
+
         public GhostMode GhostMode
         {
             get { return _ghostMode; }
@@ -111,7 +114,7 @@ namespace Pacman
 
             _ghostMode = GhostMode.Scatter;
 
-            PacMan = new PacMan(this, ScreenManager.PacManTileset, Utils.GridToAbs(new Vector2(14, 26), pacOrigin));
+            PacMan = new PacMan(this, ScreenManager.PacManTileset, PacmanStartingPosition);
 
             //Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
             Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, Utils.GridToAbs(new Vector2(26, 4), ghostOrigin));
