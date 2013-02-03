@@ -65,15 +65,6 @@ namespace Pacman.Screens
             if (input.IsKeyDown(Key.D) || input.IsKeyDown(Key.Right))
                 Level.PacMan.ChangeDirection(Direction.Right);
 
-            // Set Blinky's target tile with left mouse button
-            if (input.IsMousePressed(MouseButton.Left) &&
-                mouseGrid.X >= 0 && mouseGrid.X < Level.TilesWide &&
-                mouseGrid.Y >= 0 && mouseGrid.Y < Level.TilesHigh &&
-                mouseGrid != Level.Blinky.GridPosition)
-            {
-                Level.Blinky.TargetTile = mouseGrid;
-            }
-
             // Change ghost mode
             if (input.IsKeyPressed(Key.Space))
             {

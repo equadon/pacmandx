@@ -15,18 +15,12 @@ namespace Pacman.Actors
 
     public abstract class Ghost : Actor
     {
-        private Vector2 _targetTile;
-
         #region Properties
 
         /// <summary>The direction we'll take once we reach NextPosition.</summary>
         public Direction FutureDirection { get; protected set; }
 
-        public Vector2 TargetTile
-        {
-            get { return _targetTile; }
-            set { _targetTile = value; }
-        }
+        public Vector2 TargetTile { get; protected set; }
 
         #endregion
 
@@ -34,8 +28,7 @@ namespace Pacman.Actors
             : base(level, texture, position, sourceRect)
         {
             // TODO: Better handling of movement speeds
-            //SpeedModifier = PacmanBaseSpeed * 0.75f;
-            SpeedModifier = PacmanBaseSpeed * 0.5f;
+            SpeedModifier = PacmanBaseSpeed * 0.75f;
 
             UpdateTarget();
         }
@@ -67,28 +60,33 @@ namespace Pacman.Actors
         /// </summary>
         public void GhostModeChanged()
         {
-            return;
             // Reverse direction
+            Direction newDirection = Direction.Left;
+
             switch (Direction)
             {
                 case Direction.Up:
-                    Direction = Direction.Down;
+                    newDirection = Direction.Down;
                     break;
                 case Direction.Down:
-                    Direction = Direction.Up;
+                    newDirection = Direction.Up;
                     break;
                 case Direction.Left:
-                    Direction = Direction.Right;
+                    newDirection = Direction.Right;
                     break;
                 case Direction.Right:
-                    Direction = Direction.Left;
+                    newDirection = Direction.Left;
                     break;
             }
 
-            FutureDirection = Direction;
+            var possibleDirections = AvailableDirections(newDirection, GridPosition);
 
-            // Update target
+            if (possibleDirections.Contains(newDirection))
+                Direction = newDirection;
+
             UpdateTarget();
+
+            CalculateFutureDirection();
         }
 
         public abstract void UpdateTarget();
