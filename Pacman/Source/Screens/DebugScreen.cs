@@ -67,8 +67,20 @@ namespace Pacman.Screens
 
             // Change ghost mode
             if (input.IsKeyPressed(Key.Space))
-            {
                 Level.GhostMode = (Level.GhostMode == GhostMode.Chase) ? GhostMode.Scatter : GhostMode.Chase;
+
+            // Change level
+            if (input.IsKeyPressed(Key.PageUp))
+            {
+                ScreenManager.CurrentLevel++;
+                Level = new Level(ScreenManager);
+            }
+
+            if (input.IsKeyPressed(Key.PageDown) &&
+                ScreenManager.CurrentLevel > 1)
+            {
+                ScreenManager.CurrentLevel--;
+                Level = new Level(ScreenManager);
             }
         }
 
@@ -86,12 +98,32 @@ namespace Pacman.Screens
             Level.Draw(SpriteBatch, gameTime);
 
             // Draw debug info on the right side of the screen
-            DrawDebugInfo(SpriteBatch, gameTime);
+            //DrawGhostDebugInfo(SpriteBatch, gameTime);
+            
+            // Draw level debug info
+            DrawLevelDebugInfo(SpriteBatch, gameTime);
 
             SpriteBatch.End();
         }
 
-        private void DrawDebugInfo(SpriteBatch spriteBatch, GameTime gameTime)
+        private void DrawLevelDebugInfo(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            string text = "";
+            var pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
+
+            text += "Level: " + ScreenManager.CurrentLevel + "\n\n";
+
+            text += "Speeds:\n";
+            text += "  Pac-Man: " + Level.PacMan.SpeedModifier * 100 + "%\n";
+            text += "   Blinky: " + Level.Blinky.SpeedModifier * 100 + "%\n";
+            text += "    Pinky: " + Level.Blinky.SpeedModifier * 100 + "%\n";
+            text += "     Inky: " + Level.Blinky.SpeedModifier * 100 + "%\n";
+            text += "    Clyde: " + Level.Blinky.SpeedModifier * 100 + "%\n";
+
+            spriteBatch.DrawString(ScreenManager.DebugFont, text, pos, Color.White);
+        }
+
+        private void DrawGhostDebugInfo(SpriteBatch spriteBatch, GameTime gameTime)
         {
             string text = "";
 
