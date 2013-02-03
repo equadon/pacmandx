@@ -148,23 +148,10 @@ namespace Pacman
             DrawBoard(spriteBatch);
             
 #if DEBUG
-            float rotation = 0f;
-            switch (Blinky.FutureDirection)
-            {
-                case Direction.Up:
-                    rotation = MathUtil.DegreesToRadians(0);
-                    break;
-                case Direction.Right:
-                    rotation = MathUtil.DegreesToRadians(90);
-                    break;
-                case Direction.Down:
-                    rotation = MathUtil.DegreesToRadians(180);
-                    break;
-                case Direction.Left:
-                    rotation = MathUtil.DegreesToRadians(270);
-                    break;
-            }
-            spriteBatch.Draw(ScreenManager.DirectionTexture, Utils.GridToAbs(Blinky.NextPosition, Blinky.Origin), new DrawingRectangle(0, 0, 30, 30), Color.Red, rotation, new Vector2(15, 15), 1f, SpriteEffects.None, 0f);
+            DrawGhostDirection(spriteBatch, Blinky);
+            DrawGhostDirection(spriteBatch, Pinky);
+            DrawGhostDirection(spriteBatch, Inky);
+            DrawGhostDirection(spriteBatch, Clyde);
 #endif
 
             PacMan.Draw(spriteBatch, gameTime);
@@ -200,6 +187,38 @@ namespace Pacman
             }
 
             spriteBatch.Draw(ScreenManager.BlankTexture, new DrawingRectangle(TilesWide * PacmanGame.TileWidth, 0, 1, TilesHigh * PacmanGame.TileWidth), DebugBorderColor);
+        }
+
+        private void DrawGhostDirection(SpriteBatch spriteBatch, Ghost ghost)
+        {
+            float rotation = 0f;
+            switch (ghost.FutureDirection)
+            {
+                case Direction.Up:
+                    rotation = MathUtil.DegreesToRadians(0);
+                    break;
+                case Direction.Right:
+                    rotation = MathUtil.DegreesToRadians(90);
+                    break;
+                case Direction.Down:
+                    rotation = MathUtil.DegreesToRadians(180);
+                    break;
+                case Direction.Left:
+                    rotation = MathUtil.DegreesToRadians(270);
+                    break;
+            }
+
+            Color color;
+            if (ghost is Blinky)
+                color = Color.Red;
+            else if (ghost is Pinky)
+                color = Color.Pink;
+            else if (ghost is Inky)
+                color = Color.Blue;
+            else
+                color = Color.Orange;
+
+            spriteBatch.Draw(ScreenManager.DirectionTexture, Utils.GridToAbs(ghost.NextPosition, ghost.Origin), new DrawingRectangle(0, 0, 30, 30), color, rotation, new Vector2(15, 15), 1f, SpriteEffects.None, 0f);
         }
 
         #endregion
