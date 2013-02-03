@@ -15,6 +15,8 @@ namespace Pacman.Actors
 
     public abstract class Ghost : Actor
     {
+        private Random _random;
+
         #region Properties
 
         public bool ForceNewDirection { get; set; }
@@ -33,6 +35,8 @@ namespace Pacman.Actors
         public Ghost(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
             : base(level, texture, position, sourceRect)
         {
+            _random = new Random();
+
             ForceNewDirection = false;
 
             UpdateTarget();
@@ -94,7 +98,11 @@ namespace Pacman.Actors
             // Update target
             UpdateTarget();
 
-            Direction = FutureDirection;
+            // Random direction when frightened
+            if (!ForceNewDirection && Level.GhostMode == GhostMode.Frightened)
+                Direction = RandomDirection();
+            else
+                Direction = FutureDirection;
 
             GridPosition = GridPosition;
 
@@ -104,6 +112,52 @@ namespace Pacman.Actors
                 _position.X -= (Bounds.Right - Level.TilesWide*PacmanGame.TileWidth);
 
             CalculateFutureDirection();
+        }
+
+        private Direction RandomDirection()
+        {
+            var randomDirection = (Direction) _random.Next(4);
+
+            var isOpposite = randomDirection == OppositeDirection(Direction);
+            var isIllegal = !IsDirectionLegal(randomDirection, GetNextPosition(GridPosition, randomDirection));
+
+            while (isOpposite || isIllegal)
+            {
+                switch (randomDirection)
+                {
+                    case Direction.Up:
+                        randomDirection = Direction.Right;
+                        break;
+                    case Direction.Right:
+                        randomDirection = Direction.Down;
+                        break;
+                    case Direction.Down:
+                        randomDirection = Direction.Left;
+                        break;
+                    default:
+                        randomDirection = Direction.Up;
+                        break;
+                }
+                isOpposite = randomDirection == OppositeDirection(Direction);
+                isIllegal = !IsDirectionLegal(randomDirection, GridPosition);
+            }
+
+            return randomDirection;
+        }
+
+        private Direction OppositeDirection(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    return Direction.Down;
+                case Direction.Left:
+                    return Direction.Right;
+                case Direction.Down:
+                    return Direction.Up;
+                default:
+                    return Direction.Left;
+            }
         }
 
         /// <summary>

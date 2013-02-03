@@ -191,6 +191,10 @@ namespace Pacman
 
         private void DrawGhostDirection(SpriteBatch spriteBatch, Ghost ghost)
         {
+            // We don't use future direction in frightened mode
+            if (GhostMode == GhostMode.Frightened)
+                return;
+
             float rotation = 0f;
             switch (ghost.FutureDirection)
             {

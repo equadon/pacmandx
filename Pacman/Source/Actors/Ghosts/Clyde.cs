@@ -24,9 +24,6 @@ namespace Pacman.Actors.Ghosts
                 case GhostMode.Scatter:
                     TargetTile = new Vector2(0, 35);
                     break;
-                case GhostMode.Frightened:
-                    TargetTile = new Vector2(0, 35);
-                    break;
                 case GhostMode.Chase:
                     float distance = Vector2.Distance(Level.PacMan.GridPosition, GridPosition);
 

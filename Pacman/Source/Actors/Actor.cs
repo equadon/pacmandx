@@ -16,7 +16,7 @@ namespace Pacman.Actors
     public class Actor : Sprite
     {
         /// <summary>Pacman's base speed. TODO: Still not sure on this. Speed is supposedly 11 tiles/s. We run at 60fps.</summary>
-        public readonly float PacmanBaseSpeed = 11 * PacmanGame.TileWidth / 60f;
+        public readonly float PacmanBaseSpeed = 11f * PacmanGame.TileWidth / 60f;
 
         private bool _reachedCenter = false;
 
