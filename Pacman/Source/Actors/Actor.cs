@@ -16,7 +16,7 @@ namespace Pacman.Actors
     public class Actor : Sprite
     {
         /// <summary>Pacman's base speed. TODO: Still not sure on this. Speed is supposedly 11 tiles/s. We run at 60fps.</summary>
-        public readonly float PacmanBaseSpeed = 11 * PacmanGame.TileWidth / 60;
+        public readonly float PacmanBaseSpeed = 11 * PacmanGame.TileWidth / 60f;
 
         private bool _reachedCenter = false;
 
@@ -29,6 +29,11 @@ namespace Pacman.Actors
         public float SpeedModifier { get; protected set; }
 
         public Vector2 LastGridPosition { get; private set; }
+
+        public Vector2 NextPosition
+        {
+            get { return GetNextPosition(GridPosition, Direction); }
+        }
 
         public Direction Direction
         {
@@ -52,6 +57,63 @@ namespace Pacman.Actors
         }
 
         public override void Update(GameTime gameTime)
+        {
+            LastGridPosition = GridPosition;
+
+            Position += Velocity;
+
+            // Handle collision with illegal tiles
+            var tileBounds = Level.TileBounds(GridPosition);
+            var nextTileBounds = Level.TileBounds(GetNextPosition(GridPosition, Direction));
+
+            // Reached new tile
+            if (GridPosition != LastGridPosition)
+            {
+                LastGridPosition = GridPosition;
+
+                OnNewTile();
+
+                return;
+            }
+
+            if (_reachedCenter)
+                return;
+
+            // Reached center of tile
+            switch (Direction)
+            {
+                case Direction.Up:
+                    if (Position.Y < tileBounds.Top + PacmanGame.TileWidth / 2f)
+                        OnTileCenter();
+                    break;
+                case Direction.Down:
+                    if (Position.Y > tileBounds.Top + PacmanGame.TileWidth / 2f)
+                        OnTileCenter();
+                    break;
+                case Direction.Left:
+                    if (Position.X < tileBounds.Left + PacmanGame.TileWidth / 2f)
+                        OnTileCenter();
+                    break;
+                case Direction.Right:
+                    if (Position.X > tileBounds.Left + PacmanGame.TileWidth / 2f)
+                        OnTileCenter();
+                    break;
+            }
+
+            // Handle tunnels
+            if (GridPosition.X == 27 && GridPosition.Y == 17 &&
+                Bounds.Right > tileBounds.Right)
+            {
+                Position = new Vector2(Origin.X, 17 * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f);
+            }
+            else if (GridPosition.X == 0 && GridPosition.Y == 17 &&
+                     Bounds.Left < 0)
+            {
+                Position = new Vector2(Level.TilesWide * PacmanGame.TileWidth - Origin.X , 17 * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f);
+            }
+        }
+
+        public void Update2(GameTime gameTime)
         {
             LastGridPosition = GridPosition;
 
@@ -92,13 +154,6 @@ namespace Pacman.Actors
                         OnTileCenter();
                     break;
             }
-
-            // Handle tunnels
-            if (Bounds.Right > Level.TilesWide * PacmanGame.TileWidth)
-                Position = new Vector2(Origin.X, Position.Y);
-
-            if (Bounds.Left < 0)
-                Position = new Vector2(Level.TilesWide * PacmanGame.TileWidth - Origin.X, Position.Y);
         }
 
         public virtual void OnTileCenter()

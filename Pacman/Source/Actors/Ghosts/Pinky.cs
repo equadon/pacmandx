@@ -10,7 +10,6 @@ namespace Pacman.Actors.Ghosts
         {
             Direction = Direction.Left;
 
-            NextPosition = GridPosition;
             FutureDirection = Direction.Left;
         }
 

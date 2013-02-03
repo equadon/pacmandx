@@ -11,6 +11,8 @@ namespace Pacman.Actors
         {
             SpeedModifier = PacmanBaseSpeed * 0.8f;
             Direction = Direction.Left;
+
+            Velocity = Vector2.Zero;
         }
 
         public override void Update(GameTime gameTime)
@@ -24,13 +26,6 @@ namespace Pacman.Actors
         public override void OnTileCenter()
         {
             base.OnTileCenter();
-
-            // Stop if the next position is an illegal tile.
-            if (!Level.IsLegal(GetNextPosition(GridPosition, Direction)))
-            {
-                Position -= Velocity;
-                Velocity = Vector2.Zero;
-            }
         }
 
         /// <summary>
@@ -42,6 +37,9 @@ namespace Pacman.Actors
         /// <returns>True if the direction change was performed.</returns>
         public bool ChangeDirection(Direction direction)
         {
+            Direction = direction;
+            return true;
+
             if (direction == Direction)
                 return false;
 

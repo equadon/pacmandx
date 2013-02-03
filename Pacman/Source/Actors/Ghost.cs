@@ -22,8 +22,6 @@ namespace Pacman.Actors
         /// <summary>The direction we'll take once we reach NextPosition.</summary>
         public Direction FutureDirection { get; protected set; }
 
-        public Vector2 NextPosition { get; protected set; }
-
         public Vector2 TargetTile
         {
             get { return _targetTile; }
@@ -37,7 +35,9 @@ namespace Pacman.Actors
         {
             // TODO: Better handling of movement speeds
             //SpeedModifier = PacmanBaseSpeed * 0.75f;
-            SpeedModifier = PacmanBaseSpeed * 0.2f;
+            SpeedModifier = PacmanBaseSpeed * 0.5f;
+
+            UpdateTarget();
         }
 
         /// <summary>
@@ -50,9 +50,14 @@ namespace Pacman.Actors
             // Update target
             UpdateTarget();
 
-            NextPosition = GetNextPosition(GridPosition, FutureDirection);
-
             Direction = FutureDirection;
+
+            GridPosition = GridPosition;
+
+            if (Bounds.Left < 0)
+                _position.X += Math.Abs(Bounds.Left);
+            else if (Bounds.Right > Level.TilesWide * PacmanGame.TileWidth)
+                _position.X -= (Bounds.Right - Level.TilesWide*PacmanGame.TileWidth);
 
             CalculateFutureDirection();
         }
@@ -62,6 +67,7 @@ namespace Pacman.Actors
         /// </summary>
         public void GhostModeChanged()
         {
+            return;
             // Reverse direction
             switch (Direction)
             {
@@ -79,7 +85,6 @@ namespace Pacman.Actors
                     break;
             }
 
-            NextPosition = GetNextPosition(GridPosition, Direction);
             FutureDirection = Direction;
 
             // Update target
