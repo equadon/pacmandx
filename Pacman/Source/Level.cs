@@ -176,19 +176,23 @@ namespace Pacman
                                             PacmanGame.TileWidth);
             spriteBatch.Draw(ScreenManager.BlankTexture, rect, new Color(200, 200, 200, 255));
 
-            for (int x = 0; x < TilesWide; x++)
+            // Draw grid lines
+            if (Screens.DebugScreen.DrawGrid)
             {
-                for (int y = 0; y < TilesHigh; y++)
+                for (int x = 0; x < TilesWide; x++)
                 {
-                    for (int i = 0; i < 30; i += 6)
-                        spriteBatch.Draw(ScreenManager.BlankTexture,
-                                         new DrawingRectangle(x*PacmanGame.TileWidth + i, y*PacmanGame.TileWidth, 2, 1),
-                                         DebugBorderColor);
+                    for (int y = 0; y < TilesHigh; y++)
+                    {
+                        for (int i = 0; i < 30; i += 6)
+                            spriteBatch.Draw(ScreenManager.BlankTexture,
+                                             new DrawingRectangle(x*PacmanGame.TileWidth + i, y*PacmanGame.TileWidth, 2, 1),
+                                             DebugBorderColor);
 
-                    for (int i = 0; i < 30; i += 6)
-                        spriteBatch.Draw(ScreenManager.BlankTexture,
-                                         new DrawingRectangle(x*PacmanGame.TileWidth, y*PacmanGame.TileWidth + i, 1, 2),
-                                         DebugBorderColor);
+                        for (int i = 0; i < 30; i += 6)
+                            spriteBatch.Draw(ScreenManager.BlankTexture,
+                                             new DrawingRectangle(x*PacmanGame.TileWidth, y*PacmanGame.TileWidth + i, 1, 2),
+                                             DebugBorderColor);
+                    }
                 }
             }
 

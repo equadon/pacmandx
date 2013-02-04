@@ -14,6 +14,8 @@ namespace Pacman.Screens
     {
         #region Properties
 
+        public static bool DrawGrid { get; private set; }
+
         public Level Level { get; private set; }
 
         public Rectangle DebugBounds { get; private set; }
@@ -32,6 +34,7 @@ namespace Pacman.Screens
 
         public DebugScreen(Logger logger)
         {
+            DrawGrid = true;
         }
 
         public override void Activate(bool instancePreserved)
@@ -64,6 +67,10 @@ namespace Pacman.Screens
 
             if (input.IsKeyDown(Key.D) || input.IsKeyDown(Key.Right))
                 Level.PacMan.ChangeDirection(Direction.Right);
+
+            // Enable/disable drawing of grids
+            if (input.IsKeyPressed(Key.G))
+                DrawGrid = !DrawGrid;
 
             // Change ghost mode
             if (input.IsKeyPressed(Key.D1))
