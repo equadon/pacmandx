@@ -119,7 +119,7 @@ namespace Pacman.Actors
             var randomDirection = (Direction) _random.Next(4);
 
             var isOpposite = randomDirection == OppositeDirection(Direction);
-            var isIllegal = !IsDirectionLegal(randomDirection, GetNextPosition(GridPosition, randomDirection));
+            var isIllegal = !IsDirectionLegal(GetNextPosition(GridPosition, randomDirection), randomDirection);
 
             while (isOpposite || isIllegal)
             {
@@ -139,7 +139,7 @@ namespace Pacman.Actors
                         break;
                 }
                 isOpposite = randomDirection == OppositeDirection(Direction);
-                isIllegal = !IsDirectionLegal(randomDirection, GridPosition);
+                isIllegal = !IsDirectionLegal(GridPosition, randomDirection);
             }
 
             return randomDirection;

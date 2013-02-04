@@ -60,16 +60,16 @@ namespace Pacman.Screens
             // Control pacman with WASD or arrow keys
             // TODO: How often do we want the polling to occurr?
             if (input.IsKeyDown(Key.W) || input.IsKeyDown(Key.UpArrow))
-                Level.PacMan.ChangeDirection(Direction.Up);
+                Level.PacMan.Move(Direction.Up);
 
             if (input.IsKeyDown(Key.S) || input.IsKeyDown(Key.Down))
-                Level.PacMan.ChangeDirection(Direction.Down);
+                Level.PacMan.Move(Direction.Down);
 
             if (input.IsKeyDown(Key.A) || input.IsKeyDown(Key.Left))
-                Level.PacMan.ChangeDirection(Direction.Left);
+                Level.PacMan.Move(Direction.Left);
 
             if (input.IsKeyDown(Key.D) || input.IsKeyDown(Key.Right))
-                Level.PacMan.ChangeDirection(Direction.Right);
+                Level.PacMan.Move(Direction.Right);
 
             // Enable/disable drawing of grids
             if (input.IsKeyPressed(Key.G))

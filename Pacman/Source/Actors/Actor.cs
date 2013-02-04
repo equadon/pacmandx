@@ -16,7 +16,8 @@ namespace Pacman.Actors
     public class Actor : Sprite
     {
         /// <summary>Pacman's base speed. TODO: Still not sure on this. Speed is supposedly 11 tiles/s. We run at 60fps.</summary>
-        public readonly float PacmanBaseSpeed = 11f * PacmanGame.TileWidth / 60f;
+        //public readonly float PacmanBaseSpeed = 11f * PacmanGame.TileWidth / 60f;
+        public readonly float PacmanBaseSpeed = 5f * PacmanGame.TileWidth / 60f;
 
         private bool _reachedCenter = false;
 
@@ -130,49 +131,6 @@ namespace Pacman.Actors
             }
         }
 
-        public void Update2(GameTime gameTime)
-        {
-            LastGridPosition = GridPosition;
-
-            Position += Velocity;
-
-            // Handle collision with illegal tiles
-            var tileBounds = Level.TileBounds(GridPosition);
-            var nextTileBounds = Level.TileBounds(GetNextPosition(GridPosition, Direction));
-
-            if (GridPosition != LastGridPosition)
-            {
-                LastGridPosition = GridPosition;
-
-                OnNewTile();
-
-                return;
-            }
-
-            if (_reachedCenter)
-                return;
-
-            switch (Direction)
-            {
-                case Direction.Up:
-                    if (Position.Y < tileBounds.Top + PacmanGame.TileWidth / 2f)
-                        OnTileCenter();
-                    break;
-                case Direction.Down:
-                    if (Position.Y > tileBounds.Top + PacmanGame.TileWidth / 2f)
-                        OnTileCenter();
-                    break;
-                case Direction.Left:
-                    if (Position.X < tileBounds.Left + PacmanGame.TileWidth / 2f)
-                        OnTileCenter();
-                    break;
-                case Direction.Right:
-                    if (Position.X > tileBounds.Left + PacmanGame.TileWidth / 2f)
-                        OnTileCenter();
-                    break;
-            }
-        }
-
         public virtual void OnTileCenter()
         {
             // we just reached tile's center, do something
@@ -185,7 +143,7 @@ namespace Pacman.Actors
             _reachedCenter = false;
         }
 
-        public bool IsDirectionLegal(Direction direction, Vector2 currentPosition)
+        public bool IsDirectionLegal(Vector2 currentPosition, Direction direction)
         {
             Vector2 nextPos = GetNextPosition(currentPosition, direction);
 

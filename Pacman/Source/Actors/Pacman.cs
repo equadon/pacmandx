@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using System;
+using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
@@ -12,8 +13,6 @@ namespace Pacman.Actors
             : base(level, texture, position, new DrawingRectangle(3, 3, 48, 48))
         {
             Direction = Direction.Left;
-
-            Velocity = Vector2.Zero;
 
             // Set speeds
             int currentLevel = Level.ScreenManager.CurrentLevel;
@@ -43,39 +42,39 @@ namespace Pacman.Actors
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            var nextTileBounds = Level.TileBounds(NextPosition);
+
+            // Left wall collisions
+            if (Direction == Direction.Left && !Level.IsLegal(NextPosition) &&
+                Bounds.Left < nextTileBounds.Right - PacmanGame.TileWidth / 2f)
+            {
+                _position.X = nextTileBounds.Right - PacmanGame.TileWidth / 2f + Origin.X;
+            }
+            else if (Direction == Direction.Right && !Level.IsLegal(NextPosition) &&
+                Bounds.Right > nextTileBounds.Left + PacmanGame.TileWidth * 1/3)
+            {
+                _position.X = nextTileBounds.Left + PacmanGame.TileWidth * 1 / 3 - Origin.X;
+            }
+            else if (Direction == Direction.Up && !Level.IsLegal(NextPosition) &&
+                Bounds.Top < nextTileBounds.Bottom - PacmanGame.TileWidth / 2f)
+            {
+                _position.Y = nextTileBounds.Bottom - PacmanGame.TileWidth / 2f + Origin.Y;
+            }
+            else if (Direction == Direction.Down && !Level.IsLegal(NextPosition) &&
+               Bounds.Bottom > nextTileBounds.Top + PacmanGame.TileWidth * 1 / 3)
+            {
+                _position.Y = nextTileBounds.Top + PacmanGame.TileWidth * 1 / 3 - Origin.Y;
+            }
         }
 
         /// <summary>
-        /// We reached the center of the tile, make sure we don't run into a wall.
-        /// </summary>
-        public override void OnTileCenter()
-        {
-            base.OnTileCenter();
-        }
-
-        /// <summary>
-        /// Request direction change.
-        /// 
-        /// TODO: Note that pacman can take shortcuts if he requests direction a few pixels before ghosts can.
+        /// Change pacman's direction.
         /// </summary>
         /// <param name="direction">New direction</param>
-        /// <returns>True if the direction change was performed.</returns>
-        public bool ChangeDirection(Direction direction)
+        public void Move(Direction direction)
         {
             Direction = direction;
-            return true;
-
-            if (direction == Direction)
-                return false;
-
-            if (Level.IsLegal(GetNextPosition(GridPosition, direction)))
-            {
-                Direction = direction;
-
-                return true;
-            }
-
-            return false;
         }
     }
 }
