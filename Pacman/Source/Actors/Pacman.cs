@@ -7,6 +7,8 @@ namespace Pacman.Actors
 {
     public class PacMan : Actor
     {
+        private int _framesLeftToFreeze = 0;
+
         public float FrightSpeedModifier { get; private set; }
 
         public PacMan(Level level, Texture2D texture, Vector2 position)
@@ -43,6 +45,12 @@ namespace Pacman.Actors
 
         public override void Update(GameTime gameTime)
         {
+            if (_framesLeftToFreeze > 0)
+            {
+                _framesLeftToFreeze--;
+                return;
+            }
+
             base.Update(gameTime);
 
             var tileBounds = Level.TileBounds(GridPosition);
@@ -83,7 +91,14 @@ namespace Pacman.Actors
             base.OnTileCenter();
 
             // Eat item at current position
-            Level.EatItem(GridPosition);
+            TileItem type = Level.EatItem(GridPosition);
+
+            // Freeze position if we ate something
+            // TODO: Instead of freezing position just slow his movement enough to avoid choppy movement
+            if (type == TileItem.Dot)
+                _framesLeftToFreeze = 1;
+            else if (type == TileItem.Energizer)
+                _framesLeftToFreeze = 3;
         }
 
         /// <summary>

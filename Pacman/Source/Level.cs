@@ -193,21 +193,28 @@ namespace Pacman
         }
 
         /// <summary>
-        /// Eat item at position.
+        /// Eat the item at position.
         /// </summary>
-        public void EatItem(Vector2 position)
+        /// <param name="position">Pac-Man position</param>
+        /// <returns>Returns the type of item that was eaten.</returns>
+        public TileItem EatItem(Vector2 position)
         {
             ScoreItem item = _tileItems[(int) position.X, (int) position.Y];
             if (item != null)
             {
-                if (item.ItemType == TileItem.Dot)
+                var type = item.ItemType;
+
+                if (type == TileItem.Dot)
                     DotsLeft--;
-                else if (item.ItemType == TileItem.Energizer)
+                else if (type == TileItem.Energizer)
                     EnergizersLeft--;
 
                 Points += item.Points;
                 _tileItems[(int) position.X, (int) position.Y] = null;
+
+                return type;
             }
+            return TileItem.None;
         }
 
         #region Change Level Methods
