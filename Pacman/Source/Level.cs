@@ -28,8 +28,6 @@ namespace Pacman
     {
         Empty,
         Unknown,
-        WallStraight,
-        DoubleWallStraight // etc
     }
 
     #endregion
@@ -60,17 +58,21 @@ namespace Pacman
         /// </summary>
         private static readonly int[,] LegalTiles;
 
+        private static readonly int[,] DotTiles;
+
         /// <summary>
-        /// Array storing the state for the current level. Use the TileType
+        /// Array storing the state for the current level. Use the TileItem
         /// enum for IDs.
         /// </summary>
-        private readonly int[,] _tiles;
+        private readonly ScoreItem[,] _tileItems;
 
         private Random _random;
 
         private GhostMode _ghostMode;
 
         #endregion
+
+        #region Properties
 
         public bool HideBlinky { get; set; }
         public bool HidePinky { get; set; }
@@ -80,7 +82,8 @@ namespace Pacman
         public PacmanScreenManager ScreenManager { get; private set; }
 
         // Starting positions
-        public readonly Vector2 PacmanStartingPosition = new Vector2(14 * PacmanGame.TileWidth, 26 * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f);
+        public readonly Vector2 PacmanStartingPosition = new Vector2(14*PacmanGame.TileWidth,
+                                                                     26*PacmanGame.TileWidth + PacmanGame.TileWidth/2f);
 
         public GhostMode GhostMode
         {
@@ -90,7 +93,7 @@ namespace Pacman
                 if (value != _ghostMode)
                 {
                     _ghostMode = value;
-                    
+
                     // Inform all ghosts of the chanage
                     Blinky.ForceNewDirection = true;
                     Pinky.ForceNewDirection = true;
@@ -107,10 +110,10 @@ namespace Pacman
         public Inky Inky { get; private set; }
         public Clyde Clyde { get; private set; }
 
+        #endregion
+
         public Level(PacmanScreenManager screenManager)
         {
-            _tiles = new int[TilesWide, TilesHigh];
-
             ScreenManager = screenManager;
 
             var pacOrigin = new Vector2(48 * Sprite.Scale / 2f, 48 * Sprite.Scale / 2f);
@@ -133,6 +136,11 @@ namespace Pacman
             Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, Utils.GridToAbs(new Vector2(4, 32), ghostOrigin));
 
             _random = new Random();
+
+            // Fill level with dots and energizers
+            _tileItems = new ScoreItem[TilesWide, TilesHigh];
+
+            Fill();
         }
 
         public void Update(GameTime gameTime)
@@ -149,11 +157,39 @@ namespace Pacman
                 Clyde.Update(gameTime);
         }
 
+        /// <summary>
+        /// Fills the level with dots and energizers
+        /// </summary>
+        private void Fill()
+        {
+            var dotSource = new DrawingRectangle(7, 33, 11, 11);
+            var energizerSource = new DrawingRectangle(1, 1, 24, 24);
+
+            for (int y = 0; y < TilesHigh; y++)
+            {
+                for (int x = 0; x < TilesWide; x++)
+                {
+                    var pos = new Vector2(x * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f, y * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f);
+
+                    if (DotTiles[x, y] == (int) TileItem.Dot)
+                        _tileItems[x, y] = new ScoreItem(this, ScreenManager.DotEnergizerTexture, pos, dotSource);
+                    else if (DotTiles[x, y] == (int) TileItem.Energizer)
+                        _tileItems[x, y] = new ScoreItem(this, ScreenManager.DotEnergizerTexture, pos, energizerSource);
+                }
+            }
+        }
+
         #region Draw Methods
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             DrawBoard(spriteBatch);
+
+            // Draw items
+            for (int y = 0; y < TilesHigh; y++)
+                for (int x = 0; x < TilesWide; x++)
+                    if (_tileItems[x, y] != null)
+                        _tileItems[x, y].Draw(spriteBatch, gameTime);
             
 #if DEBUG
             if (!HideBlinky)
@@ -253,11 +289,13 @@ namespace Pacman
 #endif
         #endregion
 
+        #region Tile Methods
+
         public static bool IsLegal(Vector2 position)
         {
             try
             {
-                return LegalTiles[(int)position.X, (int)position.Y] == (int)TileType.Empty;
+                return LegalTiles[(int) position.X, (int) position.Y] == (int) TileType.Empty;
             }
             catch (IndexOutOfRangeException)
             {
@@ -267,15 +305,17 @@ namespace Pacman
 
         public static bool IsLegal(int x, int y)
         {
-            return LegalTiles[x, y] == (int)TileType.Empty;
+            return LegalTiles[x, y] == (int) TileType.Empty;
         }
 
         public static Rectangle TileBounds(Vector2 position)
         {
-            int xPos = (int)position.X * PacmanGame.TileWidth;
-            int yPos = (int)position.Y * PacmanGame.TileWidth;
+            int xPos = (int) position.X*PacmanGame.TileWidth;
+            int yPos = (int) position.Y*PacmanGame.TileWidth;
             return new Rectangle(xPos, yPos, xPos + PacmanGame.TileWidth, yPos + PacmanGame.TileWidth);
         }
+
+        #endregion
 
         #region Generate Level
 
@@ -310,6 +350,37 @@ namespace Pacman
                 { 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1}, 
                 { 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1}, 
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+            };
+
+            DotTiles = new int[,] {
+                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1, 1, 2, 1, 1, 1, 1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1, 1, 1, 2,-1,-1, 1, 1, 1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1, 1, 1, 1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1, 1, 1, 1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,-1,-1, 1, 1, 1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1, 1, 1, 1, 1,-1,-1, 1, 0, 0, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1, 1, 1, 1,-1,-1, 1, 1, 1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1, 1, 1, 1, 1,-1,-1, 1, 0, 0, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1, 1, 1, 1,-1,-1, 1, 1, 1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1, 1, 1, 1,-1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,-1,-1, 1, 1, 1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1, 1, 1, 1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1, 1, 1, 2, 1, 1, 1, 1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1, 1, 1, 2,-1,-1, 1, 1, 1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }
             };
         }
 

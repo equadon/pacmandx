@@ -20,6 +20,8 @@ namespace Pacman
         public Texture2D GhostInkyTileset { get; private set; }
         public Texture2D GhostClydeTileset { get; private set; }
 
+        public Texture2D DotEnergizerTexture { get; private set; }
+
         public Texture2D DirectionTexture { get; private set; }
 
         public int CurrentLevel { get; set; }
@@ -55,6 +57,8 @@ namespace Pacman
             GhostPinkyTileset = Content.Load<Texture2D>(@"Textures\Pinky.png");
             GhostInkyTileset = Content.Load<Texture2D>(@"Textures\Inky.png");
             GhostClydeTileset = Content.Load<Texture2D>(@"Textures\Clyde.png");
+
+            DotEnergizerTexture = Content.Load<Texture2D>(@"Textures\DotEnergizer.png");
 
             DirectionTexture = Content.Load<Texture2D>(@"Textures\Direction.png");
 
