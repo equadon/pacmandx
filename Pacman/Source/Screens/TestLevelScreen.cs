@@ -1,8 +1,6 @@
-﻿using System.Windows.Forms;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.DirectInput;
 using SharpDX.Toolkit;
-using SharpDX.Toolkit.Diagnostics;
 using SharpDX.Toolkit.Graphics;
 
 using Pacman.Actors;
@@ -28,7 +26,7 @@ namespace Pacman.Screens
 
         #endregion
 
-        public TestLevelScreen(Logger logger)
+        public TestLevelScreen()
         {
         }
 
@@ -40,7 +38,7 @@ namespace Pacman.Screens
             }
         }
 
-        public override void HandleInput(GameTime gameTime, InputState input)
+        public override void HandleInput(GameTime gameTime, Input input)
         {
             var mouseGrid = Utils.AbsToGrid(ScreenManager.MousePosition);
 
@@ -51,6 +49,20 @@ namespace Pacman.Screens
                 Level.GhostMode = GhostMode.Scatter;
             if (input.IsKeyPressed(Key.D3))
                 Level.GhostMode = GhostMode.Frightened;
+
+            // Control pacman with WASD or arrow keys
+            // TODO: How often do we want the polling to occurr?
+            if (input.IsKeyDown(Key.W) || input.IsKeyDown(Key.UpArrow))
+                Level.PacMan.Move(Direction.Up);
+
+            if (input.IsKeyDown(Key.S) || input.IsKeyDown(Key.Down))
+                Level.PacMan.Move(Direction.Down);
+
+            if (input.IsKeyDown(Key.A) || input.IsKeyDown(Key.Left))
+                Level.PacMan.Move(Direction.Left);
+
+            if (input.IsKeyDown(Key.D) || input.IsKeyDown(Key.Right))
+                Level.PacMan.Move(Direction.Right);
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)

@@ -60,7 +60,7 @@
     <Compile Include="Source\PacmanGame.cs" />
     <Compile Include="Source\PacmanScreenManager.cs" />
     <Compile Include="Source\ScreenMachine\GameScreen.cs" />
-    <Compile Include="Source\ScreenMachine\InputState.cs" />
+    <Compile Include="Source\ScreenMachine\Input.cs" />
     <Compile Include="Source\ScreenMachine\Menu\MenuItem.cs" />
     <Compile Include="Source\ScreenMachine\Menu\MenuScreen.cs" />
     <Compile Include="Source\ScreenMachine\Menu\MenuTextItem.cs" />

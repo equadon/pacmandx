@@ -37,7 +37,7 @@ namespace Pacman.ScreenMachine.Menu
         /// Responds to user input, changing the selected entry and accepting
         /// or cancelling the menu.
         /// </summary>
-        public override void HandleInput(GameTime gameTime, InputState input)
+        public override void HandleInput(GameTime gameTime, Input input)
         {
             // Move to the previous menu entry?
             if (input.IsKeyPressed(Key.UpArrow))

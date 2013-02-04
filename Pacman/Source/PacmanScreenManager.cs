@@ -1,6 +1,5 @@
 ﻿using SharpDX;
 using SharpDX.Toolkit;
-using SharpDX.Toolkit.Diagnostics;
 using SharpDX.Toolkit.Graphics;
 
 using Pacman.ScreenMachine;

@@ -1,8 +1,6 @@
-﻿using System.Windows.Forms;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.DirectInput;
 using SharpDX.Toolkit;
-using SharpDX.Toolkit.Diagnostics;
 using SharpDX.Toolkit.Graphics;
 
 using Pacman.Actors;
@@ -13,8 +11,6 @@ namespace Pacman.Screens
     public class DebugScreen : GameScreen
     {
         #region Properties
-
-        public static bool DrawGrid { get; private set; }
 
         public Ghost DrawGhost { get; private set; }
 
@@ -34,9 +30,8 @@ namespace Pacman.Screens
 
         #endregion
 
-        public DebugScreen(Logger logger)
+        public DebugScreen()
         {
-            DrawGrid = true;
         }
 
         public override void Activate(bool instancePreserved)
@@ -52,7 +47,7 @@ namespace Pacman.Screens
             }
         }
 
-        public override void HandleInput(GameTime gameTime, InputState input)
+        public override void HandleInput(GameTime gameTime, Input input)
         {
             var mousePos = ScreenManager.MousePosition;
             var mouseGrid = Utils.AbsToGrid(mousePos);
@@ -70,10 +65,6 @@ namespace Pacman.Screens
 
             if (input.IsKeyDown(Key.D) || input.IsKeyDown(Key.Right))
                 Level.PacMan.Move(Direction.Right);
-
-            // Enable/disable drawing of grids
-            if (input.IsKeyPressed(Key.G))
-                DrawGrid = !DrawGrid;
 
             if (input.IsMousePressed(MouseButton.Left))
             {

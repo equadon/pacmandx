@@ -3,7 +3,6 @@ using Pacman.Actors;
 using Pacman.Actors.Ghosts;
 using SharpDX;
 using SharpDX.Toolkit;
-using SharpDX.Toolkit.Diagnostics;
 using SharpDX.Toolkit.Graphics;
 
 namespace Pacman
@@ -67,11 +66,11 @@ namespace Pacman
         /// </summary>
         private readonly int[,] _tiles;
 
-        #endregion
-
         private Random _random;
 
         private GhostMode _ghostMode;
+
+        #endregion
 
         public PacmanScreenManager ScreenManager { get; private set; }
 
@@ -177,22 +176,19 @@ namespace Pacman
             spriteBatch.Draw(ScreenManager.BlankTexture, rect, new Color(200, 200, 200, 255));
 
             // Draw grid lines
-            if (Screens.DebugScreen.DrawGrid)
+            for (int x = 0; x < TilesWide; x++)
             {
-                for (int x = 0; x < TilesWide; x++)
+                for (int y = 0; y < TilesHigh; y++)
                 {
-                    for (int y = 0; y < TilesHigh; y++)
-                    {
-                        for (int i = 0; i < 30; i += 6)
-                            spriteBatch.Draw(ScreenManager.BlankTexture,
-                                             new DrawingRectangle(x*PacmanGame.TileWidth + i, y*PacmanGame.TileWidth, 2, 1),
-                                             DebugBorderColor);
+                    for (int i = 0; i < 30; i += 6)
+                        spriteBatch.Draw(ScreenManager.BlankTexture,
+                                            new DrawingRectangle(x*PacmanGame.TileWidth + i, y*PacmanGame.TileWidth, 2, 1),
+                                            DebugBorderColor);
 
-                        for (int i = 0; i < 30; i += 6)
-                            spriteBatch.Draw(ScreenManager.BlankTexture,
-                                             new DrawingRectangle(x*PacmanGame.TileWidth, y*PacmanGame.TileWidth + i, 1, 2),
-                                             DebugBorderColor);
-                    }
+                    for (int i = 0; i < 30; i += 6)
+                        spriteBatch.Draw(ScreenManager.BlankTexture,
+                                            new DrawingRectangle(x*PacmanGame.TileWidth, y*PacmanGame.TileWidth + i, 1, 2),
+                                            DebugBorderColor);
                 }
             }
 

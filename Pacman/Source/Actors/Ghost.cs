@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using SharpDX;
-using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
 namespace Pacman.Actors

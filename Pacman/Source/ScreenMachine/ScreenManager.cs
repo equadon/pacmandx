@@ -3,7 +3,6 @@ using System.Diagnostics;
 
 using SharpDX;
 using SharpDX.Toolkit;
-using SharpDX.Toolkit.Content;
 using SharpDX.Toolkit.Graphics;
 
 namespace Pacman.ScreenMachine
@@ -21,7 +20,7 @@ namespace Pacman.ScreenMachine
         private readonly List<GameScreen> _screens = new List<GameScreen>();
         private readonly List<GameScreen> _tempScreens = new List<GameScreen>();
 
-        private readonly InputState _input = new InputState();
+        private readonly Input _input = new Input();
 
         #endregion
 

@@ -1,8 +1,4 @@
-﻿using System;
-//using System.Windows.Forms;
-using SharpDX;
-using SharpDX.DirectInput;
-using SharpDX.Multimedia;
+﻿using SharpDX.DirectInput;
 
 namespace Pacman.ScreenMachine
 {
@@ -12,7 +8,7 @@ namespace Pacman.ScreenMachine
     /// Helper for reading input from keyboard, gamepad, and touch input. This class 
     /// tracks both the current and previous state of the input devices.
     /// </summary>
-    public class InputState
+    public class Input
     {
         private DirectInput _directInput;
 
@@ -32,7 +28,7 @@ namespace Pacman.ScreenMachine
         /// <summary>
         /// Constructs a new input state.
         /// </summary>
-        public InputState()
+        public Input()
         {
             _directInput = new DirectInput();
 

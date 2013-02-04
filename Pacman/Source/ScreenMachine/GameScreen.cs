@@ -1,5 +1,4 @@
 ﻿using System;
-using Pacman.ScreenMachine;
 using SharpDX;
 using SharpDX.Toolkit;
 
@@ -259,7 +258,7 @@ namespace Pacman.ScreenMachine
         /// is only called when the screen is active, and not when some other
         /// screen has taken the focus.
         /// </summary>
-        public virtual void HandleInput(GameTime gameTime, InputState input) { }
+        public virtual void HandleInput(GameTime gameTime, Input input) { }
 
 
         /// <summary>
