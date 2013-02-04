@@ -39,6 +39,8 @@ namespace Pacman.Screens
             if (!instancePreserved)
             {
                 Level = new Level(ScreenManager);
+
+                ScreenManager.RegisterAddPointsEvent(Level);
                 
                 DebugBounds = new Rectangle(Level.TilesWide * PacmanGame.TileWidth,
                                             0,
@@ -103,17 +105,7 @@ namespace Pacman.Screens
 
             // Change level
             if (input.IsKeyPressed(Key.PageUp))
-            {
-                ScreenManager.CurrentLevel++;
-                Level = new Level(ScreenManager);
-            }
-
-            if (input.IsKeyPressed(Key.PageDown) &&
-                ScreenManager.CurrentLevel > 1)
-            {
-                ScreenManager.CurrentLevel--;
-                Level = new Level(ScreenManager);
-            }
+                Level.NextLevel();
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -151,7 +143,11 @@ namespace Pacman.Screens
             text += "    pos: (" + ScreenManager.MousePosition.X + ", " + ScreenManager.MousePosition.Y + ")\n";
             text += "    grid: [" + gridPos.X + ", " + gridPos.Y + "]\n\n";
 
-            text += "Level: " + ScreenManager.CurrentLevel + "\n\n";
+            text += "Score: " + ScreenManager.Score + "\n\n";
+
+            text += "Level: " + ScreenManager.CurrentLevel + "\n";
+            text += "Dots left: " + Level.DotsLeft + "\n";
+            text += "Energizers left: " + Level.EnergizersLeft + "\n\n";
 
             text += "Ghost Mode: " + Level.GhostMode + "\n\n";
 

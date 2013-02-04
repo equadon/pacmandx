@@ -8,9 +8,14 @@ namespace Pacman
     /// </summary>
     public class ScoreItem : Sprite
     {
-        public ScoreItem(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
+        public TileItem ItemType { get; private set; }
+        public int Points { get; private set; }
+
+        public ScoreItem(TileItem itemType, int points, Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
             : base(level, texture, position, sourceRect)
         {
+            ItemType = itemType;
+            Points = points;
         }
     }
 }

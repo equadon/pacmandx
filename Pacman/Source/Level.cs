@@ -44,6 +44,10 @@ namespace Pacman
         public static readonly Color DebugBorderColor = new Color(150, 150, 150, 255);
         public static readonly Color DebugUnknownTileColor = Color.Black;
 
+        // Points
+        public static readonly int DotPoints = 10;
+        public static readonly int EnergizerPoints = 50;
+
         /// <summary>
         /// Array listing legal and illegal tiles that will be used by the pathfinding.
         /// 
@@ -64,7 +68,7 @@ namespace Pacman
         /// Array storing the state for the current level. Use the TileItem
         /// enum for IDs.
         /// </summary>
-        private readonly ScoreItem[,] _tileItems;
+        private ScoreItem[,] _tileItems;
 
         private Random _random;
 
@@ -78,6 +82,9 @@ namespace Pacman
         public bool HidePinky { get; set; }
         public bool HideInky { get; set; }
         public bool HideClyde { get; set; }
+
+        public int DotsLeft { get; private set; }
+        public int EnergizersLeft { get; private set; }
 
         public PacmanScreenManager ScreenManager { get; private set; }
 
@@ -110,41 +117,39 @@ namespace Pacman
         public Inky Inky { get; private set; }
         public Clyde Clyde { get; private set; }
 
+        // Points are stored in PacmanScreenManager, but we can use this to add points
+        // with help from the event handler.
+        public int Points
+        {
+            get { return ScreenManager.Score; }
+            set
+            {
+                // Fire add points event
+                if (AddPoints != null)
+                    AddPoints(this, new AddPointsEventArgs(value - Points));
+            }
+        }
+
         #endregion
+
+        // Event to use when adding points
+        public event PointsAddedHandler AddPoints;
 
         public Level(PacmanScreenManager screenManager)
         {
             ScreenManager = screenManager;
 
-            var pacOrigin = new Vector2(48 * Sprite.Scale / 2f, 48 * Sprite.Scale / 2f);
-            var ghostOrigin = new Vector2(48 * Sprite.Scale / 2f, 51 * Sprite.Scale / 2f);
-
-            _ghostMode = GhostMode.Scatter;
-
-            PacMan = new PacMan(this, ScreenManager.PacManTileset, PacmanStartingPosition);
-
-            //Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
-            Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, Utils.GridToAbs(new Vector2(26, 4), ghostOrigin));
-
-            //Pinky = new Pinky(this, ScreenManager.GhostPinkyTileset, PinkyStartingPosition);
-            Pinky = new Pinky(this, ScreenManager.GhostPinkyTileset, Utils.GridToAbs(new Vector2(4, 4), ghostOrigin));
-
-            //Inky = new Inky(this, ScreenManager.GhostInkyTileset, InkyStartingPosition);
-            Inky = new Inky(this, ScreenManager.GhostInkyTileset, Utils.GridToAbs(new Vector2(24, 32), ghostOrigin));
-
-            //Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, ClydeStartingPosition);
-            Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, Utils.GridToAbs(new Vector2(4, 32), ghostOrigin));
+            ResetLevel();
 
             _random = new Random();
-
-            // Fill level with dots and energizers
-            _tileItems = new ScoreItem[TilesWide, TilesHigh];
-
-            Fill();
         }
 
         public void Update(GameTime gameTime)
         {
+            // Next level?
+            if (DotsLeft + EnergizersLeft == 0)
+                NextLevel();
+
             PacMan.Update(gameTime);
 
             if (!HideBlinky)
@@ -171,13 +176,82 @@ namespace Pacman
                 {
                     var pos = new Vector2(x * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f, y * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f);
 
-                    if (DotTiles[x, y] == (int) TileItem.Dot)
-                        _tileItems[x, y] = new ScoreItem(this, ScreenManager.DotEnergizerTexture, pos, dotSource);
-                    else if (DotTiles[x, y] == (int) TileItem.Energizer)
-                        _tileItems[x, y] = new ScoreItem(this, ScreenManager.DotEnergizerTexture, pos, energizerSource);
+                    if (DotTiles[x, y] == (int)TileItem.Dot)
+                    {
+                        _tileItems[x, y] = new ScoreItem(TileItem.Dot, DotPoints, this, ScreenManager.DotEnergizerTexture, pos,
+                                                         dotSource);
+                        DotsLeft++;
+                    }
+                    else if (DotTiles[x, y] == (int)TileItem.Energizer)
+                    {
+                        _tileItems[x, y] = new ScoreItem(TileItem.Energizer, EnergizerPoints, this, ScreenManager.DotEnergizerTexture, pos,
+                                                         energizerSource);
+                        EnergizersLeft++;
+                    }
                 }
             }
         }
+
+        /// <summary>
+        /// Eat item at position.
+        /// </summary>
+        public void EatItem(Vector2 position)
+        {
+            ScoreItem item = _tileItems[(int) position.X, (int) position.Y];
+            if (item != null)
+            {
+                if (item.ItemType == TileItem.Dot)
+                    DotsLeft--;
+                else if (item.ItemType == TileItem.Energizer)
+                    EnergizersLeft--;
+
+                Points += item.Points;
+                _tileItems[(int) position.X, (int) position.Y] = null;
+            }
+        }
+
+        #region Change Level Methods
+
+        public void NextLevel()
+        {
+            ScreenManager.CurrentLevel++;
+            ResetLevel();
+        }
+
+        private void ResetLevel()
+        {
+            // Reset tile items
+            _tileItems = new ScoreItem[TilesWide,TilesHigh];
+            Fill();
+
+            // Reset ghosts and pacman
+            ResetActors();
+
+            GhostMode = GhostMode.Scatter;
+        }
+
+        private void ResetActors()
+        {
+            var pacOrigin = new Vector2(48 * Sprite.Scale / 2f, 48 * Sprite.Scale / 2f);
+            var ghostOrigin = new Vector2(48 * Sprite.Scale / 2f, 51 * Sprite.Scale / 2f);
+
+            PacMan = new PacMan(this, ScreenManager.PacManTileset, PacmanStartingPosition);
+
+            //Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, BlinkyStartingPosition);
+            Blinky = new Blinky(this, ScreenManager.GhostBlinkyTileset, Utils.GridToAbs(new Vector2(26, 4), ghostOrigin));
+
+            //Pinky = new Pinky(this, ScreenManager.GhostPinkyTileset, PinkyStartingPosition);
+            Pinky = new Pinky(this, ScreenManager.GhostPinkyTileset, Utils.GridToAbs(new Vector2(4, 4), ghostOrigin));
+
+            //Inky = new Inky(this, ScreenManager.GhostInkyTileset, InkyStartingPosition);
+            Inky = new Inky(this, ScreenManager.GhostInkyTileset, Utils.GridToAbs(new Vector2(24, 32), ghostOrigin));
+
+            //Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, ClydeStartingPosition);
+            Clyde = new Clyde(this, ScreenManager.GhostClydeTileset, Utils.GridToAbs(new Vector2(4, 32), ghostOrigin));
+        }
+
+        #endregion
+
 
         #region Draw Methods
 
@@ -366,8 +440,8 @@ namespace Pacman
                 {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
                 {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
                 {-1,-1,-1,-1, 1, 1, 1, 1, 1,-1,-1, 1, 0, 0, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1, 1, 1, 1,-1,-1, 1, 1, 1, 1,-1,-1,-1 }, 
-                {-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
-                {-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
+                {-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1 }, 
                 {-1,-1,-1,-1, 1, 1, 1, 1, 1,-1,-1, 1, 0, 0, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1, 1, 1, 1,-1,-1, 1, 1, 1, 1,-1,-1,-1 }, 
                 {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 
                 {-1,-1,-1,-1, 1,-1,-1,-1, 1,-1,-1, 1,-1,-1, 0,-1,-1,-1,-1,-1, 0,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1, 1,-1,-1,-1 }, 

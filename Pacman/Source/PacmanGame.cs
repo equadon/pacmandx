@@ -33,12 +33,6 @@ namespace Pacman
             _screenManager = new PacmanScreenManager(this);
             GameSystems.Add(_screenManager);
 
-#if DEBUG
-            _screenManager.AddScreen(new DebugScreen());
-#else
-            _screenManager.AddScreen(new TestLevelScreen());
-#endif
-
             Content.RootDirectory = "Content";
         }
 

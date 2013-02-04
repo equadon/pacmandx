@@ -1,4 +1,7 @@
-﻿using SharpDX;
+﻿using System;
+using System.Windows.Forms;
+using Pacman.Screens;
+using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
@@ -6,8 +9,26 @@ using Pacman.ScreenMachine;
 
 namespace Pacman
 {
+    #region Event Handler and EventArgs class
+
+    public delegate void PointsAddedHandler(object sender, AddPointsEventArgs e);
+
+    public class AddPointsEventArgs
+    {
+        public int Points;
+
+        public AddPointsEventArgs(int points)
+        {
+            Points = points;
+        }
+    }
+
+    #endregion
+
     public class PacmanScreenManager : ScreenManager
     {
+        #region Properties
+
         // Content
         public SpriteFont DebugFont { get; private set; }
 
@@ -24,23 +45,31 @@ namespace Pacman
 
         public Texture2D DirectionTexture { get; private set; }
 
+        private GameScreen _currentGameScreen;
+
+        public int Score { get; private set; }
         public int CurrentLevel { get; set; }
 
         public Vector2 MousePosition
         {
             get
             {
-                var handle = (System.Windows.Forms.Control)Game.Window.NativeWindow;
-                var cursorPos = handle.PointToClient(System.Windows.Forms.Cursor.Position);
+                var handle = (Control) Game.Window.NativeWindow;
+                var cursorPos = handle.PointToClient(Cursor.Position);
 
                 return new Vector2(cursorPos.X, cursorPos.Y);
             }
         }
 
+        #endregion
+
         public PacmanScreenManager(Game game)
             : base(game)
         {
             CurrentLevel = 1;
+            Score = 0;
+
+            NewGame();
         }
 
         protected override void LoadContent()
@@ -72,6 +101,29 @@ namespace Pacman
             base.Initialize();
 
             PacmanGame.Logger.Info("Pacman Screen Manager initialized.");
+        }
+
+        public void NewGame()
+        {
+#if DEBUG
+            _currentGameScreen = new DebugScreen();
+#else
+            _currentGameScreen = new DebugScreen();
+#endif
+            AddScreen(_currentGameScreen);
+        }
+
+        /// <summary>
+        /// Level wishes to register the add points event.
+        /// </summary>
+        public void RegisterAddPointsEvent(Level level)
+        {
+            level.AddPoints += new PointsAddedHandler(AddPoints);
+        }
+
+        private void AddPoints(object sender, AddPointsEventArgs e)
+        {
+            Score += e.Points;
         }
     }
 }

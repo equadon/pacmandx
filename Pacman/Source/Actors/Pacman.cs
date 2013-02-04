@@ -38,7 +38,7 @@ namespace Pacman.Actors
                 FrightSpeedModifier = SpeedModifier;
             }
 
-            Velocity = GetVelocity();
+            Velocity = Vector2.Zero;
         }
 
         public override void Update(GameTime gameTime)
@@ -76,6 +76,14 @@ namespace Pacman.Actors
             {
                 _position.Y = tileBounds.Bottom - tileBounds.Height / 2f;
             }
+        }
+
+        public override void OnTileCenter()
+        {
+            base.OnTileCenter();
+
+            // Eat item at current position
+            Level.EatItem(GridPosition);
         }
 
         /// <summary>
