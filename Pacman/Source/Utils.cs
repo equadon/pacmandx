@@ -39,5 +39,19 @@ namespace Pacman
                 gridPosition.X * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f,
                 gridPosition.Y * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f);
         }
+
+        public static bool NearlyEqual(float a, float b, float epsilon)
+        {
+            float absA = Math.Abs(a);
+            float absB = Math.Abs(b);
+            float diff = Math.Abs(a - b);
+
+            if (a * b == 0) { // a or b or both are zero
+                // relative error is not meaningful here
+                return diff < (epsilon * epsilon);
+            } else { // use relative error
+                return diff / (absA + absB) < epsilon;
+            }
+        }
     }
 }
