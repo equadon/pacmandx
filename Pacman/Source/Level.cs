@@ -164,7 +164,10 @@ namespace Pacman
 
         private void DrawBoard(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(ScreenManager.LevelBackground, Vector2.Zero, Color.White);
+            var backgroundRect = new DrawingRectangle(0, 0, TilesWide * PacmanGame.TileWidth, TilesHigh * PacmanGame.TileWidth);
+
+            spriteBatch.Draw(ScreenManager.LevelBackground, backgroundRect, Color.White);
+
 #if DEBUG
             // Mouse grid position highlight
             var mouseGrid = Utils.AbsToGrid(ScreenManager.MousePosition);
