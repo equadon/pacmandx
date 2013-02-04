@@ -16,6 +16,8 @@ namespace Pacman.Screens
 
         public static bool DrawGrid { get; private set; }
 
+        public Ghost DrawGhost { get; private set; }
+
         public Level Level { get; private set; }
 
         public Rectangle DebugBounds { get; private set; }
@@ -52,7 +54,8 @@ namespace Pacman.Screens
 
         public override void HandleInput(GameTime gameTime, InputState input)
         {
-            var mouseGrid = Utils.AbsToGrid(ScreenManager.MousePosition);
+            var mousePos = ScreenManager.MousePosition;
+            var mouseGrid = Utils.AbsToGrid(mousePos);
 
             // Control pacman with WASD or arrow keys
             // TODO: How often do we want the polling to occurr?
@@ -71,6 +74,24 @@ namespace Pacman.Screens
             // Enable/disable drawing of grids
             if (input.IsKeyPressed(Key.G))
                 DrawGrid = !DrawGrid;
+
+            if (input.IsMousePressed(MouseButton.Left))
+            {
+                if (mousePos.X >= Level.Blinky.Bounds.Left && mousePos.X <= Level.Blinky.Bounds.Right &&
+                    mousePos.Y >= Level.Blinky.Bounds.Top && mousePos.Y <= Level.Blinky.Bounds.Bottom)
+                    DrawGhost = Level.Blinky;
+                else if (mousePos.X >= Level.Pinky.Bounds.Left && mousePos.X <= Level.Pinky.Bounds.Right &&
+                         mousePos.Y >= Level.Pinky.Bounds.Top && mousePos.Y <= Level.Pinky.Bounds.Bottom)
+                    DrawGhost = Level.Pinky;
+                else if (mousePos.X >= Level.Inky.Bounds.Left && mousePos.X <= Level.Inky.Bounds.Right &&
+                         mousePos.Y >= Level.Inky.Bounds.Top && mousePos.Y <= Level.Inky.Bounds.Bottom)
+                    DrawGhost = Level.Inky;
+                else if (mousePos.X >= Level.Clyde.Bounds.Left && mousePos.X <= Level.Clyde.Bounds.Right &&
+                         mousePos.Y >= Level.Clyde.Bounds.Top && mousePos.Y <= Level.Clyde.Bounds.Bottom)
+                    DrawGhost = Level.Clyde;
+                else
+                    DrawGhost = null;
+            }
 
             // Change ghost mode
             if (input.IsKeyPressed(Key.D1))
@@ -141,16 +162,15 @@ namespace Pacman.Screens
             text += "     Inky: " + Level.Inky.SpeedModifier * 100 + "%\n";
             text += "    Clyde: " + Level.Clyde.SpeedModifier * 100 + "%\n\n";
 
-            text += "Blinky:\n";
-            text += "    pos:  (" + Level.Blinky.Position.X + ", " + Level.Blinky.Position.Y + ")\n";
-            text += "    grid: [" + Level.Blinky.GridPosition.X + ", " + Level.Blinky.GridPosition.Y + "]\n";
-            text += "    direction: " + Level.Blinky.Direction + "\n";
-            text += "    future dir: " + Level.Blinky.FutureDirection + "\n";
-            text += "    velocity: " + Level.Blinky.Velocity + "\n";
-            text += "    target: (" + Level.Blinky.TargetTile.X + ", " + Level.Blinky.TargetTile.Y + ")\n";
-            text += "    next: (" + Level.Blinky.NextPosition.X + ", " + Level.Blinky.NextPosition.Y + ")\n";
-
             spriteBatch.DrawString(ScreenManager.DebugFont, text, pos, Color.White);
+
+            var textSize = ScreenManager.DebugFont.MeasureString(text);
+
+            if (DrawGhost != null)
+            {
+                var ghostPos = new Vector2(pos.X, pos.Y + textSize.Y);
+                DrawGhostInfo(spriteBatch, DrawGhost, ghostPos);
+            }
         }
 
         private void DrawGhostDebugInfo(SpriteBatch spriteBatch, GameTime gameTime)
@@ -200,6 +220,22 @@ namespace Pacman.Screens
             Vector2 pos = new Vector2(DebugBounds.Left + 5, DebugBounds.Top);
 
             spriteBatch.DrawString(ScreenManager.DebugFont, text, pos, Color.White);
+        }
+
+        private void DrawGhostInfo(SpriteBatch spriteBatch, Ghost ghost, Vector2 position)
+        {
+            string text = "\n";
+
+            text += ghost.GetType().ToString() + ":\n";
+            text += "    pos:  " + ghost.Position.ToString("N2") + "\n";
+            text += "    grid: " + ghost.GridPosition + "\n";
+            text += "    direction: " + ghost.Direction + "\n";
+            text += "    future dir: " + ghost.FutureDirection + "\n";
+            text += "    velocity: " + ghost.Velocity.ToString("N2") + "\n";
+            text += "    target: " + ghost.TargetTile + "\n";
+            text += "    next: " + ghost.NextPosition + "\n";
+
+            spriteBatch.DrawString(ScreenManager.DebugFont, text, position, Color.White);
         }
 
         private void DrawGhostTargets(SpriteBatch spriteBatch)
