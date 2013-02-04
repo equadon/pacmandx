@@ -66,6 +66,15 @@ namespace Pacman.Screens
             if (input.IsKeyDown(Key.D) || input.IsKeyDown(Key.Right))
                 Level.PacMan.Move(Direction.Right);
 
+            if (input.IsKeyPressed(Key.NumberPad1))
+                Level.HideBlinky = !Level.HideBlinky;
+            if (input.IsKeyPressed(Key.NumberPad2))
+                Level.HidePinky = !Level.HidePinky;
+            if (input.IsKeyPressed(Key.NumberPad3))
+                Level.HideInky = !Level.HideInky;
+            if (input.IsKeyPressed(Key.NumberPad4))
+                Level.HideClyde = !Level.HideClyde;
+
             if (input.IsMousePressed(MouseButton.Left))
             {
                 if (mousePos.X >= Level.Blinky.Bounds.Left && mousePos.X <= Level.Blinky.Bounds.Right &&
@@ -251,25 +260,40 @@ namespace Pacman.Screens
             if (Level.GhostMode == GhostMode.Frightened)
                 return;
 
+            DrawingRectangle targetTileRect;
+
             // Blinky's target tile
-            var targetTileRect = new DrawingRectangle(
-                (int)(Level.Blinky.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Blinky.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
-            spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Red);
+            if (!Level.HideBlinky)
+            {
+                targetTileRect = new DrawingRectangle(
+                    (int) (Level.Blinky.TargetTile.X*PacmanGame.TileWidth),
+                    (int) (Level.Blinky.TargetTile.Y*PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
+                spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Red);
+            }
 
             // Pinky's target tile
-            targetTileRect = new DrawingRectangle(
-                (int)(Level.Pinky.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Pinky.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
-            spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Pink);
+            if (!Level.HidePinky)
+            {
+                targetTileRect = new DrawingRectangle(
+                    (int)(Level.Pinky.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Pinky.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
+                spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Pink);
+            }
 
             // Inky's target tile
-            targetTileRect = new DrawingRectangle(
-                (int)(Level.Inky.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Inky.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
-            spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Blue);
+            if (!Level.HideInky)
+            {
+                targetTileRect = new DrawingRectangle(
+                    (int)(Level.Inky.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Inky.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
+                spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Blue);
+            }
 
             // Clyde's target tile
-            targetTileRect = new DrawingRectangle(
-                (int)(Level.Clyde.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Clyde.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
-            spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Orange);
+            if (!Level.HideClyde)
+            {
+                targetTileRect = new DrawingRectangle(
+                    (int)(Level.Clyde.TargetTile.X * PacmanGame.TileWidth), (int)(Level.Clyde.TargetTile.Y * PacmanGame.TileWidth), PacmanGame.TileWidth, PacmanGame.TileWidth);
+                spriteBatch.Draw(ScreenManager.BlankTexture, targetTileRect, Color.Orange);
+            }
         }
     }
 }

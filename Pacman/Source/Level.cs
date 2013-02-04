@@ -72,6 +72,11 @@ namespace Pacman
 
         #endregion
 
+        public bool HideBlinky { get; set; }
+        public bool HidePinky { get; set; }
+        public bool HideInky { get; set; }
+        public bool HideClyde { get; set; }
+
         public PacmanScreenManager ScreenManager { get; private set; }
 
         // Starting positions
@@ -134,10 +139,14 @@ namespace Pacman
         {
             PacMan.Update(gameTime);
 
-            Blinky.Update(gameTime);
-            Pinky.Update(gameTime);
-            Inky.Update(gameTime);
-            Clyde.Update(gameTime);
+            if (!HideBlinky)
+                Blinky.Update(gameTime);
+            if (!HidePinky)
+                Pinky.Update(gameTime);
+            if (!HideInky)
+                Inky.Update(gameTime);
+            if (!HideClyde)
+                Clyde.Update(gameTime);
         }
 
         #region Draw Methods
@@ -147,18 +156,26 @@ namespace Pacman
             DrawBoard(spriteBatch);
             
 #if DEBUG
-            DrawGhostDirection(spriteBatch, Blinky);
-            DrawGhostDirection(spriteBatch, Pinky);
-            DrawGhostDirection(spriteBatch, Inky);
-            DrawGhostDirection(spriteBatch, Clyde);
+            if (!HideBlinky)
+                DrawGhostDirection(spriteBatch, Blinky);
+            if (!HidePinky)
+                DrawGhostDirection(spriteBatch, Pinky);
+            if (!HideInky)
+                DrawGhostDirection(spriteBatch, Inky);
+            if (!HideClyde)
+                DrawGhostDirection(spriteBatch, Clyde);
 #endif
 
             PacMan.Draw(spriteBatch, gameTime);
 
-            Blinky.Draw(spriteBatch, gameTime);
-            Pinky.Draw(spriteBatch, gameTime);
-            Inky.Draw(spriteBatch, gameTime);
-            Clyde.Draw(spriteBatch, gameTime);
+            if (!HideBlinky)
+                Blinky.Draw(spriteBatch, gameTime);
+            if (!HidePinky)
+                Pinky.Draw(spriteBatch, gameTime);
+            if (!HideInky)
+                Inky.Draw(spriteBatch, gameTime);
+            if (!HideClyde)
+                Clyde.Draw(spriteBatch, gameTime);
         }
 
         private void DrawBoard(SpriteBatch spriteBatch)
