@@ -10,20 +10,23 @@ namespace Pacman.Actors
         Up,
         Down,
         Left,
-        Right
+        Right,
     }
 
     public class Actor : Sprite
     {
+        #region Fields
+
         /// <summary>Pacman's base speed. TODO: Still not sure on this. Speed is supposedly 11 tiles/s. We run at 60fps.</summary>
-        //public readonly float PacmanBaseSpeed = 11f * PacmanGame.TileWidth / 60f;
-        public readonly float PacmanBaseSpeed = 5f * PacmanGame.TileWidth / 60f;
+        public readonly float PacmanBaseSpeed = 11f * PacmanGame.TileWidth/60f;
 
         private bool _reachedCenter = false;
 
         protected Vector2 _velocity;
 
         private Direction _direction;
+
+        #endregion
 
         #region Properties
 
@@ -70,7 +73,6 @@ namespace Pacman.Actors
         public Actor(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
             : base(level, texture, position, sourceRect)
         {
-            SpeedModifier = PacmanBaseSpeed;
             LastGridPosition = Utils.AbsToGrid(position);
         }
 
