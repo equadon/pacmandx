@@ -166,10 +166,12 @@ namespace Pacman.Screens
 
             var textSize = ScreenManager.DebugFont.MeasureString(text);
 
+            textSize += DrawActorInfo(spriteBatch, Level.PacMan, new Vector2(pos.X, pos.Y + textSize.Y));
+
             if (DrawGhost != null)
             {
                 var ghostPos = new Vector2(pos.X, pos.Y + textSize.Y);
-                DrawGhostInfo(spriteBatch, DrawGhost, ghostPos);
+                DrawActorInfo(spriteBatch, DrawGhost, ghostPos);
             }
         }
 
@@ -222,20 +224,34 @@ namespace Pacman.Screens
             spriteBatch.DrawString(ScreenManager.DebugFont, text, pos, Color.White);
         }
 
-        private void DrawGhostInfo(SpriteBatch spriteBatch, Ghost ghost, Vector2 position)
+        /// <summary>
+        /// Draw debug info for an actor.
+        /// </summary>
+        /// <returns>Returns the MeasureString vector</returns>
+        private Vector2 DrawActorInfo(SpriteBatch spriteBatch, Actor actor, Vector2 position)
         {
             string text = "\n";
 
-            text += ghost.GetType().ToString() + ":\n";
-            text += "    pos:  " + ghost.Position.ToString("N2") + "\n";
-            text += "    grid: " + ghost.GridPosition + "\n";
-            text += "    direction: " + ghost.Direction + "\n";
-            text += "    future dir: " + ghost.FutureDirection + "\n";
-            text += "    velocity: " + ghost.Velocity.ToString("N2") + "\n";
-            text += "    target: " + ghost.TargetTile + "\n";
-            text += "    next: " + ghost.NextPosition + "\n";
+            var ghost = actor as Ghost;
+
+            text += actor.GetType().ToString() + ":\n";
+            text += "    pos:  " + actor.Position.ToString("N2") + "\n";
+            text += "    grid: " + actor.GridPosition + "\n";
+            text += "    direction: " + actor.Direction + "\n";
+
+            if (ghost != null)
+                text += "    future dir: " + ghost.FutureDirection + "\n";
+
+            text += "    velocity: " + actor.Velocity.ToString("N2") + "\n";
+
+            if (ghost != null)
+                text += "    target: " + ghost.TargetTile + "\n";
+
+            text += "    next: " + actor.NextPosition + "\n";
 
             spriteBatch.DrawString(ScreenManager.DebugFont, text, position, Color.White);
+
+            return ScreenManager.DebugFont.MeasureString(text);
         }
 
         private void DrawGhostTargets(SpriteBatch spriteBatch)
