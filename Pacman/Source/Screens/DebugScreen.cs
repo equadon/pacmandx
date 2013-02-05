@@ -68,6 +68,9 @@ namespace Pacman.Screens
             if (input.IsKeyDown(Key.D) || input.IsKeyDown(Key.Right))
                 Level.PacMan.Move(Direction.Right);
 
+            if (input.IsKeyPressed(Key.H))
+                Level.SpawnFruit(ScreenManager.CurrentLevel);
+
             if (input.IsKeyPressed(Key.NumberPad1))
                 Level.HideBlinky = !Level.HideBlinky;
             if (input.IsKeyPressed(Key.NumberPad2))

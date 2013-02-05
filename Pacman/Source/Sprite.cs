@@ -13,6 +13,9 @@ namespace Pacman
 
         protected Vector2 _position;
 
+        private double _flashDuration;
+        private float _alphaFlash;
+
         #endregion
 
         #region Properties
@@ -20,6 +23,7 @@ namespace Pacman
         public Color Color { get; protected set; }
 
         public Rectangle SourceRect { get; protected set; }
+        public Rectangle FlashSourceRect { get; protected set; }
 
         public Level Level { get; private set; }
 
@@ -61,6 +65,11 @@ namespace Pacman
             get { return PacmanGame.TileWidth/30f; }
         }
 
+        public bool IsFlashing
+        {
+            get { return _flashDuration > 0; }
+        }
+
         #endregion
 
         public Sprite(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
@@ -76,11 +85,30 @@ namespace Pacman
 
         public virtual void Update(GameTime gameTime)
         {
+            if (_flashDuration > 0)
+            {
+                _flashDuration -= gameTime.ElapsedGameTime.TotalSeconds;
+                _alphaFlash += Utils.Lerp(0, 1, 0.03f);
+            }
+            else
+            {
+                _alphaFlash = 0;
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(_texture, Position, SourceRect, Color, 0f, Origin, Scale, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(_texture, Position, FlashSourceRect, Color.White * _alphaFlash, 0f, Origin, Scale, SpriteEffects.None, 0f);
+        }
+
+        public void Flash(double duration)
+        {
+            if (FlashSourceRect == Rectangle.Empty)
+                throw new Exception("FlashSourceRect needs to be defined in order for Flash() to work");
+
+            _flashDuration = duration;
         }
     }
 }

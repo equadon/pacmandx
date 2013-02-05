@@ -30,33 +30,43 @@ namespace Pacman
                     break;
                 case TileItem.Cherries:
                     Points = 100;
+                    FlashSourceRect = new DrawingRectangle(59, 3, 42, 49);
                     break;
                 case TileItem.Strawberry:
                     Points = 300;
+                    FlashSourceRect = new DrawingRectangle(168, 2, 45, 50);
                     break;
                 case TileItem.Peach:
                     Points = 500;
+                    FlashSourceRect = new DrawingRectangle(166, 55, 47, 52);
                     break;
                 case TileItem.Apple:
                     Points = 700;
+                    FlashSourceRect = new DrawingRectangle(57, 55, 47, 51);
                     break;
                 case TileItem.Grapes:
                     Points = 1000;
+                    FlashSourceRect = new DrawingRectangle(56, 111, 50, 49);
                     break;
                 case TileItem.Galaxian:
                     Points = 2000;
+                    FlashSourceRect = new DrawingRectangle(163, 111, 52, 49);
                     break;
                 case TileItem.Bell:
                     Points = 3000;
+                    FlashSourceRect = new DrawingRectangle(56, 164, 49, 50);
                     break;
                 case TileItem.Key:
                     Points = 5000;
+                    FlashSourceRect = new DrawingRectangle(175, 166, 29, 50);
                     break;
             }
         }
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
             if (Duration > 0d)
                 Duration -= gameTime.ElapsedGameTime.TotalSeconds;
         }

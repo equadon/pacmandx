@@ -167,6 +167,9 @@ namespace Pacman
             {
                 Fruit.Update(gameTime);
 
+                if (!Fruit.IsFlashing && Fruit.Duration < 5)
+                    Fruit.Flash(5);
+
                 if (Fruit.Duration < 0)
                     Fruit = null;
             }
@@ -253,9 +256,9 @@ namespace Pacman
             return TileItem.None;
         }
 
-        private void SpawnFruit(int currentLevel)
+        public void SpawnFruit(int currentLevel)
         {
-            DrawingRectangle source = new DrawingRectangle(5, 3, 42, 48);;
+            DrawingRectangle source = DrawingRectangle.Empty;
             TileItem type;
 
             if (currentLevel == 1)

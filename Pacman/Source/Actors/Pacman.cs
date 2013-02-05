@@ -16,6 +16,8 @@ namespace Pacman.Actors
         {
             Direction = Direction.Left;
 
+            FlashSourceRect = new DrawingRectangle(56, 3, 48, 48);
+
             // Set speeds
             int currentLevel = Level.ScreenManager.CurrentLevel;
 

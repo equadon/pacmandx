@@ -78,6 +78,8 @@ namespace Pacman.Actors
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
             LastGridPosition = GridPosition;
 
             Position += Velocity;
