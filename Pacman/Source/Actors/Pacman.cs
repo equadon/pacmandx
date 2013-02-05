@@ -12,7 +12,7 @@ namespace Pacman.Actors
         public float FrightSpeedModifier { get; private set; }
 
         public PacMan(Level level, Texture2D texture, Vector2 position)
-            : base(level, texture, position, new DrawingRectangle(3, 3, 48, 48))
+            : base(level, texture, position, new DrawingRectangle(3, 57, 48, 48))
         {
             Direction = Direction.Left;
 
@@ -89,6 +89,16 @@ namespace Pacman.Actors
                     Level.EatFruit();
                 }
             }
+
+            // Rotate pacman depending on which direction he's heading
+            if (Direction == Direction.Right)
+                Rotation = 0;
+            else if (Direction == Direction.Down)
+                Rotation = MathUtil.Pi / 2;
+            else if (Direction == Direction.Left)
+                Rotation = MathUtil.Pi;
+            else
+                Rotation = -MathUtil.Pi / 2;
         }
 
         public override void OnTileCenter()

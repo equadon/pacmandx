@@ -28,6 +28,8 @@ namespace Pacman
 
         public Level Level { get; private set; }
 
+        public float Rotation { get; protected set; }
+
         public RectangleF Bounds
         {
             get
@@ -81,6 +83,8 @@ namespace Pacman
             Level = level;
             SourceRect = sourceRect;
 
+            Rotation = 0;
+
             Color = Color.White;
         }
 
@@ -99,10 +103,10 @@ namespace Pacman
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(_texture, Position, SourceRect, Color, 0f, Origin, Scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_texture, Position, SourceRect, Color, Rotation, Origin, Scale, SpriteEffects.None, 0f);
 
             if (IsFlashing)
-                spriteBatch.Draw(_texture, Position, FlashSourceRect, Color.White * _alphaFlash, 0f, Origin, Scale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(_texture, Position, FlashSourceRect, Color.White * _alphaFlash, Rotation, Origin, Scale, SpriteEffects.None, 0f);
         }
 
         public void Flash(double duration, int flashCount)
