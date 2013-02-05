@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Pacman.Effects;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
@@ -88,6 +89,8 @@ namespace Pacman
         {
             get { return _ghostModeDuration; }
         }
+
+        public List<TextEffect> Effects { get; private set; }
 
         public bool HideBlinky { get; set; }
         public bool HidePinky { get; set; }
@@ -212,6 +215,10 @@ namespace Pacman
                 Inky.Flash(_ghostModeBeginFlashing, _ghostModeFlashes);
                 Clyde.Flash(_ghostModeBeginFlashing, _ghostModeFlashes);
             }
+
+            // Effects
+            for (int i = 0; i < Effects.Count; i++)
+                Effects[i].Update(gameTime);
         }
 
         /// <summary>
@@ -252,7 +259,8 @@ namespace Pacman
             if (Fruit == null)
                 return;
 
-            Points += Fruit.Points;
+            Fruit.Eat();
+
             Fruit = null;
         }
 
@@ -392,6 +400,11 @@ namespace Pacman
         {
             // Reset tile items
             _tileItems = new ScoreItem[TilesWide,TilesHigh];
+            Effects = new List<TextEffect>();
+
+            DotsLeft = 0;
+            EnergizersLeft = 0;
+
             Fill();
 
             // Reset ghosts and pacman
@@ -459,6 +472,10 @@ namespace Pacman
             // Fruit
             if (Fruit != null)
                 Fruit.Draw(spriteBatch, gameTime);
+
+            // Effects
+            for (int i = 0; i < Effects.Count; i++)
+                Effects[i].Draw(spriteBatch, gameTime);
         }
 
         private void DrawBoard(SpriteBatch spriteBatch)

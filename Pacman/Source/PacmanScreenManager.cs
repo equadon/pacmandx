@@ -31,6 +31,7 @@ namespace Pacman
 
         // Content
         public SpriteFont DebugFont { get; private set; }
+        public SpriteFont GameFont { get; private set; }
 
         public Texture2D LevelBackground { get; private set; }
 
@@ -76,6 +77,7 @@ namespace Pacman
         protected override void LoadContent()
         {
             DebugFont = Content.Load<SpriteFont>(@"Fonts\DebugFont.tkfont");
+            GameFont = Content.Load<SpriteFont>(@"Fonts\GameFont.tkfont");
             
             BlankTexture = Content.Load<Texture2D>(@"Textures\Blank.png");
 

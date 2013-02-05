@@ -1,4 +1,5 @@
-﻿using SharpDX;
+﻿using Pacman.Effects;
+using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
@@ -31,10 +32,12 @@ namespace Pacman
                 Duration -= gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        // TODO: Could we use this to null this item?
         public void Eat()
         {
             Level.Points += Points;
+
+            if (Points > 10)
+                Level.Effects.Add(new TextEffect(Level, Level.ScreenManager.GameFont, Position, Points.ToString("D")));
         }
 
         /// <summary>

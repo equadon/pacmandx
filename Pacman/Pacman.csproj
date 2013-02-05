@@ -42,6 +42,9 @@
     <None Include="Content\Fonts\DebugFont.tkfont">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Content\Fonts\GameFont.tkfont">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Pacman.cd" />
   </ItemGroup>
@@ -56,6 +59,7 @@
     <Compile Include="Source\Actors\PacMan.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\Effects\TextEffect.cs" />
     <Compile Include="Source\ScoreItem.cs" />
     <Compile Include="Source\Level.cs" />
     <Compile Include="Source\PacmanGame.cs" />
