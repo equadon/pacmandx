@@ -22,6 +22,12 @@ namespace Pacman
             // Set points
             switch (itemType)
             {
+                case TileItem.Dot:
+                    Points = 10;
+                    break;
+                case TileItem.Energizer:
+                    Points = 50;
+                    break;
                 case TileItem.Cherries:
                     Points = 100;
                     break;
