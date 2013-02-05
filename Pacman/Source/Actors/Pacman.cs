@@ -65,24 +65,27 @@ namespace Pacman.Actors
 
             // Wall collisions
             if (Direction == Direction.Left && !Level.IsLegal(NextPosition) &&
-                Position.X < tileBounds.Right - tileBounds.Width/2f)
-            {
+                     Position.X < tileBounds.Right - tileBounds.Width/2f)
                 _position.X = tileBounds.Right - tileBounds.Width/2f;
-            }
             else if (Direction == Direction.Right && !Level.IsLegal(NextPosition) &&
-                Position.X > tileBounds.Right - tileBounds.Width / 2f)
-            {
+                     Position.X > tileBounds.Right - tileBounds.Width / 2f)
                 _position.X = tileBounds.Right - tileBounds.Width / 2f;
-            }
             else if (Direction == Direction.Up && !Level.IsLegal(NextPosition) &&
-                Position.Y < tileBounds.Bottom - tileBounds.Height / 2f)
-            {
+                     Position.Y < tileBounds.Bottom - tileBounds.Height / 2f)
                 _position.Y = tileBounds.Bottom - tileBounds.Height / 2f;
-            }
             else if (Direction == Direction.Down && !Level.IsLegal(NextPosition) &&
-               Position.Y > tileBounds.Bottom - tileBounds.Height / 2f)
-            {
+                     Position.Y > tileBounds.Bottom - tileBounds.Height / 2f)
                 _position.Y = tileBounds.Bottom - tileBounds.Height / 2f;
+
+            // Collision with fruit
+            if (Level.Fruit != null)
+            {
+                if (Position.Y >= Level.Fruit.Bounds.Top &&
+                    Position.Y <= Level.Fruit.Bounds.Bottom &&
+                    Vector2.Distance(Position, Level.Fruit.Position) <= Origin.X + Level.Fruit.Origin.X)
+                {
+                    Level.EatFruit();
+                }
             }
         }
 

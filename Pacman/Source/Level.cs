@@ -203,6 +203,18 @@ namespace Pacman
         }
 
         /// <summary>
+        /// Eat the fruit.
+        /// </summary>
+        public void EatFruit()
+        {
+            if (Fruit == null)
+                return;
+
+            Points += Fruit.Points;
+            Fruit = null;
+        }
+
+        /// <summary>
         /// Eat the item at position.
         /// </summary>
         /// <param name="position">Pac-Man position</param>
@@ -229,11 +241,11 @@ namespace Pacman
 
                 // TODO: Spawn fruits after 70 dots or 70 dots+energizers?
                 // 1st spawn after 70 dots have been cleared
-                if (Fruit == null && DotsLeft < 240 - 70)
+                if (Fruit == null && DotsLeft == 170)
                     SpawnFruit(ScreenManager.CurrentLevel);
 
                 // 2nd spawn after 170 dots have been cleared
-                if (Fruit == null && DotsLeft < 240 - 70)
+                if (Fruit == null && DotsLeft == 70)
                     SpawnFruit(ScreenManager.CurrentLevel);
 
                 return type;
