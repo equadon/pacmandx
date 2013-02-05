@@ -77,6 +77,7 @@ namespace Pacman
         private GhostMode _ghostMode;
 
         private double _ghostModeDuration;
+        private double _ghostModeBeginFlashing;
         private int _ghostModeFlashes;
 
         #endregion
@@ -109,7 +110,7 @@ namespace Pacman
             get { return _ghostMode; }
             set
             {
-                if (value != _ghostMode)
+                if (value != _ghostMode || value == GhostMode.Frightened)
                 {
                     // Inform all ghosts of the chanage if we go from
                     if ((_ghostMode == GhostMode.Chase && value == GhostMode.Scatter) ||
@@ -163,6 +164,7 @@ namespace Pacman
             ResetLevel();
 
             _ghostModeDuration = 0;
+            _ghostModeBeginFlashing = 0;
             _ghostModeFlashes = 0;
 
             _random = new Random();
@@ -190,7 +192,7 @@ namespace Pacman
                 Fruit.Update(gameTime);
 
                 if (!Fruit.IsFlashing && Fruit.Duration < 5)
-                    Fruit.Flash(5);
+                    Fruit.Flash(4, 8);
 
                 if (Fruit.Duration < 0)
                     Fruit = null;
@@ -203,9 +205,12 @@ namespace Pacman
                 GhostMode = GhostMode.Chase;
 
             // Frightened mode
-            if (GhostMode == GhostMode.Frightened)
+            if (GhostMode == GhostMode.Frightened && !Inky.IsFlashing && _ghostModeDuration <= _ghostModeBeginFlashing)
             {
-                
+                Blinky.Flash(_ghostModeBeginFlashing, _ghostModeFlashes);
+                Pinky.Flash(_ghostModeBeginFlashing, _ghostModeFlashes);
+                Inky.Flash(_ghostModeBeginFlashing, _ghostModeFlashes);
+                Clyde.Flash(_ghostModeBeginFlashing, _ghostModeFlashes);
             }
         }
 
@@ -271,6 +276,7 @@ namespace Pacman
                 else if (type == TileItem.Energizer)
                 {
                     EnergizersLeft--;
+                    GhostMode = GhostMode.Frightened;
                 }
                 item.Eat();
                 _tileItems[(int) position.X, (int) position.Y] = null;
@@ -370,6 +376,8 @@ namespace Pacman
                 _ghostModeFlashes = 3;
             else
                 _ghostModeFlashes = 0;
+
+            _ghostModeBeginFlashing = _ghostModeDuration/2;
         }
 
         #region Change Level Methods
@@ -389,7 +397,7 @@ namespace Pacman
             // Reset ghosts and pacman
             ResetActors();
 
-            GhostMode = GhostMode.Scatter;
+            GhostMode = GhostMode.Chase;
         }
 
         private void ResetActors()

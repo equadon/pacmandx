@@ -15,6 +15,7 @@ namespace Pacman
 
         private double _flashDuration;
         private float _alphaFlash;
+        private float _amount;
 
         #endregion
 
@@ -88,7 +89,7 @@ namespace Pacman
             if (_flashDuration > 0)
             {
                 _flashDuration -= gameTime.ElapsedGameTime.TotalSeconds;
-                _alphaFlash += Utils.Lerp(0, 1, 0.03f);
+                _alphaFlash += Utils.Lerp(0, 1, _amount);
             }
             else
             {
@@ -103,12 +104,13 @@ namespace Pacman
             spriteBatch.Draw(_texture, Position, FlashSourceRect, Color.White * _alphaFlash, 0f, Origin, Scale, SpriteEffects.None, 0f);
         }
 
-        public void Flash(double duration)
+        public void Flash(double duration, int flashCount)
         {
             if (FlashSourceRect == Rectangle.Empty)
                 throw new Exception("FlashSourceRect needs to be defined in order for Flash() to work");
 
             _flashDuration = duration;
+            _amount = (flashCount * 0.01f / 3f) * 5 / (float) duration;
         }
     }
 }
