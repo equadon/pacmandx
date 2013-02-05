@@ -56,6 +56,7 @@
     <Compile Include="Source\Actors\PacMan.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Source\Effects\PointsEffect.cs" />
     <Compile Include="Source\ScoreItem.cs" />
     <Compile Include="Source\Level.cs" />
     <Compile Include="Source\PacmanGame.cs" />
@@ -120,6 +121,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\DotEnergizer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Textures\EyesPoints.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Textures\Inky.png">

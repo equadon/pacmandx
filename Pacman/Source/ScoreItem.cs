@@ -20,7 +20,23 @@ namespace Pacman
             Duration = duration;
 
             // Set points
-            switch (itemType)
+            SetPoints();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            if (Duration > 0d)
+                Duration -= gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
+        /// <summary>
+        /// Set points depending on which item type it is.
+        /// </summary>
+        private void SetPoints()
+        {
+            switch (ItemType)
             {
                 case TileItem.Dot:
                     Points = 10;
@@ -61,14 +77,6 @@ namespace Pacman
                     FlashSourceRect = new DrawingRectangle(175, 166, 29, 50);
                     break;
             }
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-
-            if (Duration > 0d)
-                Duration -= gameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 }

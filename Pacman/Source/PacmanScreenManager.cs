@@ -42,6 +42,7 @@ namespace Pacman
         public Texture2D GhostClydeTileset { get; private set; }
 
         public Texture2D DotEnergizerTexture { get; private set; }
+        public Texture2D EyesPointsTexture { get; private set; }
 
         public Texture2D DirectionTexture { get; private set; }
 
@@ -88,6 +89,7 @@ namespace Pacman
             GhostClydeTileset = Content.Load<Texture2D>(@"Textures\Clyde.png");
 
             DotEnergizerTexture = Content.Load<Texture2D>(@"Textures\DotEnergizer.png");
+            EyesPointsTexture = Content.Load<Texture2D>(@"Textures\EyesPoints.png");
 
             BonusItemsTileset = Content.Load<Texture2D>(@"Textures\BonusItems.png");
 
