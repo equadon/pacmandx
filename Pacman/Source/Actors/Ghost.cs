@@ -43,8 +43,8 @@ namespace Pacman.Actors
             ForceNewDirection = false;
 
             DefaultSource = SourceRect;
-            FlashSourceRect = new DrawingRectangle(3, 164, 48, 51);
             FrightenedSource = new DrawingRectangle(3, 110, 48, 51);
+            FlashSourceRect = new DrawingRectangle(111, 110, 48, 51);
 
             UpdateTarget();
 
