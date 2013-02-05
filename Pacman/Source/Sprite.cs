@@ -101,7 +101,8 @@ namespace Pacman
         {
             spriteBatch.Draw(_texture, Position, SourceRect, Color, 0f, Origin, Scale, SpriteEffects.None, 0f);
 
-            spriteBatch.Draw(_texture, Position, FlashSourceRect, Color.White * _alphaFlash, 0f, Origin, Scale, SpriteEffects.None, 0f);
+            if (IsFlashing)
+                spriteBatch.Draw(_texture, Position, FlashSourceRect, Color.White * _alphaFlash, 0f, Origin, Scale, SpriteEffects.None, 0f);
         }
 
         public void Flash(double duration, int flashCount)
