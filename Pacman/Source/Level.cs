@@ -205,9 +205,14 @@ namespace Pacman
                 var type = item.ItemType;
 
                 if (type == TileItem.Dot)
+                {
                     DotsLeft--;
+                    Blinky.HandleElroy(ScreenManager.CurrentLevel, DotsLeft);
+                }
                 else if (type == TileItem.Energizer)
+                {
                     EnergizersLeft--;
+                }
 
                 Points += item.Points;
                 _tileItems[(int) position.X, (int) position.Y] = null;

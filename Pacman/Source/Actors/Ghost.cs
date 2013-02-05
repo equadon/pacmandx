@@ -78,6 +78,11 @@ namespace Pacman.Actors
             if (ForceNewDirection)
                 ReverseDirection();
 
+            // If this is Blinky and he's Elroy, don't change speed.
+            var blinky = this as Ghosts.Blinky;
+            if (blinky != null && blinky.IsElroy)
+                return;
+
             // Are we in the tunnels?
             if (IsInsideTunnels)
                 SpeedModifier = TunnelSpeedModifier;
