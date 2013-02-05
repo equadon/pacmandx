@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SharpDX;
+using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
 
 namespace Pacman.Actors
@@ -29,6 +30,9 @@ namespace Pacman.Actors
         public float FrightSpeedModifier { get; private set; }
         public float TunnelSpeedModifier { get; private set; }
 
+        public DrawingRectangle DefaultSource { get; private set; }
+        public DrawingRectangle FrightenedSource { get; private set; }
+
         #endregion
 
         public Ghost(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
@@ -37,6 +41,10 @@ namespace Pacman.Actors
             _random = new Random();
 
             ForceNewDirection = false;
+
+            DefaultSource = SourceRect;
+            FlashSourceRect = new DrawingRectangle(3, 164, 48, 51);
+            FrightenedSource = new DrawingRectangle(3, 110, 48, 51);
 
             UpdateTarget();
 
@@ -69,6 +77,13 @@ namespace Pacman.Actors
             }
 
             SpeedModifier = BaseSpeedModifier;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            SourceRect = (Level.GhostMode == GhostMode.Frightened) ? FrightenedSource : DefaultSource;
+
+            base.Update(gameTime);
         }
 
         public override void OnNewTile()

@@ -148,6 +148,8 @@ namespace Pacman.Screens
 
             text += "Score: " + ScreenManager.Score + "\n\n";
 
+            text += "Frightened Time Left: " + Level.GhostModeDuration.ToString("N2") + "s\n\n";
+
             text += "Level: " + ScreenManager.CurrentLevel + "\n";
             text += "Dots left: " + Level.DotsLeft + "\n";
             text += "Energizers left: " + Level.EnergizersLeft + "\n\n";

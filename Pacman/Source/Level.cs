@@ -76,9 +76,17 @@ namespace Pacman
 
         private GhostMode _ghostMode;
 
+        private double _ghostModeDuration;
+        private int _ghostModeFlashes;
+
         #endregion
 
         #region Properties
+
+        public double GhostModeDuration
+        {
+            get { return _ghostModeDuration; }
+        }
 
         public bool HideBlinky { get; set; }
         public bool HidePinky { get; set; }
@@ -103,13 +111,22 @@ namespace Pacman
             {
                 if (value != _ghostMode)
                 {
+                    // Inform all ghosts of the chanage if we go from
+                    if ((_ghostMode == GhostMode.Chase && value == GhostMode.Scatter) ||
+                        (_ghostMode == GhostMode.Chase && value == GhostMode.Frightened) ||
+                        (_ghostMode == GhostMode.Scatter && value == GhostMode.Chase) ||
+                        (_ghostMode == GhostMode.Scatter && value == GhostMode.Frightened))
+                    {
+                        Blinky.ForceNewDirection = true;
+                        Pinky.ForceNewDirection = true;
+                        Inky.ForceNewDirection = true;
+                        Clyde.ForceNewDirection = true;
+                    }
+
                     _ghostMode = value;
 
-                    // Inform all ghosts of the chanage
-                    Blinky.ForceNewDirection = true;
-                    Pinky.ForceNewDirection = true;
-                    Inky.ForceNewDirection = true;
-                    Clyde.ForceNewDirection = true;
+                    if (_ghostMode == GhostMode.Frightened)
+                        UpdateFrightenedModeDuration(ScreenManager.CurrentLevel);
                 }
             }
         }
@@ -145,6 +162,9 @@ namespace Pacman
 
             ResetLevel();
 
+            _ghostModeDuration = 0;
+            _ghostModeFlashes = 0;
+
             _random = new Random();
         }
 
@@ -174,6 +194,18 @@ namespace Pacman
 
                 if (Fruit.Duration < 0)
                     Fruit = null;
+            }
+
+            if (_ghostModeDuration > 0)
+                _ghostModeDuration -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_ghostModeDuration <= 0)
+                GhostMode = GhostMode.Chase;
+
+            // Frightened mode
+            if (GhostMode == GhostMode.Frightened)
+            {
+                
             }
         }
 
@@ -308,6 +340,38 @@ namespace Pacman
             Fruit = new ScoreItem(type, 10, this, ScreenManager.BonusItemsTileset, position, source);
         }
 
+        private void UpdateFrightenedModeDuration(int currentLevel)
+        {
+            if (currentLevel == 1)
+                _ghostModeDuration = 6;
+            else if (currentLevel == 2 || currentLevel == 6 || currentLevel == 10)
+                _ghostModeDuration = 5;
+            else if (currentLevel == 3)
+                _ghostModeDuration = 4;
+            else if (currentLevel == 4 || currentLevel == 14)
+                _ghostModeDuration = 3;
+            else if (currentLevel == 5 || currentLevel == 7 ||
+                currentLevel == 8 || currentLevel == 11)
+                _ghostModeDuration = 2;
+            else if (currentLevel == 9 || currentLevel == 12 ||
+                currentLevel == 13 || currentLevel == 15 ||
+                currentLevel == 16 || currentLevel == 18)
+                _ghostModeDuration = 1;
+            else
+                _ghostModeDuration = 0;
+
+            if (currentLevel >= 1 && currentLevel <= 8 ||
+                currentLevel == 10 || currentLevel == 11 ||
+                currentLevel == 14)
+                _ghostModeFlashes = 5;
+            else if (currentLevel == 9 || currentLevel == 12 ||
+                currentLevel == 13 || currentLevel == 15 ||
+                currentLevel == 16)
+                _ghostModeFlashes = 3;
+            else
+                _ghostModeFlashes = 0;
+        }
+
         #region Change Level Methods
 
         public void NextLevel()
@@ -349,7 +413,6 @@ namespace Pacman
         }
 
         #endregion
-
 
         #region Draw Methods
 
