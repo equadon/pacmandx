@@ -89,6 +89,8 @@ namespace Pacman
 
             DotEnergizerTexture = Content.Load<Texture2D>(@"Textures\DotEnergizer.png");
 
+            BonusItemsTileset = Content.Load<Texture2D>(@"Textures\BonusItems.png");
+
             DirectionTexture = Content.Load<Texture2D>(@"Textures\Direction.png");
 
             base.LoadContent();

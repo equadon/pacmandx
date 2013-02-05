@@ -86,6 +86,8 @@ namespace Pacman
         public int DotsLeft { get; private set; }
         public int EnergizersLeft { get; private set; }
 
+        public ScoreItem Fruit { get; private set; }
+
         public PacmanScreenManager ScreenManager { get; private set; }
 
         // Starting positions
@@ -160,6 +162,14 @@ namespace Pacman
                 Inky.Update(gameTime);
             if (!HideClyde)
                 Clyde.Update(gameTime);
+
+            if (Fruit != null)
+            {
+                Fruit.Update(gameTime);
+
+                if (Fruit.Duration < 0)
+                    Fruit = null;
+            }
         }
 
         /// <summary>
@@ -178,13 +188,13 @@ namespace Pacman
 
                     if (DotTiles[x, y] == (int)TileItem.Dot)
                     {
-                        _tileItems[x, y] = new ScoreItem(TileItem.Dot, DotPoints, this, ScreenManager.DotEnergizerTexture, pos,
+                        _tileItems[x, y] = new ScoreItem(TileItem.Dot, 0, this, ScreenManager.DotEnergizerTexture, pos,
                                                          dotSource);
                         DotsLeft++;
                     }
                     else if (DotTiles[x, y] == (int)TileItem.Energizer)
                     {
-                        _tileItems[x, y] = new ScoreItem(TileItem.Energizer, EnergizerPoints, this, ScreenManager.DotEnergizerTexture, pos,
+                        _tileItems[x, y] = new ScoreItem(TileItem.Energizer, 0, this, ScreenManager.DotEnergizerTexture, pos,
                                                          energizerSource);
                         EnergizersLeft++;
                     }
@@ -217,9 +227,69 @@ namespace Pacman
                 Points += item.Points;
                 _tileItems[(int) position.X, (int) position.Y] = null;
 
+                // TODO: Spawn fruits after 70 dots or 70 dots+energizers?
+                // 1st spawn after 70 dots have been cleared
+                if (Fruit == null && DotsLeft < 240 - 70)
+                    SpawnFruit(ScreenManager.CurrentLevel);
+
+                // 2nd spawn after 170 dots have been cleared
+                if (Fruit == null && DotsLeft < 240 - 70)
+                    SpawnFruit(ScreenManager.CurrentLevel);
+
                 return type;
             }
             return TileItem.None;
+        }
+
+        private void SpawnFruit(int currentLevel)
+        {
+            DrawingRectangle source = new DrawingRectangle(5, 3, 42, 48);;
+            TileItem type;
+
+            if (currentLevel == 1)
+            {
+                type = TileItem.Cherries;
+                source = new DrawingRectangle(5, 3, 42, 48);
+            }
+            else if (currentLevel == 2)
+            {
+                type = TileItem.Strawberry;
+                source = new DrawingRectangle(114, 2, 45, 50);
+            }
+            else if (currentLevel >= 3 && currentLevel <= 4)
+            {
+                type = TileItem.Peach;
+                source = new DrawingRectangle(112, 55, 46, 52);
+            }
+            else if (currentLevel >= 5 && currentLevel <= 6)
+            {
+                type = TileItem.Apple;
+                source = new DrawingRectangle(3, 55, 47, 51);
+            }
+            else if (currentLevel >= 7 && currentLevel <= 8)
+            {
+                type = TileItem.Grapes;
+                source = new DrawingRectangle(2, 111, 50, 49);
+            }
+            else if (currentLevel >= 9 && currentLevel <= 10)
+            {
+                type = TileItem.Galaxian;
+                source = new DrawingRectangle(109, 111, 52, 48);
+            }
+            else if (currentLevel >= 11 && currentLevel <= 12)
+            {
+                type = TileItem.Bell;
+                source = new DrawingRectangle(2, 164, 49, 50);
+            }
+            else
+            {
+                type = TileItem.Key;
+                source = new DrawingRectangle(120, 164, 30, 51);
+            }
+
+            var position = new Vector2(14 * PacmanGame.TileWidth, 20 * PacmanGame.TileWidth + PacmanGame.TileWidth / 2f);
+
+            Fruit = new ScoreItem(type, 10, this, ScreenManager.BonusItemsTileset, position, source);
         }
 
         #region Change Level Methods
@@ -298,6 +368,10 @@ namespace Pacman
                 Inky.Draw(spriteBatch, gameTime);
             if (!HideClyde)
                 Clyde.Draw(spriteBatch, gameTime);
+
+            // Fruit
+            if (Fruit != null)
+                Fruit.Draw(spriteBatch, gameTime);
         }
 
         private void DrawBoard(SpriteBatch spriteBatch)
