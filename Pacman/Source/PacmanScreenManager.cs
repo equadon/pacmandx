@@ -114,7 +114,7 @@ namespace Pacman
 #if DEBUG
             _currentGameScreen = new DebugScreen();
 #else
-            _currentGameScreen = new DebugScreen();
+            _currentGameScreen = new TestLevelScreen();
 #endif
             AddScreen(_currentGameScreen);
         }
