@@ -56,7 +56,6 @@
     <Compile Include="Source\Actors\PacMan.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Source\Effects\PointsEffect.cs" />
     <Compile Include="Source\ScoreItem.cs" />
     <Compile Include="Source\Level.cs" />
     <Compile Include="Source\PacmanGame.cs" />

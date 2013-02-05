@@ -1,9 +1,11 @@
 ﻿using System;
-using Pacman.Actors;
-using Pacman.Actors.Ghosts;
+using System.Collections.Generic;
 using SharpDX;
 using SharpDX.Toolkit;
 using SharpDX.Toolkit.Graphics;
+
+using Pacman.Actors;
+using Pacman.Actors.Ghosts;
 
 namespace Pacman
 {
@@ -238,8 +240,7 @@ namespace Pacman
                 {
                     EnergizersLeft--;
                 }
-
-                Points += item.Points;
+                item.Eat();
                 _tileItems[(int) position.X, (int) position.Y] = null;
 
                 // TODO: Spawn fruits after 70 dots or 70 dots+energizers?

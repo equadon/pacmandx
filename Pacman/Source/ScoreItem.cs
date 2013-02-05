@@ -31,6 +31,12 @@ namespace Pacman
                 Duration -= gameTime.ElapsedGameTime.TotalSeconds;
         }
 
+        // TODO: Could we use this to null this item?
+        public void Eat()
+        {
+            Level.Points += Points;
+        }
+
         /// <summary>
         /// Set points depending on which item type it is.
         /// </summary>
