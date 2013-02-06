@@ -265,6 +265,14 @@ namespace Pacman
         }
 
         /// <summary>
+        /// East ghost
+        /// </summary>
+        /// <param name="clyde"></param>
+        public void EatGhost(Ghost ghost)
+        {
+        }
+
+        /// <summary>
         /// Eat the item at position.
         /// </summary>
         /// <param name="position">Pac-Man position</param>

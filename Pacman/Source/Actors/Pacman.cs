@@ -79,6 +79,31 @@ namespace Pacman.Actors
                      Position.Y > tileBounds.Bottom - tileBounds.Height / 2f)
                 _position.Y = tileBounds.Bottom - tileBounds.Height / 2f;
 
+            // Collision with ghosts
+            if (IsCollidingWith(Level.Blinky))
+                if (Level.GhostMode == GhostMode.Frightened)
+                    Level.EatGhost(Level.Blinky);
+                else
+                    Level.ScreenManager.KillPlayer(Level);
+
+            if (IsCollidingWith(Level.Pinky))
+                if (Level.GhostMode == GhostMode.Frightened)
+                    Level.EatGhost(Level.Pinky);
+                else
+                    Level.ScreenManager.KillPlayer(Level);
+
+            if (IsCollidingWith(Level.Inky))
+                if (Level.GhostMode == GhostMode.Frightened)
+                    Level.EatGhost(Level.Inky);
+                else
+                    Level.ScreenManager.KillPlayer(Level);
+
+            if (IsCollidingWith(Level.Clyde))
+                if (Level.GhostMode == GhostMode.Frightened)
+                    Level.EatGhost(Level.Clyde);
+                else
+                    Level.ScreenManager.KillPlayer(Level);
+
             // Collision with fruit
             if (Level.Fruit != null)
             {

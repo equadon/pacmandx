@@ -117,5 +117,28 @@ namespace Pacman
             _flashDuration = duration;
             _amount = (flashCount * 0.01f / 3f) * 5 / (float) duration;
         }
+
+        // Check collision between sprites
+        public bool IsCollidingWith(Sprite sprite)
+        {
+            //bool collisionY = Position.X >= sprite.Bounds.Left &&
+            //                  Position.X <= sprite.Bounds.Right &&
+            //                  (Bounds.Top < sprite.Bounds.Bottom || Bounds.Bottom > sprite.Bounds.Top);
+
+            //if (!collisionY)
+            //    return false;
+
+            //bool collisionX = Position.Y >= sprite.Bounds.Top &&
+            //                  Position.Y <= sprite.Bounds.Bottom &&
+            //                  (Bounds.Left < sprite.Bounds.Right || Bounds.Right > sprite.Bounds.Left);
+
+            //return collisionX;
+
+            float distance = Vector2.Distance(Position, sprite.Position);
+
+            return (distance <= Origin.Y + sprite.Origin.Y &&
+                    ((int)GridPosition.X == (int) sprite.GridPosition.X ||
+                     (int)GridPosition.Y == (int) sprite.GridPosition.Y));
+        }
     }
 }
