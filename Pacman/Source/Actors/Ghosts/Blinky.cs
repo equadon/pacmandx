@@ -25,6 +25,12 @@ namespace Pacman.Actors.Ghosts
         /// </summary>
         public override void UpdateTarget()
         {
+            if (IsDead)
+            {
+                TargetTile = new Vector2(13, 14);
+                return;
+            }
+
             switch (Level.GhostMode)
             {
                 case GhostMode.Scatter:

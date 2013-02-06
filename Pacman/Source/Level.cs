@@ -270,6 +270,7 @@ namespace Pacman
         /// <param name="clyde"></param>
         public void EatGhost(Ghost ghost)
         {
+            ghost.Kill();
         }
 
         /// <summary>

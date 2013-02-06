@@ -139,6 +139,11 @@ namespace Pacman.Actors
                 _framesLeftToFreeze = 1;
             else if (type == TileItem.Energizer)
                 _framesLeftToFreeze = 3;
+
+            // PacMan animation
+            // TODO: Develop a proper animation system
+            var defaultRect = new Rectangle(3, 57, 51, 105);
+            SourceRect = SourceRect == defaultRect ? new Rectangle(110, 3, 158, 51) : defaultRect;
         }
 
         /// <summary>

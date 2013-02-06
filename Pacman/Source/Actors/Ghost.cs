@@ -33,6 +33,8 @@ namespace Pacman.Actors
         public DrawingRectangle DefaultSource { get; private set; }
         public DrawingRectangle FrightenedSource { get; private set; }
 
+        public bool IsDead { get; private set; }
+
         #endregion
 
         public Ghost(Level level, Texture2D texture, Vector2 position, Rectangle sourceRect)
@@ -41,6 +43,8 @@ namespace Pacman.Actors
             _random = new Random();
 
             ForceNewDirection = false;
+
+            IsDead = false;
 
             DefaultSource = SourceRect;
             FrightenedSource = new DrawingRectangle(3, 110, 48, 51);
@@ -82,6 +86,9 @@ namespace Pacman.Actors
         public override void Update(GameTime gameTime)
         {
             SourceRect = (Level.GhostMode == GhostMode.Frightened) ? FrightenedSource : DefaultSource;
+
+            if (IsDead && GridPosition == new Vector2(13, 14))
+                IsDead = false;
 
             base.Update(gameTime);
         }
@@ -131,6 +138,14 @@ namespace Pacman.Actors
                 _position.X -= (Bounds.Right - Level.TilesWide*PacmanGame.TileWidth);
 
             CalculateFutureDirection();
+        }
+
+        /// <summary>
+        /// PacMan ate ghost and he's killed.
+        /// </summary>
+        public void Kill()
+        {
+            IsDead = true;
         }
 
         private Direction RandomDirection()
