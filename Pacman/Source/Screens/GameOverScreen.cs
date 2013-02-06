@@ -36,9 +36,13 @@ namespace Pacman.Screens
         {
             var screenRect = new DrawingRectangle(0, 0, Level.TilesWide * PacmanGame.TileWidth, Level.TilesHigh * PacmanGame.TileWidth);
 
+            const string gameOverText = "Game Over";
+            Vector2 size = ScreenManager.GameFont.MeasureString(gameOverText);
+            var pos = new Vector2(PacmanGame.ScreenWidth / 2f - size.X / 2f, PacmanGame.ScreenHeight / 2f - size.Y);
+
             SpriteBatch.Begin();
             SpriteBatch.Draw(ScreenManager.BlankTexture, screenRect, new Color(0, 0, 0, 150));
-            SpriteBatch.DrawString(ScreenManager.GameFont, "Game Over", new Vector2(200, 200), Color.Red);
+            SpriteBatch.DrawString(ScreenManager.GameFont, gameOverText, pos, Color.White);
             SpriteBatch.End();
         }
     }
