@@ -396,7 +396,7 @@ namespace Pacman
             ResetLevel();
         }
 
-        private void ResetLevel()
+        public void ResetLevel()
         {
             // Reset tile items
             _tileItems = new ScoreItem[TilesWide,TilesHigh];
@@ -476,6 +476,37 @@ namespace Pacman
             // Effects
             for (int i = 0; i < Effects.Count; i++)
                 Effects[i].Draw(spriteBatch, gameTime);
+
+            // HUD
+            DrawHud(spriteBatch);
+        }
+
+        private void DrawHud(SpriteBatch spriteBatch)
+        {
+            // Draw score
+            string text = "Score: " + ScreenManager.Score;
+            Vector2 size = ScreenManager.HudFont.MeasureString(text);
+            var pos = new Vector2(TilesWide * PacmanGame.TileWidth - size.X - PacmanGame.TileWidth / 3f, PacmanGame.TileWidth);
+
+            spriteBatch.DrawString(ScreenManager.HudFont, text, pos, Color.Black);
+
+            // Draw lives
+            text = "Lives: ";
+            size = ScreenManager.HudFont.MeasureString(text);
+            pos = new Vector2(PacmanGame.TileWidth / 3f, PacmanGame.TileWidth);
+
+            spriteBatch.DrawString(ScreenManager.HudFont, text, pos, Color.Black);
+
+            const float scale = 0.9f;
+            var origin = new Vector2(48 / 2 * scale, 48 / 2 * scale);
+            pos.Y += origin.Y;
+            pos.X += size.X + origin.X * 2;
+
+            for (int i = 0; i < ScreenManager.Lives; i++)
+            {
+                spriteBatch.Draw(ScreenManager.PacManTileset, pos, new DrawingRectangle(110, 3, 48, 48), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
+                pos.X += origin.X * 2 + 5;
+            }
         }
 
         private void DrawBoard(SpriteBatch spriteBatch)

@@ -32,6 +32,7 @@ namespace Pacman
         // Content
         public SpriteFont DebugFont { get; private set; }
         public SpriteFont GameFont { get; private set; }
+        public SpriteFont HudFont { get; private set; }
 
         public Texture2D LevelBackground { get; private set; }
 
@@ -52,6 +53,8 @@ namespace Pacman
         public int Score { get; private set; }
         public int CurrentLevel { get; set; }
 
+        public int Lives { get; private set; }
+
         public Vector2 MousePosition
         {
             get
@@ -71,6 +74,8 @@ namespace Pacman
             CurrentLevel = 1;
             Score = 0;
 
+            Lives = 3;
+
             NewGame();
         }
 
@@ -78,6 +83,7 @@ namespace Pacman
         {
             DebugFont = Content.Load<SpriteFont>(@"Fonts\DebugFont.tkfont");
             GameFont = Content.Load<SpriteFont>(@"Fonts\GameFont.tkfont");
+            HudFont = Content.Load<SpriteFont>(@"Fonts\DimitriSwank.tkfont");
             
             BlankTexture = Content.Load<Texture2D>(@"Textures\Blank.png");
 
@@ -130,6 +136,21 @@ namespace Pacman
         private void AddPoints(object sender, AddPointsEventArgs e)
         {
             Score += e.Points;
+        }
+
+        public void KillPlayer(Level level)
+        {
+            Lives--;
+
+            if (Lives < 0)
+            {
+                // Game Over screen
+            }
+            else
+            {
+                // Display "Get Ready" screen
+                level.ResetLevel();
+            }
         }
     }
 }

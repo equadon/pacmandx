@@ -80,6 +80,11 @@ namespace Pacman.Screens
             if (input.IsKeyPressed(Key.NumberPad4))
                 Level.HideClyde = !Level.HideClyde;
 
+            if (input.IsKeyPressed(Key.NumberPad7))
+            {
+                ScreenManager.KillPlayer(Level);
+            }
+
             if (input.IsMousePressed(MouseButton.Left))
             {
                 if (mousePos.X >= Level.Blinky.Bounds.Left && mousePos.X <= Level.Blinky.Bounds.Right &&
