@@ -74,6 +74,7 @@
     <Compile Include="Source\ScreenMachine\Menu\MenuTextItem.cs" />
     <Compile Include="Source\ScreenMachine\ScreenManager.cs" />
     <Compile Include="Source\Screens\DebugScreen.cs" />
+    <Compile Include="Source\Screens\GameOverScreen.cs" />
     <Compile Include="Source\Screens\TestLevelScreen.cs" />
     <Compile Include="Source\Sprite.cs" />
     <Compile Include="Source\Utils.cs" />

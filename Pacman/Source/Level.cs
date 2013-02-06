@@ -401,19 +401,22 @@ namespace Pacman
         public void NextLevel()
         {
             ScreenManager.CurrentLevel++;
-            ResetLevel();
+            ResetLevel(true);
         }
 
-        public void ResetLevel()
+        public void ResetLevel(bool newLevel = false)
         {
             // Reset tile items
-            _tileItems = new ScoreItem[TilesWide,TilesHigh];
-            Effects = new List<TextEffect>();
+            if (newLevel)
+            {
+                _tileItems = new ScoreItem[TilesWide, TilesHigh];
+                Effects = new List<TextEffect>();
 
-            DotsLeft = 0;
-            EnergizersLeft = 0;
+                DotsLeft = 0;
+                EnergizersLeft = 0;
 
-            Fill();
+                Fill();
+            }
 
             // Reset ghosts and pacman
             ResetActors();

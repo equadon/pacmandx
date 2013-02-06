@@ -118,6 +118,9 @@ namespace Pacman.Screens
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
+            if (!IsActive)
+                return;
+
             Level.Update(gameTime);
 
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);

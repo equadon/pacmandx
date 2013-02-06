@@ -142,9 +142,10 @@ namespace Pacman
         {
             Lives--;
 
-            if (Lives < 0)
+            if (Lives < 1)
             {
-                // Game Over screen
+                // Game Over
+                AddScreen(new GameOverScreen());
             }
             else
             {
