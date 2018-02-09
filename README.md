@@ -1,6 +1,6 @@
 # Pacman clone
 
-Pacman clone written in C# using ![SharpDX](http://sharpdx.org/)
+Pacman clone written in C# using [SharpDX](http://sharpdx.org/).
 
 ## Chase mode
 ![Chase mode](https://i.imgur.com/Yh43cq0.png)
